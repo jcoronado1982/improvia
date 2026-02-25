@@ -1,0 +1,559 @@
+/* TRAINER CARD - Dark Premium Design */
+
+/* === TOP BAR === */
+.sop-td-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.sop-td-results {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.sop-td-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.sop-td-filter-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-family: var(--sop-font-main);
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sop-td-filter-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.sop-td-fav-btn {
+    background: rgba(255, 184, 0, 0.1);
+    border-color: rgba(255, 184, 0, 0.3);
+    color: #ffb800;
+}
+
+.sop-td-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 8px 18px;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.82rem;
+}
+
+/* === TRAINER GRID === */
+.sop-trainer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 31.9%));
+    justify-content: start;
+    gap: 30px;
+    padding: 0px;
+}
+
+/* === CARD CONTAINER === */
+.sop-trainer-card {
+    background: #0d121c;
+    /* Deep dark background */
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+.sop-trainer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* === CARD HEADER: Image + Badges (Side-by-side) === */
+.sop-tc-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 20px 0;
+    gap: 15px;
+}
+
+.sop-tc-image-wrapper {
+    position: relative;
+    width: 45%;
+    /* 40% of the header width */
+    flex-shrink: 0;
+    aspect-ratio: 1 / 1;
+    /* Keeps the box perfectly square automatically */
+}
+
+.sop-tc-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.sop-tc-icon-btn {
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    background: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #0b1120;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.sop-tc-header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 15px;
+    width: 55%;
+    /* 60% of the header width */
+}
+
+.sop-tc-header-top-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.sop-tc-menu-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    margin-left: 5px;
+}
+
+.sop-tc-badges {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    /* Take full width of right column, left-aligned internally */
+    padding-left: 10px;
+    /* Slight indent from center line */
+}
+
+.sop-tc-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sop-stars-sm {
+    color: #ffb800;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+}
+
+.sop-tc-rating-count {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.8rem;
+}
+
+.sop-tc-badge-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sop-tc-badge-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+}
+
+.sop-tc-badge-box {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    color: #ffffff;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 400;
+    display: inline-block;
+    width: fit-content;
+}
+
+/* === CARD BODY === */
+.sop-tc-body {
+    padding: 15px 20px 20px;
+    flex: 1;
+}
+
+.sop-tc-name {
+    font-family: var(--sop-font-main);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 2px 0;
+    letter-spacing: 0px;
+}
+
+.sop-tc-role {
+    display: block;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.sop-tc-desc {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+}
+
+/* Tags Row (Nivel, Cupos) */
+.sop-tc-tags-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.sop-tc-tag-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+}
+
+.sop-tc-tag-val {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.sop-tc-tag-cupos {
+    background: #891b22;
+    /* Deep red for featured cupos */
+    border-color: #891b22;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+}
+
+/* Focus Section */
+.sop-tc-focus {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.sop-tc-focus-label {
+    display: block;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    margin-bottom: 10px;
+}
+
+.sop-tc-focus-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.sop-tc-focus-tag {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.sop-tc-focus-tag:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+}
+
+.sop-tc-focus-more {
+    color: rgba(255, 255, 255, 0.5);
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+/* === CARD FOOTER: Price === */
+.sop-tc-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: #2a161b;
+    /* Dark reddish brown background */
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: auto;
+}
+
+.sop-tc-desde {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.sop-tc-price-pill {
+    background: transparent;
+    border: 1px solid #891b22;
+    /* Red accent */
+    color: #ffffff;
+    padding: 6px 20px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sop-tc-price-pill strong {
+    font-size: 1.2rem;
+    color: #ffffff;
+}
+
+.sop-tc-price-pill span {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    color: #ffffff;
+}
+
+/* === PRICING CARD VARIANT === */
+.sop-tc-pricing-card {
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    gap: 35px;
+    background: #070d19;
+    /* Extremely dark background */
+    border: 1px solid #142898;
+    /* Distinct royal blue outer border */
+    border-radius: 20px;
+}
+
+.sop-tc-pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    /* Equal spacing between all 4 boxes */
+    width: 100%;
+}
+
+.sop-tc-pricing-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    /* Gap between blue box and the text below */
+}
+
+/* Base box styling */
+.sop-tc-pricing-box {
+    border: 2px solid #142898;
+    /* Solid royal blue border */
+    background: #0b1120;
+    /* Very dark inner box */
+    border-radius: 8px;
+    /* Full rounded corners on all sides */
+    padding: 30px 10px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sop-tc-price-amount {
+    color: #ffffff;
+    font-size: 2.2rem;
+    /* Larger, thinner prices */
+    font-weight: 300;
+}
+
+.sop-tc-price-period {
+    color: #ffffff;
+    /* Solid white period text */
+    font-size: 0.85rem;
+    font-weight: 300;
+    text-transform: capitalize;
+}
+
+.sop-tc-pricing-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    /* More gap between buttons */
+    width: 100%;
+    margin-top: 5px;
+}
+
+.sop-tc-action-btn {
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 50px;
+    /* Fully rounded buttons */
+    font-family: var(--sop-font-main);
+    font-size: 1rem;
+    font-weight: 400;
+    /* Thinner font */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.sop-tc-action-fav {
+    background: transparent;
+    border: 1px solid #ffffff;
+    /* Solid white border */
+    color: #ffffff;
+}
+
+.sop-tc-action-fav:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sop-tc-action-ver {
+    background: #0a219e;
+    /* Solid royal blue background */
+    border: 1px solid #0a219e;
+    color: #ffffff;
+    /* White text */
+}
+
+.sop-tc-action-ver:hover {
+    background: #142898;
+}
+
+
+
+/* === PAGINATOR === */
+.sop-paginator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    /* Spaced further apart */
+    margin-top: 50px;
+    padding: 20px 0;
+}
+
+.sop-pag-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    /* Solid white border per Figma */
+    background: transparent;
+    color: #ffffff;
+    /* Solid white text */
+    font-family: var(--sop-font-main);
+    font-size: 1.1rem;
+    font-weight: 300;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+/* For the Next/Prev arrows to remove border but keep sizing */
+.sop-pag-btn.sop-pag-arrow {
+    border: none;
+    font-size: 1.5rem;
+    font-weight: 200;
+}
+
+.sop-pag-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sop-pag-active {
+    background: #0a219e;
+    /* Solid royal blue */
+    color: #ffffff;
+    border-color: #0a219e;
+    /* Hide white border by making it blue */
+    font-weight: 400;
+}
+
+.sop-pag-active:hover {
+    background: #142898;
+}
+
+.sop-pag-disabled {
+    pointer-events: none;
+    opacity: 0.3;
+    cursor: default;
+}
+
+.sop-pag-arrow {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.sop-pag-dots {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.9rem;
+    padding: 0 5px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1100px) {
+    .sop-trainer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .sop-trainer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sop-td-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

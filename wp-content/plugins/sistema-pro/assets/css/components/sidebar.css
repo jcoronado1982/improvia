@@ -1,0 +1,67 @@
+/* SIDEBAR MENU - Flat Aesthetic Design */
+.sop-sidebar-menu {
+    /* Flat slate-navy background matching the latest screenshot */
+    background: #313847;
+    border-radius: 0 40px 40px 0;
+    padding: 60px 40px 50px 50px !important;
+    height: auto;
+    max-height: 552px;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    position: sticky;
+    top: 40px;
+    /* Un poco de margen desde arriba para que no pegue con el header, si el header mide 186, podemos usar top: 120px o 200px dependiendo del layout. Asumimos 200px. */
+    z-index: 100;
+}
+
+.sop-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-decoration: none !important;
+    color: var(--sop-color-white) !important;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.sop-menu-item:hover,
+.sop-menu-item.active {
+    opacity: 1;
+}
+
+.sop-menu-item.active {
+    /* Retaining active state visually, perhaps just opacity or an underline if needed later */
+}
+
+.sop-menu-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    opacity: 0.9;
+}
+
+.sop-menu-item span {
+    font-family: var(--sop-font-main);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28.8px;
+    letter-spacing: 0%;
+    color: #FFFFFF;
+}
+
+.sop-dot {
+    width: 10px;
+    height: 10px;
+    background: #ff5c00;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 8px rgba(255, 92, 0, 0.4);
+}
+
+/* Push "Salir" to bottom if needed, though gap handles it for now */
+.sop-menu-item:last-child {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}

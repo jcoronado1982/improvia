@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap');
+
+:root {
+    --sop-color-navy: #000000;
+    --sop-color-bg-primary: #092189;
+    --sop-color-navy-light: #0d111a;
+    --sop-color-panel: rgba(26, 34, 53, 0.8);
+    /* Form panels background with transparency */
+    --sop-color-sidebar: #050a14;
+    --sop-color-white: #ffffff;
+    --sop-color-gray: #8c98a4;
+    --sop-color-light: #f8f9fa;
+    --sop-color-primary: #0047b3;
+    /* Accent color / active states */
+    --sop-border-light: rgba(255, 255, 255, 0.1);
+    --sop-radius-lg: 20px;
+    --sop-radius-md: 12px;
+    --sop-radius-sm: 8px;
+    --sop-radius-pill: 50px;
+    --sop-font-main: 'Red Hat Display', sans-serif;
+}
+
+body {
+    padding-top: 0 !important;
+    background-color: var(--sop-color-navy);
+    color: var(--sop-color-white);
+    min-height: 100vh;
+}
+
+#content,
+.site-content {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* OCULTAR ELEMENTOS DEL TEMA QUE ESTORBAN */
+header:not(.sop-global-header),
+footer:not(.sop-global-footer),
+.site-header,
+.site-footer,
+.wp-block-template-part,
+.main-navigation,
+.nav-menu,
+.site-navigation,
+.header-widget-region,
+.entry-header {
+    display: none !important;
+}
+
+.sop-cols-container~.entry-title,
+.entry-title {
+    display: none !important;
+}
+
+/* GLOBAL BUTTON STYLES */
+.sop-btn-blue {
+    background: #092189;
+    color: var(--sop-color-white);
+    padding: 12px 24px;
+    border-radius: var(--sop-radius-sm);
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: var(--sop-font-main);
+    transition: background 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sop-btn-blue:hover {
+    background: #0a2eb8;
+}
+
+.sop-btn-white {
+    background: var(--sop-color-white);
+    color: #092189;
+    padding: 12px 24px;
+    border-radius: var(--sop-radius-sm);
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: var(--sop-font-main);
+    transition: opacity 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sop-btn-white:hover {
+    opacity: 0.9;
+}

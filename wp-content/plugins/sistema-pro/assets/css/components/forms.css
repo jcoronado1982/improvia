@@ -1,0 +1,139 @@
+.sop-label {
+    display: block;
+    font-family: 'Red Hat Display', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin-bottom: 8px;
+    color: var(--sop-color-white);
+    opacity: 0.7;
+}
+
+.sop-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--sop-radius-md) !important;
+    padding: 12px 15px !important;
+    color: var(--sop-color-white) !important;
+    font-size: 0.95rem !important;
+    transition: border-color 0.3s ease;
+}
+
+.sop-input:focus {
+    border-color: var(--sop-color-gold) !important;
+    outline: none;
+}
+
+select.sop-input option {
+    background: var(--sop-color-panel);
+    color: var(--sop-color-white);
+}
+
+.sop-login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background: var(--sop-color-white);
+    border-radius: var(--sop-radius-sm);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.sop-login-container input,
+.sop-login-container select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.sop-register-container {
+    max-width: 500px;
+}
+
+.sop-alert {
+    padding: 15px;
+    background: #fff8e1;
+    border-left: 4px solid var(--sop-color-gold);
+    margin: 20px 0;
+}
+
+.sop-login-container button {
+    width: 100%;
+    padding: 12px;
+    background: #1a1a1a;
+    color: var(--sop-color-white);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.sop-login-container button:hover {
+    background: #333;
+}
+
+/* Authentication Forms Utilities */
+.sop-auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sop-auth-header h2 {
+    color: var(--sop-color-navy);
+    margin: 0;
+}
+
+.sop-auth-header p {
+    color: var(--sop-color-gray);
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.sop-label-light {
+    color: #333 !important;
+}
+
+.sop-input-light {
+    color: #333 !important;
+    background: #fff !important;
+    border-color: #ccc !important;
+}
+
+.sop-auth-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.sop-auth-row {
+    margin-bottom: 15px;
+}
+
+.sop-auth-row-large {
+    margin-bottom: 25px;
+}
+
+.sop-btn-full {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: var(--sop-radius-sm);
+}
+
+.sop-auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+.sop-auth-footer a {
+    color: var(--sop-color-navy);
+    text-decoration: none;
+}

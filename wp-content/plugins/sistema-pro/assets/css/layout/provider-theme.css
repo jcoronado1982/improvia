@@ -1,0 +1,340 @@
+/* 
+ * PROVIDER THEME (LIGHT MODE) 
+ * This CSS is applied globally when a user with role 'entrenador' or 'especialista' is logged in. 
+ */
+
+/* 1. Global Reset to Light Mode */
+body.sop-provider-theme-light:not(.sop-preview-mode),
+body.sop-provider-theme-light:not(.sop-preview-mode) #content,
+body.sop-provider-theme-light:not(.sop-preview-mode) .site-content,
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-cols-container,
+body.sop-provider-theme-light:not(.sop-preview-mode) #primary,
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-panel,
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tabs-container {
+    background-color: #f8f9fa !important;
+    color: #0a0e1a !important;
+}
+
+/* 2. Global Header Overrides for Light Mode */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-global-header {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-global-header * {
+    color: #0a0e1a !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-header-logo img {
+    filter: brightness(0.2);
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-user-pill {
+    border-color: #0a0e1a !important;
+    color: #0a0e1a !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-user-pill:hover {
+    background: #0a0e1a !important;
+    color: #ffffff !important;
+}
+
+/* 3. Sidebar Menu Overrides for Light Mode */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-sidebar-menu {
+    background-color: #ffffff !important;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.03);
+}
+
+/* Inactive items: soft gray-blue, reset opacity from sidebar.css's 0.5 value */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-item {
+    color: #b0c1c8 !important;
+    font-weight: 400 !important;
+    opacity: 1 !important;
+}
+
+/* Force the span to inherit parent color instead of using its own white */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-item span {
+    color: inherit !important;
+    font-size: 16px !important;
+}
+
+/* Active / hover: exact Navy Blue */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-item.active,
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-item:hover {
+    color: #092189 !important;
+    font-weight: 500 !important;
+    opacity: 1 !important;
+}
+
+/* Remove box styles from active state */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-item.active {
+    border-left: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding-left: 30px !important;
+}
+
+/* Colorize sidebar icons */
+/* Inactive icons light gray */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-icon {
+    filter: brightness(0) saturate(100%) invert(85%) sepia(8%) saturate(350%) hue-rotate(145deg) brightness(85%) contrast(85%) !important;
+    opacity: 0.8 !important;
+}
+
+/* Active icons exact Navy Blue #092189 */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-item.active .sop-menu-icon,
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-item:hover .sop-menu-icon {
+    /* Filter optimized to turn black into #092189 */
+    filter: brightness(0) saturate(100%) invert(13%) sepia(85%) saturate(3736%) hue-rotate(224deg) brightness(96%) contrast(101%) !important;
+    opacity: 1 !important;
+}
+
+/* 4. Tab Buttons Overrides for Light Mode */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-btn {
+    background: transparent !important;
+    border: 1px solid #092189 !important;
+    color: #092189 !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-btn img {
+    filter: brightness(0) saturate(100%) invert(11%) sepia(87%) saturate(5427%) hue-rotate(228deg) brightness(85%) contrast(105%) !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-btn.active {
+    background: #092189 !important;
+    color: #ffffff !important;
+    border-color: #092189 !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-btn.active img {
+    filter: brightness(0) invert(1) !important;
+}
+
+/* 5. Forms and Inputs Overrides */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-label {
+    color: #092189 !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-input,
+body.sop-provider-theme-light:not(.sop-preview-mode) select.sop-input {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #0a0e1a !important;
+}
+
+/* 6. Cards and Panels — UNIFIED style: shadow only, no border */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-profile-card,
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-form-box,
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-settings-section,
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-card,
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-panel,
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-split,
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-section {
+    background: #ffffff !important;
+    border: none !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06) !important;
+    color: #0a0e1a !important;
+}
+
+/* Nested box (Idiomas): remove its own border/background since the parent already has one */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-nested-box {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* 7. Footer Overrides */
+/* The footer in the mockups remains Dark Navy! */
+/* So we do not override it here unless specifically requested. */
+
+/* Fix the Titles inside forms */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-title-with-line {
+    color: #092189 !important;
+    border-bottom-color: #e2e8f0 !important;
+    /* Override the white bottom line */
+}
+
+/* Profile image upload box: neutral gray in light theme */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-profile-img-upload {
+    background: #f0f2f7 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Nested box title */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-nested-title {
+    color: #0a0e1a !important;
+}
+
+/* ======== 8. Security Tab Overrides ======== */
+/* .sop-security-section styles already unified in section 6 above */
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-title {
+    color: #092189 !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-label {
+    color: #0a0e1a !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-badge {
+    background: #f0f2f7 !important;
+    color: #0a0e1a !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-box {
+    border-color: #e2e8f0 !important;
+}
+
+/* ======== 9. Settings Tab Overrides ======== */
+
+/* Main settings panels */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-settings-panel {
+    background: #ffffff !important;
+    border: none !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06) !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-settings-title {
+    color: #092189 !important;
+}
+
+/* Notification toggle items */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-settings-item {
+    background: #f8f9fa !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-settings-item-text strong {
+    color: #0a0e1a !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-settings-item-text span {
+    color: #6b7280 !important;
+}
+
+/* Toggle slider inactive state */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-slider {
+    background-color: #d1d5db !important;
+}
+
+/* Language box */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-lang-box {
+    background: #f8f9fa !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-lang-badge {
+    background: #092189 !important;
+    color: #ffffff !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-lang-select {
+    color: #6b7280 !important;
+}
+
+/* Cancellation box */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-cancellation-box {
+    border: 1px solid #e2e8f0 !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-cancellation-box h4 {
+    color: #0a0e1a !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-cancellation-list li {
+    color: #6b7280 !important;
+}
+
+/* Dark select dropdown override */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-select-dark {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #0a0e1a !important;
+}
+
+/* Label override for settings */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-settings-panel .sop-label {
+    color: #6b7280 !important;
+}
+
+/* "Eliminar cuenta" button: red for destructive action */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-cancellation-box .sop-btn-blue {
+    background: #c53030 !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-cancellation-box .sop-btn-blue:hover {
+    background: #9b2c2c !important;
+}
+
+/* Language badges: light pill with dark text */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-badge {
+    background: #f0f2f7 !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #0a0e1a !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-badge * {
+    color: #0a0e1a !important;
+}
+
+/* ======== 10. Preview Tab Overrides for Providers ======== */
+
+
+
+/* ======== 12. Provider Preview Sections ======== */
+
+/* BACKGROUND 3-column grid */
+.sop-preview-bg-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.sop-preview-bg-subtitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #0a0e1a;
+    margin: 0 0 10px;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-preview-bg-subtitle {
+    color: #0a0e1a !important;
+}
+
+.sop-preview-bg-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sop-preview-bg-list li {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 8px;
+    padding-left: 15px;
+    position: relative;
+}
+
+.sop-preview-bg-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #092189;
+}
+
+/* POSICIONES ESPECIALIZADAS 2-column grid */
+.sop-preview-positions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 20px;
+}

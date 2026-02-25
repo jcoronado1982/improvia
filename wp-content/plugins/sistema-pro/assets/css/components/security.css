@@ -1,0 +1,85 @@
+/* ACCOUNT SECURITY COMPONENTS */
+.sop-security-section {
+    background: #212849;
+    border-radius: var(--sop-radius-lg);
+    padding: 30px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sop-security-title {
+    font-family: var(--sop-font-main);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-transform: uppercase;
+    color: var(--sop-color-white);
+    margin-bottom: 15px;
+}
+
+.sop-security-box {
+    background: transparent;
+    border: 1px solid var(--sop-border-light);
+    border-radius: var(--sop-radius-md);
+    padding: 20px 30px;
+    display: grid;
+    grid-template-columns: 150px auto max-content;
+    align-items: center;
+    gap: 20px;
+}
+
+.sop-security-label {
+    color: var(--sop-color-white);
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.sop-security-badge {
+    background: #000;
+    color: var(--sop-color-white);
+    padding: 8px 20px;
+    border-radius: var(--sop-radius-pill);
+    font-size: 0.9rem;
+    display: inline-block;
+    width: fit-content;
+}
+
+.sop-btn-blue {
+    background: #0d47a1;
+    /* Deep blue from the design */
+    color: var(--sop-color-white);
+    border: none;
+    padding: 10px 25px;
+    border-radius: var(--sop-radius-sm);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.sop-btn-blue:hover {
+    background: #1565c0;
+}
+
+/* Container Queries for Responsiveness */
+.sop-security-container {
+    container-type: inline-size;
+    container-name: security-layout;
+}
+
+@container security-layout (max-width: 600px) {
+    .sop-security-box {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .sop-security-badge {
+        margin: 0 auto;
+    }
+
+    .sop-btn-blue {
+        width: 100%;
+    }
+}

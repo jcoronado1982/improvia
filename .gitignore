@@ -1,0 +1,47 @@
+# WordPress Core
+wp-admin/
+wp-includes/
+wp-content/uploads/
+wp-content/blogs.dir/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/cache/
+wp-content/themes/
+wp-content/plugins/index.php
+wp-content/plugins/hello.php
+
+# wp-config
+wp-config.php
+
+# IDE & OS Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+debug.log
+
+# Dependency Directories
+node_modules/
+vendor/
+
+# Environment Variables
+.env
+.env.local
+
+# Build output
+dist/
+build/
+.next/
+
+# User specifically requested excluding things that shouldn't be pushed.
+# We are only interested in pushing the custom plugin we developed:
+# wp-content/plugins/sistema-pro/
+# However, if the user initiated git at the root of IMPROVIA, we need to ignore the rest.
+# To be safe, let's ignore ALL plugins EXCEPT sistema-pro:
+wp-content/plugins/*
+!wp-content/plugins/sistema-pro/

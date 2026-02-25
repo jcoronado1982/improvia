@@ -1,0 +1,101 @@
+/* ======== Subscription Sidebar Component ======== */
+.sop-preview-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+}
+
+.sop-preview-subscription {
+    width: 100%;
+    background: #2b3244;
+    /* Dark gray from Figma */
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    padding: 25px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sop-preview-sub-title {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0 0 15px;
+}
+
+.sop-preview-period-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.sop-period-tab {
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sop-period-tab.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.sop-period-tab:hover:not(.active) {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+}
+
+.sop-preview-price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 10px 0;
+}
+
+.sop-preview-slots {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 15px;
+}
+
+.sop-preview-slots span {
+    font-weight: 600;
+    color: #ff4d4f;
+    /* Figma red */
+    background: rgba(255, 77, 79, 0.15);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 6px;
+}
+
+.sop-preview-sub-desc {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+.sop-preview-subscribe-btn {
+    width: 100%;
+    padding: 12px;
+    background: #092189;
+    /* Deep Navy */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s ease;
+}
+
+.sop-preview-subscribe-btn:hover {
+    background: #112d99;
+}
