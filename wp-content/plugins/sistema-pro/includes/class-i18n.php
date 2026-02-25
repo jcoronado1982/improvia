@@ -129,16 +129,48 @@ class SOP_I18n {
             'Pierna dominante' => 'Dominant leg',
             'Altura (cm)' => 'Height (cm)',
             'Peso' => 'Weight',
+            'DESCRIPCION PROFESIONAL' => 'PROFESSIONAL DESCRIPTION',
             'DESCRIPCIÓN PROFESIONAL' => 'PROFESSIONAL DESCRIPTION',
             'ESTUDIO PRINCIPAL' => 'MAIN EDUCATION',
-            'Adjunta tu título o certificación para su verificación, de no adjuntarlo tu título no aparecerá para los Entrenadores.' => 'Attach your degree or certification for verification. If you don\'t attach it, your title won\'t appear for Coaches.',
-            'REDES SOCIALES PROFESIONALES' => 'PROFESSIONAL SOCIAL NETWORKS',
+            'Adjunta tu título o certificación para su verificación, de no adjuntarlo tu título no aparecerá para los Entrenadores' => 'Attach your degree or certification for verification. If you don\'t attach it, your title won\'t appear for Coaches',
+            'Recuerda que los entrenadores necesitan claridad y transparencia verificando que jugadores como tu son realmente titulados y puedan ofrecerte la ayuda que necesitas' => 'Remember that coaches need clarity and transparency, verifying that players like you are truly qualified so they can offer you the help you need',
+            'RRSS PROFESIONAL' => 'PROFESSIONAL SOCIAL MEDIA',
+            'Red social' => 'Social network',
+            '@Ejemplo' => '@Example',
+            'Agregar' => 'Add',
+            'Ver archivo actual' => 'View current file',
+            'PDF / JPG' => 'PDF / JPG',
+            'Cambiar foto' => 'Change photo',
+            'Escribe aquí tu descripción profesional...' => 'Write your professional description here...',
+            // Coach-specific Professional Info
+            'OCUPACION' => 'OCCUPATION',
+            'Ocupación actual' => 'Current occupation',
+            'Experiencia' => 'Experience',
+            'FORMACION REGLADA' => 'FORMAL EDUCATION',
+            'Título de estudio' => 'Degree title',
+            'Instituto' => 'Institute',
+            'Tipo de licencia' => 'License type',
+            'País' => 'Country',
+            'Fecha de egreso' => 'Graduation date',
+            'Adjunta tu título o certificación para su verificación, de no adjuntarlo tu título no aparecerá para los jugadores' => 'Attach your degree or certification for verification. If you don\'t attach it, your title won\'t appear for players',
+            'Recuerda que tus futuros jugadores necesitan claridad y transparencia verificando que coaches como tu son realmente titulados.' => 'Remember that your future players need clarity and transparency, verifying that coaches like you are truly qualified.',
+            'ESTUDIOS SECUNDARIOS' => 'SECONDARY STUDIES',
+            'Certificado o premio' => 'Certificate or award',
+            'Lugar de estudio' => 'Study location',
+            'Fecha' => 'Date',
+            'POSICIONES ESPECIALIZADAS' => 'SPECIALIZED POSITIONS',
+            'Posicion' => 'Position',
+            'Fases de juego' => 'Game phases',
+            'Fase Ofensiva' => 'Offensive phase',
+            'Fase Defensiva' => 'Defensive phase',
+            // AJAX Messages
+            'Guardando...' => 'Saving...',
+            'Guardado correctamente' => 'Saved successfully',
+            'Error al guardar' => 'Error saving',
             // Preview Overview (Provider)
             'BACKGROUND' => 'BACKGROUND',
-            'Experiencia' => 'Experience',
             'Licencias' => 'Licenses',
             'Certificaciones' => 'Certifications',
-            'POSICIONES ESPECIALIZADAS' => 'SPECIALIZED POSITIONS',
             'Posiciones' => 'Positions',
             'Paises donde puedo entrenar' => 'Countries where I can train',
             'QUIEN SOY' => 'WHO I AM',
@@ -159,6 +191,15 @@ class SOP_I18n {
             'Positivas (%s) ✕' => 'Positive (%s) ✕',
             'Neutras (%s)' => 'Neutral (%s)',
             'Negativas (%s)' => 'Negative (%s)',
+            // Preview dynamic data
+            'Formación Reglada' => 'Formal Education',
+            'Sin datos registrados' => 'No data recorded',
+            'Sin posiciones seleccionadas' => 'No positions selected',
+            'Sin fases seleccionadas' => 'No phases selected',
+            'Nivel' => 'Level',
+            'Edad' => 'Age',
+            'Resultados en 2 dias' => 'Results in 2 days',
+            'Escribe aquí tu descripción profesional...' => 'Write your professional description here...',
             'RRSS' => 'SOCIAL MEDIA'
         );
 
@@ -180,7 +221,18 @@ class SOP_I18n {
         
         if ( ! empty( $lang ) ) {
             $user_id = get_current_user_id();
+            $old_lang = get_user_meta( $user_id, 'sop_user_language', true );
             update_user_meta( $user_id, 'sop_user_language', $lang );
+
+            if ( class_exists( '\Improvia\Modules\Traceability\Classes\Audit_Logger' ) ) {
+                \Improvia\Modules\Traceability\Classes\Audit_Logger::log(
+                    'user_language_updated',
+                    $user_id,
+                    null,
+                    $old_lang,
+                    $lang
+                );
+            }
             wp_send_json_success( 'Idioma guardado' );
         } else {
             wp_send_json_error( 'Idioma inválido' );

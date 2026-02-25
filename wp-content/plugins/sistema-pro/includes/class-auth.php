@@ -112,6 +112,16 @@ class SOP_Auth {
         update_user_meta( $user_id, 'first_name', $user_name );
         update_user_meta( $user_id, 'sop_telefono', $user_tel );
 
+        if ( class_exists( '\Improvia\Modules\Traceability\Classes\Audit_Logger' ) ) {
+            \Improvia\Modules\Traceability\Classes\Audit_Logger::log(
+                'user_registered',
+                $user_id,
+                null,
+                null,
+                [ 'user_login' => $user_login, 'role' => $user_role ]
+            );
+        }
+
         // Auto-login
         wp_set_current_user( $user_id );
         wp_set_auth_cookie( $user_id );
@@ -167,8 +177,23 @@ class SOP_Auth {
         $user = wp_signon( $creds, false );
 
         if ( is_wp_error( $user ) ) {
-            // Se podría añadir un error en el formulario aquí
+            if ( class_exists( '\Improvia\Modules\Traceability\Classes\Audit_Logger' ) ) {
+                \Improvia\Modules\Traceability\Classes\Audit_Logger::log(
+                    'login_failed',
+                    0,
+                    null,
+                    null,
+                    [ 'user_login' => $_POST['sop_log'], 'error' => $user->get_error_message() ]
+                );
+            }
             return;
+        }
+
+        if ( class_exists( '\Improvia\Modules\Traceability\Classes\Audit_Logger' ) ) {
+            \Improvia\Modules\Traceability\Classes\Audit_Logger::log(
+                'user_logged_in',
+                $user->ID
+            );
         }
 
         // Redirección dinámica basada en el rol

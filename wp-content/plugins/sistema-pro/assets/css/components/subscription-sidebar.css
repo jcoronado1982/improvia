@@ -84,18 +84,19 @@
 .sop-preview-subscribe-btn {
     width: 100%;
     padding: 12px;
-    background: #092189;
-    /* Deep Navy */
+    background: linear-gradient(90deg, #669DED 0%, #406AC4 14%, #092189 28%, #092189 42%, #669DED 56%, #669DED 70%, #5889DD 85%, #092189 100%);
     color: #ffffff;
-    border: none;
+    border: 1px solid #669DED;
     border-radius: 8px;
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     letter-spacing: 1px;
-    transition: background 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 157, 237, 0.3);
 }
 
 .sop-preview-subscribe-btn:hover {
-    background: #112d99;
+    background: linear-gradient(90deg, #406AC4 0%, #092189 14%, #092189 28%, #669DED 42%, #669DED 56%, #5889DD 70%, #092189 85%, #669DED 100%);
+    box-shadow: 0 6px 20px rgba(102, 157, 237, 0.5);
 }

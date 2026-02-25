@@ -1,0 +1,99 @@
+/* ===================================
+ * Professional Components
+ * Estilos para los componentes de la
+ * pestaña de Información Profesional
+ * =================================== */
+
+/* --- Layout: apilado vertical con gap --- */
+.sop-prof-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* --- Flex row para dropdowns (ocupación, formación inputs) --- */
+.sop-prof-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.sop-prof-row-tight {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.sop-prof-row-start {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+/* --- Tag grid (checkboxes pills) --- */
+.sop-tag-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.sop-tag-grid-spaced {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+/* --- Chip list (formación, estudios, rrss items) --- */
+.sop-chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.sop-chip-list-spaced {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* --- Section labels --- */
+.sop-prof-section-label {
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.sop-prof-sub-label {
+    font-size: 0.85rem;
+    opacity: 0.6;
+    margin-bottom: 8px;
+}
+
+/* --- Description display --- */
+.sop-prof-desc-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.8;
+    white-space: pre-wrap;
+}
+
+/* --- File upload hint --- */
+.sop-prof-file-hint {
+    font-size: 1rem;
+    opacity: 0.7;
+    margin-left: 10px;
+}
+
+/* --- Empty state for preview --- */
+.sop-empty-state {
+    opacity: 0.5;
+}
+
+/* --- Flag emoji in preview --- */
+.sop-flag-emoji {
+    font-size: 1.4em;
+    margin-left: 5px;
+}

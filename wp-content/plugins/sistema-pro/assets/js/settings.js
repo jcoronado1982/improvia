@@ -1,10 +1,10 @@
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
     // Escuchar cambios en el selector de idioma
-    $('#sop_lang_pref').on('change', function() {
+    $('#sop_lang_pref').on('change', function () {
         var selectedLang = $(this).val();
-        
+
         // Ignorar si seleccionan la opción "Cambiar" (vacía/placeholder)
-        if ( !selectedLang || selectedLang === 'Cambiar' ) {
+        if (!selectedLang || selectedLang === 'Cambiar') {
             return;
         }
 
@@ -19,7 +19,7 @@ jQuery(document).ready(function($) {
                 nonce: sop_ajax.nonce,
                 lang: selectedLang
             },
-            success: function(response) {
+            success: function (response) {
                 if (response.success) {
                     // Recargar la página para aplicar el nuevo idioma
                     window.location.reload();
@@ -28,10 +28,11 @@ jQuery(document).ready(function($) {
                     $('#sop_lang_pref').css('opacity', '1');
                 }
             },
-            error: function() {
+            error: function () {
                 alert('Ocurrió un error en la conexión.');
                 $('#sop_lang_pref').css('opacity', '1');
             }
         });
     });
 });
+

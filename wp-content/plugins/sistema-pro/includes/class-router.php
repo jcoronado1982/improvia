@@ -18,7 +18,7 @@ class SOP_Router {
      * Reglas de redirección para el frontend
      */
     public function handle_frontend_access() {
-        $private_pages = array( 'suscripcion', 'perfil', 'mensajes', 'entrenadores', 'especialistas', 'qa' );
+        $private_pages = array( 'suscripcion', 'perfil', 'mensajes', 'entrenadores', 'especialistas', 'qa', 'checkout-simulado', 'detalle-entrenador' );
         
         // 1. Si intenta entrar a cualquier página privada sin estar logueado, rebotar a /home
         if ( is_page( $private_pages ) && ! is_user_logged_in() ) {

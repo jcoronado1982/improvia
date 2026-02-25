@@ -16,17 +16,29 @@ $ubicacion_act = get_user_meta( $user->ID, 'sop_ubicacion_id', true );
 $nacimiento = get_user_meta( $user->ID, 'sop_fecha_nacimiento', true );
 ?>
 
-<form id="sop-profile-form">
+<form id="sop-profile-form" enctype="multipart/form-data">
     <?php wp_nonce_field( 'sop_profile_nonce', 'nonce' ); ?>
     
     <div class="sop-tab-panel">
         <h3 class="sop-title-with-line"><?php esc_html_e( 'ABOUT ME', 'sistema-pro' ); ?></h3>
     <div class="sop-tab-split">
-        <div style="text-align: center;">
-            <div class="sop-profile-img-upload">
-                <i style="opacity: 0.5;">📷</i>
-            </div>
-            <p style="font-size: 0.85rem; margin-top: 15px; cursor: pointer;"><?php esc_html_e( 'Upload image', 'sistema-pro' ); ?></p>
+<?php
+        $profile_image_id = get_user_meta( $user->ID, 'sop_profile_image_id', true );
+        $profile_image_url = $profile_image_id ? wp_get_attachment_image_url( $profile_image_id, 'thumbnail' ) : '';
+        ?>
+        <div style="text-align: center; position: relative; flex: 0 0 160px;">
+            <label for="sop_profile_picture" style="cursor: pointer; display: block;">
+                <div class="sop-profile-img-upload" style="overflow: hidden; position: relative; width: 140px; height: 140px; border-radius: 50%; margin: 0 auto; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <?php if ( $profile_image_url ) : ?>
+                        <img src="<?php echo esc_url( $profile_image_url ); ?>" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover;" id="sop-profile-img-preview">
+                    <?php else : ?>
+                        <i style="opacity: 0.5;" id="sop-profile-img-icon">📷</i>
+                        <img src="" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover; display: none;" id="sop-profile-img-preview">
+                    <?php endif; ?>
+                </div>
+                <p style="font-size: 0.85rem; margin-top: 15px; cursor: pointer;"><?php esc_html_e( 'Upload image', 'sistema-pro' ); ?></p>
+            </label>
+            <input type="file" id="sop_profile_picture" name="sop_profile_picture" accept="image/jpeg, image/png, image/webp" style="display: none;" onchange="sopPreviewImage(this)">
         </div>
 
         <div style="flex: 1; min-width: 300px;">
@@ -82,7 +94,7 @@ $nacimiento = get_user_meta( $user->ID, 'sop_fecha_nacimiento', true );
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <button type="button" id="sop-add-lang" class="sop-btn-blue" style="width: auto; min-width: 100px;"><?php esc_html_e( 'Add', 'sistema-pro' ); ?></button>
+                    <button type="button" id="sop-add-lang" class="sop-btn-blue" style="width: auto; min-width: 100px;"><?php esc_html_e( 'Agregar', 'sistema-pro' ); ?></button>
                 </div>
 
                 <div id="sop-languages-list" style="display: flex; flex-wrap: wrap; gap: 10px;">
@@ -98,3 +110,19 @@ $nacimiento = get_user_meta( $user->ID, 'sop_fecha_nacimiento', true );
         <button type="submit" class="sop-btn-white"><?php esc_html_e( 'Guardar Cambios', 'sistema-pro' ); ?></button>
     </div>
 </form>
+
+<script>
+function sopPreviewImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var icon = document.getElementById('sop-profile-img-icon');
+            if (icon) icon.style.display = 'none';
+            var preview = document.getElementById('sop-profile-img-preview');
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>

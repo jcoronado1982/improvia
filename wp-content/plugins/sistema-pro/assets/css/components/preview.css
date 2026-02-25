@@ -13,8 +13,13 @@ body.sop-preview-mode .sop-tab-panel {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Override ONLY for Provider: Dark Navy background (transparent to layout) */
-body.sop-is-provider.sop-preview-mode,
+/* Override ONLY for Provider: Dark Navy Gradient background */
+body.sop-is-provider.sop-preview-mode {
+    background: radial-gradient(circle at 50% 0%, #092189 0%, #000000 80%) !important;
+    background-attachment: fixed !important;
+    color: #ffffff !important;
+}
+
 body.sop-is-provider.sop-preview-mode #content,
 body.sop-is-provider.sop-preview-mode .site-content,
 body.sop-is-provider.sop-preview-mode .sop-cols-container,

@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div>
 
     <div id="professional" class="sop-tab-content">
-        <form id="sop-professional-form" class="sop_professional_tab_form">
+        <form id="sop-professional-form" class="sop_professional_tab_form" enctype="multipart/form-data">
             <?php include SOP_PATH . 'templates/tabs/professional.php'; ?>
             <div style="margin-top: 40px; text-align: right;">
                 <span id="sop-prof-msg" style="margin-right: 20px; font-size: 0.9rem;"></span>
@@ -174,16 +174,110 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (newText) {
                     descDisplay.innerHTML = newText.replace(/\n/g, '<br>');
                 } else {
-                    descDisplay.textContent = 'Lorem ipsum dolor sit amet consectetur. Pretium at libero fermentum in vulputate. Viverra cum non ultricies tempor arcu in accumsan eu. Fringilla ut nulla neque leo phasellus tellus. Dignissim ante pulvinar purus in non tristique sed cursus. Ac sapien amet tellus quam pulvinar. Ac ipsum rutrum ac gravida massa iaculis sociis etiam. Facilisis augue auctor risus elementum. Aenean duis egestas amet urna viverra vitae bibendum blandit gravida.';
+                    descDisplay.textContent = '<?php echo esc_js( __( 'Escribe aquí tu descripción profesional...', 'sistema-pro' ) ); ?>';
                 }
             }
         });
     }
 
+    // --- Lógica Coach: Formación Reglada ---
+    let formacion = <?php echo json_encode(get_user_meta($user->ID, 'sop_formacion_reglada_data', true) ?: []); ?>;
+    const formacionList = document.getElementById('sop-formacion-list');
+    const addFormacionBtn = document.getElementById('sop-add-formacion');
+
+    function renderFormacion() {
+        if(!formacionList) return;
+        formacionList.innerHTML = '';
+        formacion.forEach((item, index) => {
+            const tag = document.createElement('div');
+            tag.className = 'sop-tab-badge';
+            tag.innerHTML = `<span>${item.titulo_name} / ${item.instituto_name} / ${item.tipo_name} / ${item.pais_name} / ${item.fecha || ''}</span><span style="cursor: pointer; opacity: 0.5;" onclick="removeFormacion(${index})">✕</span>`;
+            formacionList.appendChild(tag);
+        });
+    }
+
+    window.removeFormacion = (index) => {
+        formacion.splice(index, 1);
+        renderFormacion();
+    };
+
+    if(addFormacionBtn) {
+        addFormacionBtn.addEventListener('click', () => {
+            const titulo = document.getElementById('sop-formacion-titulo');
+            const instituto = document.getElementById('sop-formacion-instituto');
+            const lugar = document.getElementById('sop-formacion-lugar');
+            const tipo = document.getElementById('sop-formacion-tipo');
+            const pais = document.getElementById('sop-formacion-pais');
+            const fecha = document.getElementById('sop-formacion-fecha');
+            if(!titulo || !titulo.value) return;
+            formacion.push({
+                titulo_id: titulo.value,
+                titulo_name: titulo.options[titulo.selectedIndex].text,
+                instituto_id: instituto ? instituto.value : '',
+                instituto_name: instituto ? instituto.options[instituto.selectedIndex].text : '',
+                lugar_id: lugar ? lugar.value : '',
+                lugar_name: lugar ? lugar.options[lugar.selectedIndex].text : '',
+                tipo_id: tipo ? tipo.value : '',
+                tipo_name: tipo ? tipo.options[tipo.selectedIndex].text : '',
+                pais_id: pais ? pais.value : '',
+                pais_name: pais ? pais.options[pais.selectedIndex].text : '',
+                fecha: fecha ? fecha.value : ''
+            });
+            renderFormacion();
+        });
+    }
+    renderFormacion();
+
+    // --- Lógica Coach: Estudios Secundarios ---
+    let estudios = <?php echo json_encode(get_user_meta($user->ID, 'sop_estudios_secundarios_data', true) ?: []); ?>;
+    const estudiosList = document.getElementById('sop-estudios-list');
+    const addEstudiosBtn = document.getElementById('sop-add-estudios');
+
+    function renderEstudios() {
+        if(!estudiosList) return;
+        estudiosList.innerHTML = '';
+        estudios.forEach((item, index) => {
+            const tag = document.createElement('div');
+            tag.className = 'sop-tab-badge';
+            tag.innerHTML = `<span>${item.cert_name} / ${item.instituto_name} / ${item.fecha || ''}</span><span style="cursor: pointer; opacity: 0.5;" onclick="removeEstudio(${index})">✕</span>`;
+            estudiosList.appendChild(tag);
+        });
+    }
+
+    window.removeEstudio = (index) => {
+        estudios.splice(index, 1);
+        renderEstudios();
+    };
+
+    if(addEstudiosBtn) {
+        addEstudiosBtn.addEventListener('click', () => {
+            const cert = document.getElementById('sop-estudios-cert');
+            const instituto = document.getElementById('sop-estudios-instituto');
+            const lugar = document.getElementById('sop-estudios-lugar');
+            const fecha = document.getElementById('sop-estudios-fecha');
+            if(!cert || !cert.value) return;
+            estudios.push({
+                cert_id: cert.value,
+                cert_name: cert.options[cert.selectedIndex].text,
+                instituto_id: '',
+                instituto_name: instituto ? instituto.value : '',
+                lugar_id: lugar ? lugar.value : '',
+                lugar_name: lugar ? lugar.options[lugar.selectedIndex].text : '',
+                fecha: fecha ? fecha.value : ''
+            });
+            renderEstudios();
+        });
+    }
+    renderEstudios();
+
     // AJAX SAVING
     const forms = [
         { id: 'sop-profile-form', msgId: 'sop-profile-msg', extra: { key: 'sop_idiomas', val: () => languages } },
-        { id: 'sop-professional-form', msgId: 'sop-prof-msg', extra: { key: 'sop_rrss', val: () => rrss } }
+        { id: 'sop-professional-form', msgId: 'sop-prof-msg', extras: [
+            { key: 'sop_rrss', val: () => rrss },
+            { key: 'sop_formacion_reglada', val: () => formacion },
+            { key: 'sop_estudios_secundarios', val: () => estudios }
+        ]}
     ];
 
     forms.forEach(f => {
@@ -192,13 +286,18 @@ document.addEventListener('DOMContentLoaded', function() {
         el.addEventListener('submit', (e) => {
             e.preventDefault();
             const msgEl = document.getElementById(f.msgId);
-            msgEl.textContent = 'Guardando...';
+            msgEl.textContent = '<?php echo esc_js( __( 'Guardando...', 'sistema-pro' ) ); ?>';
             msgEl.style.color = '#fff';
 
             const formData = new FormData(el);
             formData.append('action', 'sop_update_profile');
             if(f.extra) {
                 formData.append(f.extra.key, JSON.stringify(f.extra.val()));
+            }
+            if(f.extras) {
+                f.extras.forEach(ex => {
+                    formData.append(ex.key, JSON.stringify(ex.val()));
+                });
             }
 
             fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
@@ -208,11 +307,12 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    msgEl.textContent = '✓ Guardado correctamente';
+                    msgEl.textContent = '✓ <?php echo esc_js( __( 'Guardado correctamente', 'sistema-pro' ) ); ?>';
                     msgEl.style.color = '#ffde00';
-                    setTimeout(() => { msgEl.textContent = ''; }, 3000);
+                    // Recargar para que Preview refleje los cambios guardados
+                    setTimeout(() => { location.reload(); }, 1000);
                 } else {
-                    msgEl.textContent = data.data || 'Error al guardar';
+                    msgEl.textContent = data.data || '<?php echo esc_js( __( 'Error al guardar', 'sistema-pro' ) ); ?>';
                     msgEl.style.color = '#ff4b4b';
                 }
             });

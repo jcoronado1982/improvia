@@ -226,3 +226,153 @@
     font-size: 0.85rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* ========================================
+   COACH FORM CONTAINER (Bordered inner box)
+   ======================================== */
+.sop-coach-form-box {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 15px;
+}
+
+.sop-coach-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.sop-coach-form-grid-row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+.sop-coach-form-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto auto;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+/* Tag Checkbox (Posiciones) */
+.sop-tag-checkbox {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: #fff;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.sop-tag-checkbox:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.sop-tag-checkbox.active,
+.sop-tag-checkbox:has(input:checked) {
+    background: #092189;
+    border-color: #092189;
+    color: #fff;
+}
+
+.sop-tag-x {
+    margin-left: 4px;
+    font-size: 0.75rem;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+/* Posiciones sub-box */
+.sop-posiciones-box {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 15px;
+}
+
+/* ========================================
+   PROVIDER LIGHT THEME OVERRIDES
+   ======================================== */
+.sop-provider-theme-light .sop-tab-panel {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: #1a1a2e;
+}
+
+.sop-provider-theme-light .sop-tab-panel h3 {
+    color: #092189;
+}
+
+.sop-provider-theme-light .sop-title-with-line {
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+.sop-provider-theme-light .sop-label {
+    color: #333;
+}
+
+.sop-provider-theme-light .sop-input {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.15);
+    color: #333;
+}
+
+.sop-provider-theme-light .sop-tab-badge {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    color: #333;
+}
+
+.sop-provider-theme-light .sop-tab-upload-area {
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.sop-provider-theme-light .sop-tab-warning-box {
+    background: #fff8e1;
+    border-color: rgba(255, 171, 0, 0.5);
+}
+
+.sop-provider-theme-light .sop-tab-warning-box p {
+    color: #333 !important;
+}
+
+.sop-provider-theme-light .sop-tab-nested-box,
+.sop-provider-theme-light .sop-coach-form-box,
+.sop-provider-theme-light .sop-posiciones-box {
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+.sop-provider-theme-light .sop-tag-checkbox {
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #333;
+    background: #fff;
+}
+
+.sop-provider-theme-light .sop-tag-checkbox:hover {
+    border-color: rgba(0, 0, 0, 0.4);
+}
+
+.sop-provider-theme-light .sop-tag-checkbox.active,
+.sop-provider-theme-light .sop-tag-checkbox:has(input:checked) {
+    background: #092189;
+    border-color: #092189;
+    color: #fff;
+}
+
+.sop-provider-theme-light #sop-prof-desc-display {
+    color: #333;
+}
+
+.sop-provider-theme-light .sop-btn-blue {
+    background: #092189;
+    color: #fff;
+}

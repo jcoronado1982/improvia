@@ -2,30 +2,81 @@
 /**
  * Template para la pestaña de Previsualización
  */
-if ( ! defined( 'ABSPATH' ) ) exit;
 ?>
 <div class="sop-preview-container">
     <?php
-    $current_user = wp_get_current_user();
+    if ( isset( $sop_preview_user_id ) && $sop_preview_user_id ) {
+        $current_user = get_userdata( $sop_preview_user_id );
+    } else {
+        $current_user = wp_get_current_user();
+    }
     
-    // Fetch custom data
-    $nationality_id = get_user_meta( $current_user->ID, 'sop_nacionalidad_id', true );
-    $edad = '28'; // Todo: calculate from sop_fecha_nacimiento if exists
-    $club = 'Boca Juniors'; // Todo: fetch from appropriate taxonomy
-    $perfil_desc = get_user_meta( $current_user->ID, 'sop_prof_description', true ) ?: 'Lorem ipsum dolor sit amet consectetur...';
-    $pierna = 'Derecha';
-    $peso = '62kg';
-    $nivel = 'Junior';
-    $altura = '1.72';
-    $cirquix = '45cm';
-    $pecho = '40cm';
-    $brazos = '25cm';
-    $pierna_size = '35cm';
+    if ( ! $current_user || is_wp_error( $current_user ) ) {
+        echo '<p>' . esc_html__( 'Usuario no encontrado.', 'sistema-pro' ) . '</p></div>';
+        return;
+    }
+    
+    // Fetch real data
+    $nationality_id   = get_user_meta( $current_user->ID, 'sop_nacionalidad_id', true );
+    $nationality_term = $nationality_id ? get_term( $nationality_id ) : null;
+    $nationality_name = ( $nationality_term && ! is_wp_error( $nationality_term ) ) ? $nationality_term->name : '';
+    $nationality_flag = SOP_UI::get_nationality_flag( $nationality_name );
+
+    $perfil_desc = get_user_meta( $current_user->ID, 'sop_prof_description', true ) ?: __( 'Escribe aquí tu descripción profesional...', 'sistema-pro' );
+
+    $categoria_id   = get_user_meta( $current_user->ID, 'sop_categoria_id', true );
+    $categoria_term = $categoria_id ? get_term( $categoria_id ) : null;
+    $categoria_name = ( $categoria_term && ! is_wp_error( $categoria_term ) ) ? $categoria_term->name : '';
+
+    // Ocupación para el subtítulo
+    $preview_ocup_id   = get_user_meta( $current_user->ID, 'sop_ocupacion_id', true );
+    $preview_ocup_term = $preview_ocup_id ? get_term( $preview_ocup_id ) : null;
+    $ocupacion_label   = ( $preview_ocup_term && ! is_wp_error( $preview_ocup_term ) ) ? $preview_ocup_term->name : '';
+
+    // Nivel profesional
+    $nivel_id   = get_user_meta( $current_user->ID, 'sop_nivel_prof_id', true );
+    $nivel_term = $nivel_id ? get_term( $nivel_id ) : null;
+    $nivel      = ( $nivel_term && ! is_wp_error( $nivel_term ) ) ? $nivel_term->name : '';
+
+    // Edad (calculada desde fecha de nacimiento)
+    $fecha_nac = get_user_meta( $current_user->ID, 'sop_fecha_nacimiento', true );
+    $edad = '';
+    if ( ! empty( $fecha_nac ) ) {
+        try {
+            $birth = new DateTime( $fecha_nac );
+            $today = new DateTime();
+            $edad  = $birth->diff( $today )->y;
+        } catch ( Exception $ex ) {
+            $edad = '';
+        }
+    }
+
+    // Datos del atleta para preview
+    $pierna_id   = get_user_meta( $current_user->ID, 'sop_pierna_id', true );
+    $pierna_term = $pierna_id ? get_term( $pierna_id ) : null;
+    $pierna      = ( $pierna_term && ! is_wp_error( $pierna_term ) ) ? $pierna_term->name : '';
+
+    $peso_id   = get_user_meta( $current_user->ID, 'sop_peso_id', true );
+    $peso_term = $peso_id ? get_term( $peso_id ) : null;
+    $peso      = ( $peso_term && ! is_wp_error( $peso_term ) ) ? $peso_term->name . ' kg' : '';
+
+    $altura_id   = get_user_meta( $current_user->ID, 'sop_altura_id', true );
+    $altura_term = $altura_id ? get_term( $altura_id ) : null;
+    $altura      = ( $altura_term && ! is_wp_error( $altura_term ) ) ? $altura_term->name . ' cm' : '';
+
+    // Placeholders for composition (currently not in DB)
+    $cirquix = $pecho = $brazos = $pierna_size = '';
     ?>
 
     <!-- Header + Subscription Layout -->
     <?php
-    $is_provider = ( current_user_can( 'entrenador' ) || current_user_can( 'especialista' ) );
+    $is_provider = false;
+    if ( $current_user && ! is_wp_error( $current_user ) ) {
+        $roles = (array) $current_user->roles;
+        if ( in_array( 'entrenador', $roles ) || in_array( 'especialista', $roles ) ) {
+            $is_provider = true;
+        }
+    }
     ?>
     <div class="sop-preview-layout sop-preview-with-sidebar">
         
@@ -35,34 +86,62 @@ if ( ! defined( 'ABSPATH' ) ) exit;
             <!-- Header Section -->
             <div class="sop-preview-header">
                 <div class="sop-preview-image">
-                    <img src="<?php echo esc_url( SOP_URL . 'assets/images/profile1.png' ); ?>" alt="Profile">
+                    <?php
+                    $profile_image_id = get_user_meta( $current_user->ID, 'sop_profile_image_id', true );
+                    $profile_image_url = $profile_image_id ? wp_get_attachment_image_url( $profile_image_id, 'medium' ) : SOP_URL . 'assets/images/profile1.png';
+                    ?>
+                    <img src="<?php echo esc_url( $profile_image_url ); ?>" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
                 <div class="sop-preview-info">
                     <div class="sop-preview-rating">
                         <span class="sop-stars">★★★★★</span> <span class="sop-rating-count">(10)</span>
                     </div>
                     <h2 class="sop-preview-name"><?php echo esc_html( strtoupper($current_user->display_name) ); ?></h2>
-                    <p class="sop-preview-group">Coach de futbol</p>
+                    <?php if ( ! empty( $ocupacion_label ) ) : ?>
+                        <p class="sop-preview-group"><?php echo esc_html( $ocupacion_label ); ?></p>
+                    <?php endif; ?>
                     
                     <div class="sop-preview-tags">
-                        <div class="sop-tag">Nivel <span class="sop-tag-gold"><?php echo esc_html( $nivel ); ?></span></div>
-                        <div class="sop-tag">Nacionalidad <img src="<?php echo esc_url( SOP_URL . 'assets/images/flag_ar.png' ); ?>" alt="AR" style="width: 24px; vertical-align: middle; margin-left: 5px;"></div>
+                        <?php if ( ! empty( $nivel ) ) : ?>
+                            <div class="sop-tag"><?php esc_html_e( 'Nivel', 'sistema-pro' ); ?> <span class="sop-tag-gold"><?php echo esc_html( $nivel ); ?></span></div>
+                        <?php endif; ?>
+                        <?php if ( ! empty( $nationality_name ) ) : ?>
+                            <div class="sop-tag"><?php esc_html_e( 'Nacionalidad', 'sistema-pro' ); ?> <span class="sop-flag-emoji"><?php echo $nationality_flag; ?></span></div>
+                        <?php endif; ?>
+                        <?php if ( ! empty( $categoria_name ) ) : ?>
+                            <div class="sop-tag"><?php esc_html_e( 'Categoría', 'sistema-pro' ); ?> <span><?php echo esc_html( $categoria_name ); ?></span></div>
+                        <?php endif; ?>
                     </div>
                     
                     <div class="sop-preview-tags">
-                        <div class="sop-tag">Total jugadores <span>46</span></div>
-                        <div class="sop-tag">Edad <span><?php echo esc_html( $edad ); ?></span></div>
+                        <?php if ( ! empty( $edad ) ) : ?>
+                            <div class="sop-tag"><?php esc_html_e( 'Edad', 'sistema-pro' ); ?> <span><?php echo esc_html( $edad ); ?></span></div>
+                        <?php endif; ?>
                     </div>
 
                     <?php if ( $is_provider ) : ?>
-                        <p class="sop-preview-result-time">⚡ Resultados en 2 dias</p>
+                        <p class="sop-preview-result-time">⚡ <?php esc_html_e( 'Resultados en 2 dias', 'sistema-pro' ); ?></p>
                     <?php endif; ?>
                 </div>
             </div>
 
-            <?php if ( $is_provider ) : ?>
+            <?php if ( $is_provider ) :
+            // Fetch coach professional data
+            $ocupacion_id   = get_user_meta( $current_user->ID, 'sop_ocupacion_id', true );
+            $experiencia_id = get_user_meta( $current_user->ID, 'sop_experiencia_id', true );
+            $ocupacion_term   = $ocupacion_id ? get_term( $ocupacion_id ) : null;
+            $experiencia_term = $experiencia_id ? get_term( $experiencia_id ) : null;
+
+            $formacion_data = get_user_meta( $current_user->ID, 'sop_formacion_reglada_data', true ) ?: array();
+            $estudios_data  = get_user_meta( $current_user->ID, 'sop_estudios_secundarios_data', true ) ?: array();
+
+            $posiciones_ids       = get_user_meta( $current_user->ID, 'sop_posiciones_ids', true ) ?: array();
+            $fases_ofensivas_ids  = get_user_meta( $current_user->ID, 'sop_fase_ofensiva_ids', true ) ?: array();
+            $fases_defensivas_ids = get_user_meta( $current_user->ID, 'sop_fase_defensiva_ids', true ) ?: array();
+            ?>
             <!-- Provider: Description below header -->
             <div class="sop-preview-card sop-full-width">
+                <h3 class="sop-preview-card-title"><?php esc_html_e( 'DESCRIPCION PROFESIONAL', 'sistema-pro' ); ?></h3>
                 <p class="sop-preview-text"><?php echo nl2br( esc_html( $perfil_desc ) ); ?></p>
             </div>
 
@@ -73,23 +152,39 @@ if ( ! defined( 'ABSPATH' ) ) exit;
                     <div>
                         <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'Experiencia', 'sistema-pro' ); ?></h4>
                         <ul class="sop-preview-bg-list">
-                            <li>5 años</li>
-                            <li>Experiencia en fútbol y fútbol sala (AFC)</li>
-                            <li>UEFA PRO / Capely / CHF</li>
+                            <?php if ( $ocupacion_term && ! is_wp_error( $ocupacion_term ) ) : ?>
+                                <li><?php echo esc_html( $ocupacion_term->name ); ?></li>
+                            <?php endif; ?>
+                            <?php if ( $experiencia_term && ! is_wp_error( $experiencia_term ) ) : ?>
+                                <li><?php echo esc_html( $experiencia_term->name ); ?></li>
+                            <?php endif; ?>
+                            <?php if ( empty( $ocupacion_term ) && empty( $experiencia_term ) ) : ?>
+                                <li class="sop-empty-state"><?php esc_html_e( 'Sin datos registrados', 'sistema-pro' ); ?></li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                     <div>
-                        <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'Licencias', 'sistema-pro' ); ?></h4>
+                        <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'Formación Reglada', 'sistema-pro' ); ?></h4>
                         <ul class="sop-preview-bg-list">
-                            <li>Licencia pro del entrenador capacitado</li>
-                            <li>Continuo a través del entrenamiento</li>
+                            <?php if ( ! empty( $formacion_data ) ) : ?>
+                                <?php foreach ( $formacion_data as $f ) : ?>
+                                    <li><?php echo esc_html( ( $f['cert_name'] ?? '' ) . ' — ' . ( $f['instituto_name'] ?? '' ) ); ?></li>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <li class="sop-empty-state"><?php esc_html_e( 'Sin datos registrados', 'sistema-pro' ); ?></li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                     <div>
                         <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'Certificaciones', 'sistema-pro' ); ?></h4>
                         <ul class="sop-preview-bg-list">
-                            <li>Certificado profesional técnico deportivo</li>
-                            <li>Certificado profesional de preparación física</li>
+                            <?php if ( ! empty( $estudios_data ) ) : ?>
+                                <?php foreach ( $estudios_data as $e ) : ?>
+                                    <li><?php echo esc_html( ( $e['cert_name'] ?? '' ) . ' — ' . ( $e['instituto_name'] ?? '' ) ); ?></li>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <li class="sop-empty-state"><?php esc_html_e( 'Sin datos registrados', 'sistema-pro' ); ?></li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </div>
@@ -102,32 +197,45 @@ if ( ! defined( 'ABSPATH' ) ) exit;
                     <div>
                         <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'Posiciones', 'sistema-pro' ); ?></h4>
                         <div class="sop-comp-tags">
-                            <span class="sop-comp-tag">Portero</span>
-                            <span class="sop-comp-tag">Lateral</span>
-                            <span class="sop-comp-tag">Centrocap</span>
-                            <span class="sop-comp-tag">Defensa Central</span>
-                            <span class="sop-comp-tag">Interior completo</span>
-                            <span class="sop-comp-tag">Mediocentro</span>
-                            <span class="sop-comp-tag">Extremo</span>
+                            <?php if ( ! empty( $posiciones_ids ) ) : ?>
+                                <?php foreach ( $posiciones_ids as $pid ) :
+                                    $term = get_term( $pid );
+                                    if ( $term && ! is_wp_error( $term ) ) : ?>
+                                        <span class="sop-comp-tag"><?php echo esc_html( $term->name ); ?></span>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <span class="sop-comp-tag sop-empty-state"><?php esc_html_e( 'Sin posiciones seleccionadas', 'sistema-pro' ); ?></span>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div>
-                        <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'Paises donde puedo entrenar', 'sistema-pro' ); ?></h4>
+                        <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'Fase Ofensiva', 'sistema-pro' ); ?></h4>
                         <div class="sop-comp-tags">
-                            <span class="sop-comp-tag">Toda españa</span>
-                            <span class="sop-comp-tag">Alianza de estrellas</span>
-                            <span class="sop-comp-tag">Alianza de futbol</span>
+                            <?php if ( ! empty( $fases_ofensivas_ids ) ) : ?>
+                                <?php foreach ( $fases_ofensivas_ids as $foid ) :
+                                    $term = get_term( $foid );
+                                    if ( $term && ! is_wp_error( $term ) ) : ?>
+                                        <span class="sop-comp-tag"><?php echo esc_html( $term->name ); ?></span>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <span class="sop-comp-tag sop-empty-state"><?php esc_html_e( 'Sin fases seleccionadas', 'sistema-pro' ); ?></span>
+                            <?php endif; ?>
                         </div>
-                        <h4 class="sop-preview-bg-subtitle" style="margin-top: 20px;">Fases Defensivas</h4>
+
+                        <h4 class="sop-preview-bg-subtitle" style="margin-top: 20px;"><?php esc_html_e( 'Fase Defensiva', 'sistema-pro' ); ?></h4>
                         <div class="sop-comp-tags">
-                            <span class="sop-comp-tag">Zona baja</span>
-                            <span class="sop-comp-tag">Zona media baja</span>
-                        </div>
-                        <h4 class="sop-preview-bg-subtitle" style="margin-top: 20px;">Fases Ofensivas</h4>
-                        <div class="sop-comp-tags">
-                            <span class="sop-comp-tag">Construcción / Progresión</span>
-                            <span class="sop-comp-tag">Dato de Nombre del Paso</span>
-                            <span class="sop-comp-tag">Contraataque desorganizado</span>
+                            <?php if ( ! empty( $fases_defensivas_ids ) ) : ?>
+                                <?php foreach ( $fases_defensivas_ids as $fdid ) :
+                                    $term = get_term( $fdid );
+                                    if ( $term && ! is_wp_error( $term ) ) : ?>
+                                        <span class="sop-comp-tag"><?php echo esc_html( $term->name ); ?></span>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <span class="sop-comp-tag sop-empty-state"><?php esc_html_e( 'Sin fases seleccionadas', 'sistema-pro' ); ?></span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -143,14 +251,33 @@ if ( ! defined( 'ABSPATH' ) ) exit;
                 <div class="sop-preview-card">
                     <h3 class="sop-preview-card-title"><?php esc_html_e( 'MI COMPOSICION', 'sistema-pro' ); ?></h3>
                     <div class="sop-comp-tags">
-                        <span class="sop-comp-tag">Pierna dominante / <?php echo esc_html( $pierna ); ?></span>
-                        <span class="sop-comp-tag">Peso / <?php echo esc_html( $peso ); ?></span>
-                        <span class="sop-comp-tag">Nivel / <?php echo esc_html( $nivel ); ?></span>
-                        <span class="sop-comp-tag">Altura: <?php echo esc_html( $altura ); ?></span>
-                        <span class="sop-comp-tag">Cirquix: <?php echo esc_html( $cirquix ); ?></span>
-                        <span class="sop-comp-tag">Pecho: <?php echo esc_html( $pecho ); ?></span>
-                        <span class="sop-comp-tag">Brazos: <?php echo esc_html( $brazos ); ?></span>
-                        <span class="sop-comp-tag">Pierna: <?php echo esc_html( $pierna_size ); ?></span>
+                        <?php if ( ! empty( $pierna ) ) : ?>
+                            <span class="sop-comp-tag"><?php esc_html_e( 'Pierna dominante', 'sistema-pro' ); ?> / <?php echo esc_html( $pierna ); ?></span>
+                        <?php endif; ?>
+                        <?php if ( ! empty( $peso ) ) : ?>
+                            <span class="sop-comp-tag"><?php esc_html_e( 'Peso', 'sistema-pro' ); ?> / <?php echo esc_html( $peso ); ?></span>
+                        <?php endif; ?>
+                        <?php if ( ! empty( $nivel ) ) : ?>
+                            <span class="sop-comp-tag"><?php esc_html_e( 'Nivel', 'sistema-pro' ); ?> / <?php echo esc_html( $nivel ); ?></span>
+                        <?php endif; ?>
+                        <?php if ( ! empty( $altura ) ) : ?>
+                            <span class="sop-comp-tag"><?php esc_html_e( 'Altura', 'sistema-pro' ); ?> / <?php echo esc_html( $altura ); ?></span>
+                        <?php endif; ?>
+                        <?php if ( ! empty( $cirquix ) ) : ?>
+                            <span class="sop-comp-tag"><?php esc_html_e( 'Cirquix', 'sistema-pro' ); ?>: <?php echo esc_html( $cirquix ); ?></span>
+                        <?php endif; ?>
+                        <?php if ( ! empty( $pecho ) ) : ?>
+                            <span class="sop-comp-tag"><?php esc_html_e( 'Pecho', 'sistema-pro' ); ?>: <?php echo esc_html( $pecho ); ?></span>
+                        <?php endif; ?>
+                        <?php if ( ! empty( $brazos ) ) : ?>
+                            <span class="sop-comp-tag"><?php esc_html_e( 'Brazos', 'sistema-pro' ); ?>: <?php echo esc_html( $brazos ); ?></span>
+                        <?php endif; ?>
+                        <?php if ( ! empty( $pierna_size ) ) : ?>
+                            <span class="sop-comp-tag"><?php esc_html_e( 'Pierna', 'sistema-pro' ); ?>: <?php echo esc_html( $pierna_size ); ?></span>
+                        <?php endif; ?>
+                        <?php if ( empty( $pierna ) && empty( $peso ) && empty( $nivel ) && empty( $altura ) ) : ?>
+                            <span class="sop-comp-tag sop-empty-state"><?php esc_html_e( 'Sin datos registrados', 'sistema-pro' ); ?></span>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

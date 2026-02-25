@@ -11,6 +11,9 @@ class SOP_Shortcodes_Controller {
         add_shortcode( 'sop_menu_lateral', array( $this, 'render_sidebar_menu' ) );
         add_shortcode( 'sop_hero_landing', array( $this, 'render_hero_landing' ) );
         add_shortcode( 'sop_lista_entrenadores', array( $this, 'render_trainer_list' ) );
+        add_shortcode( 'sop_mock_checkout', array( $this, 'render_mock_checkout' ) );
+        add_shortcode( 'sop_detalle_entrenador', array( $this, 'render_trainer_detail' ) );
+        add_shortcode( 'sop_suscripciones', array( $this, 'render_subscriptions' ) );
         
         // Registrar Shortcode de Layout Envolvente
         add_shortcode( 'sop_layout', array( $this, 'render_generic_layout' ) );
@@ -116,6 +119,48 @@ class SOP_Shortcodes_Controller {
     public function render_hero_landing() {
         ob_start();
         $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-hero-landing.php';
+        if ( file_exists( $view_path ) ) {
+            require $view_path;
+        } else {
+            echo '<p>Error: View file not found.</p>';
+        }
+        return ob_get_clean();
+    }
+
+    /**
+     * Renderiza la vista del checkout simulado
+     */
+    public function render_mock_checkout() {
+        ob_start();
+        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-mock-checkout.php';
+        if ( file_exists( $view_path ) ) {
+            require $view_path;
+        } else {
+            echo '<p>Error: View file not found.</p>';
+        }
+        return ob_get_clean();
+    }
+
+    /**
+     * Renderiza la vista del detalle público del entrenador
+     */
+    public function render_trainer_detail() {
+        ob_start();
+        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-trainer-detail.php';
+        if ( file_exists( $view_path ) ) {
+            require $view_path;
+        } else {
+            echo '<p>Error: View file not found.</p>';
+        }
+        return ob_get_clean();
+    }
+
+    /**
+     * Renderiza la vista del panel de Suscripciones
+     */
+    public function render_subscriptions() {
+        ob_start();
+        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-subscriptions.php';
         if ( file_exists( $view_path ) ) {
             require $view_path;
         } else {
