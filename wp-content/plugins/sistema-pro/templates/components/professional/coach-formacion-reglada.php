@@ -26,8 +26,8 @@ $coach_doc_name = $coach_doc_id ? basename( get_attached_file( $coach_doc_id ) )
         <div class="sop-coach-form-grid">
             <div>
                 <label class="sop-label"><?php esc_html_e( 'Título de estudio', 'sistema-pro' ); ?></label>
-                <select id="sop-formacion-titulo" class="sop-input">
-                    <option value=""><?php esc_html_e( 'Seleccionar', 'sistema-pro' ); ?></option>
+                <select id="sop-formacion-titulo" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
+                    <option value=""></option>
                     <?php foreach ($titulos as $t) : ?>
                         <option value="<?php echo $t->term_id; ?>"><?php echo esc_html($t->name); ?></option>
                     <?php endforeach; ?>
@@ -35,8 +35,8 @@ $coach_doc_name = $coach_doc_id ? basename( get_attached_file( $coach_doc_id ) )
             </div>
             <div>
                 <label class="sop-label"><?php esc_html_e( 'Instituto', 'sistema-pro' ); ?></label>
-                <select id="sop-formacion-instituto" class="sop-input">
-                    <option value=""><?php esc_html_e( 'Seleccionar', 'sistema-pro' ); ?></option>
+                <select id="sop-formacion-instituto" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
+                    <option value=""></option>
                     <?php foreach ($institutos as $inst) : ?>
                         <option value="<?php echo $inst->term_id; ?>"><?php echo esc_html($inst->name); ?></option>
                     <?php endforeach; ?>
@@ -44,8 +44,8 @@ $coach_doc_name = $coach_doc_id ? basename( get_attached_file( $coach_doc_id ) )
             </div>
             <div>
                 <label class="sop-label"><?php esc_html_e( 'Tipo de licencia', 'sistema-pro' ); ?></label>
-                <select id="sop-formacion-tipo" class="sop-input">
-                    <option value=""><?php esc_html_e( 'Seleccionar', 'sistema-pro' ); ?></option>
+                <select id="sop-formacion-tipo" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
+                    <option value=""></option>
                     <?php foreach ($tipos_titulo as $tt) : ?>
                         <option value="<?php echo $tt->term_id; ?>"><?php echo esc_html($tt->name); ?></option>
                     <?php endforeach; ?>
@@ -55,8 +55,8 @@ $coach_doc_name = $coach_doc_id ? basename( get_attached_file( $coach_doc_id ) )
         <div class="sop-coach-form-grid-row2">
             <div>
                 <label class="sop-label"><?php esc_html_e( 'País', 'sistema-pro' ); ?></label>
-                <select id="sop-formacion-pais" class="sop-input">
-                    <option value=""><?php esc_html_e( 'Seleccionar', 'sistema-pro' ); ?></option>
+                <select id="sop-formacion-pais" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
+                    <option value=""></option>
                     <?php foreach ($paises as $pa) : ?>
                         <option value="<?php echo $pa->term_id; ?>"><?php echo esc_html($pa->name); ?></option>
                     <?php endforeach; ?>
@@ -64,7 +64,7 @@ $coach_doc_name = $coach_doc_id ? basename( get_attached_file( $coach_doc_id ) )
             </div>
             <div>
                 <label class="sop-label"><?php esc_html_e( 'Fecha de egreso', 'sistema-pro' ); ?></label>
-                <input type="date" id="sop-formacion-fecha" class="sop-input">
+                <input type="text" id="sop-formacion-fecha" class="sop-input sop-datepicker">
             </div>
             <button type="button" id="sop-add-formacion" class="sop-btn-blue"><?php esc_html_e( 'Agregar', 'sistema-pro' ); ?></button>
         </div>

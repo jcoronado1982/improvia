@@ -13,29 +13,29 @@ if ( is_user_logged_in() ) {
 
 <div class="sop-login-container">
     <div class="sop-auth-header">
-        <h2><?php esc_html_e( 'Bienvenido de nuevo', 'sistema-pro' ); ?></h2>
-        <p><?php esc_html_e( 'Ingresa tus credenciales para continuar', 'sistema-pro' ); ?></p>
+        <h2>Bienvenido de nuevo</h2>
+        <p>Ingresa tus credenciales para continuar</p>
     </div>
 
     <form method="post" action="">
         <div class="sop-auth-row">
-            <label for="sop_user" class="sop-label sop-label-light"><?php esc_html_e( 'Usuario o Correo', 'sistema-pro' ); ?></label>
+            <label for="sop_user" class="sop-label sop-label-light">Usuario o Correo Electrónico</label>
             <input type="text" name="sop_log" id="sop_user" class="sop-input sop-input-light" required>
         </div>
         
         <div class="sop-auth-row-large">
-            <label for="sop_pass" class="sop-label sop-label-light"><?php esc_html_e( 'Contraseña', 'sistema-pro' ); ?></label>
+            <label for="sop_pass" class="sop-label sop-label-light">Contraseña</label>
             <input type="password" name="sop_pwd" id="sop_pass" class="sop-input sop-input-light" required>
         </div>
 
         <?php wp_nonce_field( 'sop_login_action', 'sop_nonce' ); ?>
         
         <button type="submit" name="sop_login_submit" class="sop-btn-nav sop-btn-register sop-btn-full">
-            <?php esc_html_e( 'Entrar al Sistema', 'sistema-pro' ); ?>
+            Iniciar Sesión
         </button>
         
         <div class="sop-auth-footer">
-            <a href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( '¿Olvidaste tu contraseña?', 'sistema-pro' ); ?></a>
+            <a href="<?php echo esc_url( wp_lostpassword_url() ); ?>">¿Olvidaste tu contraseña?</a>
         </div>
     </form>
 </div>

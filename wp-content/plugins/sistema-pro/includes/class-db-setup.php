@@ -12,9 +12,6 @@ class SOP_DB_Setup {
         add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
     }
 
-    /**
-     * Crea un menú dedicado en el administrador
-     */
     public function register_admin_menu() {
         // El menú principal ahora apunta a los logs de simulación como página inicial por defecto
         add_menu_page(
@@ -27,38 +24,40 @@ class SOP_DB_Setup {
             30
         );
 
-        // Menu de logs de simulación visible en el submenú también
-        add_submenu_page(
-            'sop_mock_logs',
-            'Suscripciones Sim.',
-            'Suscripciones Sim.',
-            'manage_options',
-            'sop_mock_logs',
-            array( $this, 'render_mock_logs_page' )
-        );
+        // SECCIÓN: GESTIÓN
+        add_submenu_page( 'sop_mock_logs', '--- GESTIÓN ---', '<span style="color:#aaa;font-weight:bold;text-transform:uppercase;font-size:10px;">—— GESTIÓN ——</span>', 'manage_options', '#' );
+        add_submenu_page( 'sop_mock_logs', 'Suscripciones', 'Suscripciones (Real)', 'manage_options', 'edit.php?post_type=subscription' );
+        add_submenu_page( 'sop_mock_logs', 'Suscripciones Sim.', 'Suscripciones Sim.', 'manage_options', 'sop_mock_logs' );
+        
+        // SECCIÓN: DATOS GLOBALES
+        add_submenu_page( 'sop_mock_logs', '--- GLOBALES ---', '<span style="color:#aaa;font-weight:bold;text-transform:uppercase;font-size:10px;">—— GLOBALES ——</span>', 'manage_options', '#' );
+        add_submenu_page( 'sop_mock_logs', 'Idiomas', 'Idiomas', 'manage_options', 'edit-tags.php?taxonomy=sop_idioma' );
+        add_submenu_page( 'sop_mock_logs', 'Niveles Idioma', 'Niveles Idioma', 'manage_options', 'edit-tags.php?taxonomy=sop_nivel' );
+        add_submenu_page( 'sop_mock_logs', 'Nacionalidades', 'Nacionalidades', 'manage_options', 'edit-tags.php?taxonomy=sop_nacionalidad' );
+        add_submenu_page( 'sop_mock_logs', 'Ubicaciones', 'Ubicaciones', 'manage_options', 'edit-tags.php?taxonomy=sop_ubicacion' );
+        add_submenu_page( 'sop_mock_logs', 'Países', 'Países', 'manage_options', 'edit-tags.php?taxonomy=sop_pais' );
+        add_submenu_page( 'sop_mock_logs', 'Redes Sociales', 'Redes Sociales', 'manage_options', 'edit-tags.php?taxonomy=sop_red_social' );
 
-        // Submenús (el primero suele repetirse para que aparezca en el desplegable)
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Idiomas', 'Idiomas', 'manage_options', 'edit-tags.php?taxonomy=sop_idioma' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Niveles', 'Niveles de Idioma', 'manage_options', 'edit-tags.php?taxonomy=sop_nivel' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Nacionalidades', 'Nacionalidades', 'manage_options', 'edit-tags.php?taxonomy=sop_nacionalidad' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Ubicaciones', 'Ubicaciones', 'manage_options', 'edit-tags.php?taxonomy=sop_ubicacion' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Pierna', 'Pierna Dominante', 'manage_options', 'edit-tags.php?taxonomy=sop_pierna' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Altura', 'Altura', 'manage_options', 'edit-tags.php?taxonomy=sop_altura' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Peso', 'Peso', 'manage_options', 'edit-tags.php?taxonomy=sop_peso' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Nivel Prof.', 'Niveles Prof.', 'manage_options', 'edit-tags.php?taxonomy=sop_nivel_prof' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'RRSS', 'Redes Sociales', 'manage_options', 'edit-tags.php?taxonomy=sop_red_social' );
-        // Coach/Especialista taxonomies
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Ocupación', 'Ocupaciones', 'manage_options', 'edit-tags.php?taxonomy=sop_ocupacion' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Experiencia', 'Experiencia', 'manage_options', 'edit-tags.php?taxonomy=sop_experiencia' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Títulos', 'Títulos de Estudio', 'manage_options', 'edit-tags.php?taxonomy=sop_titulo' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Institutos', 'Institutos', 'manage_options', 'edit-tags.php?taxonomy=sop_instituto' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Lugares', 'Lugares de Estudio', 'manage_options', 'edit-tags.php?taxonomy=sop_lugar_estudio' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Tipo Título', 'Tipos de Título', 'manage_options', 'edit-tags.php?taxonomy=sop_tipo_titulo' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Países', 'Países', 'manage_options', 'edit-tags.php?taxonomy=sop_pais' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Certificaciones', 'Certificaciones', 'manage_options', 'edit-tags.php?taxonomy=sop_certificacion' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Posiciones', 'Posiciones', 'manage_options', 'edit-tags.php?taxonomy=sop_posicion' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Fase Ofensiva', 'Fases Ofensivas', 'manage_options', 'edit-tags.php?taxonomy=sop_fase_ofensiva' );
-        add_submenu_page( 'edit-tags.php?taxonomy=sop_idioma', 'Fase Defensiva', 'Fases Defensivas', 'manage_options', 'edit-tags.php?taxonomy=sop_fase_defensiva' );
+        // SECCIÓN: DATOS ATLETA
+        add_submenu_page( 'sop_mock_logs', '--- ATLETA ---', '<span style="color:#aaa;font-weight:bold;text-transform:uppercase;font-size:10px;">—— ATLETA ——</span>', 'manage_options', '#' );
+        add_submenu_page( 'sop_mock_logs', 'Pierna', 'Pierna Dominante', 'manage_options', 'edit-tags.php?taxonomy=sop_pierna' );
+        add_submenu_page( 'sop_mock_logs', 'Altura', 'Altura', 'manage_options', 'edit-tags.php?taxonomy=sop_altura' );
+        add_submenu_page( 'sop_mock_logs', 'Peso', 'Peso', 'manage_options', 'edit-tags.php?taxonomy=sop_peso' );
+        add_submenu_page( 'sop_mock_logs', 'Nivel Prof.', 'Niveles Prof.', 'manage_options', 'edit-tags.php?taxonomy=sop_nivel_prof' );
+        add_submenu_page( 'sop_mock_logs', 'Categorías', 'Categorías', 'manage_options', 'edit-tags.php?taxonomy=sop_categoria' );
+
+        // SECCIÓN: DATOS STAFF (COACH/ESPECIALISTA)
+        add_submenu_page( 'sop_mock_logs', '--- STAFF ---', '<span style="color:#aaa;font-weight:bold;text-transform:uppercase;font-size:10px;">—— STAFF ——</span>', 'manage_options', '#' );
+        add_submenu_page( 'sop_mock_logs', 'Ocupación', 'Ocupaciones', 'manage_options', 'edit-tags.php?taxonomy=sop_ocupacion' );
+        add_submenu_page( 'sop_mock_logs', 'Experiencia', 'Experiencia', 'manage_options', 'edit-tags.php?taxonomy=sop_experiencia' );
+        add_submenu_page( 'sop_mock_logs', 'Títulos', 'Títulos de Estudio', 'manage_options', 'edit-tags.php?taxonomy=sop_titulo' );
+        add_submenu_page( 'sop_mock_logs', 'Institutos', 'Institutos', 'manage_options', 'edit-tags.php?taxonomy=sop_instituto' );
+        add_submenu_page( 'sop_mock_logs', 'Lugares', 'Lugares de Estudio', 'manage_options', 'edit-tags.php?taxonomy=sop_lugar_estudio' );
+        add_submenu_page( 'sop_mock_logs', 'Tipo Título', 'Tipos de Título', 'manage_options', 'edit-tags.php?taxonomy=sop_tipo_titulo' );
+        add_submenu_page( 'sop_mock_logs', 'Certificaciones', 'Certificaciones', 'manage_options', 'edit-tags.php?taxonomy=sop_certificacion' );
+        add_submenu_page( 'sop_mock_logs', 'Posiciones', 'Posiciones', 'manage_options', 'edit-tags.php?taxonomy=sop_posicion' );
+        add_submenu_page( 'sop_mock_logs', 'Fase Ofensiva', 'Fases Ofensivas', 'manage_options', 'edit-tags.php?taxonomy=sop_fase_ofensiva' );
+        add_submenu_page( 'sop_mock_logs', 'Fase Defensiva', 'Fases Defensivas', 'manage_options', 'edit-tags.php?taxonomy=sop_fase_defensiva' );
     }
 
     /**
@@ -486,13 +485,17 @@ class SOP_DB_Setup {
                 'slug'    => 'suscripcion',
                 'content' => '[sop_layout]<h2>Suscripción</h2><p>Estado de tu suscripción actual.</p>[/sop_layout]'
             ),
+            'Solicitudes' => array(
+                'slug'    => 'solicitudes',
+                'content' => '[sop_layout][sop_solicitudes][/sop_layout]'
+            ),
             'Perfil' => array(
                 'slug'    => 'perfil',
                 'content' => '[sop_layout][/sop_layout]'
             ),
             'Mensajes' => array(
                 'slug'    => 'mensajes',
-                'content' => '[sop_layout]<h2>Mis Mensajes</h2><p>Bandeja de entrada y notificaciones.</p>[/sop_layout]'
+                'content' => '[sop_layout][sop_mensajes][/sop_layout]'
             ),
             'Entrenadores' => array(
                 'slug'    => 'entrenadores',
@@ -500,7 +503,7 @@ class SOP_DB_Setup {
             ),
             'Especialistas' => array(
                 'slug'    => 'especialistas',
-                'content' => '[sop_layout]<h2>Especialistas</h2><p>Directorio de especialistas técnicos.</p>[/sop_layout]'
+                'content' => '[sop_layout][sop_lista_entrenadores role="especialista"][/sop_layout]'
             ),
             'QA' => array(
                 'slug'    => 'qa',

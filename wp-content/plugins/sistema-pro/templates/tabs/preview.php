@@ -78,19 +78,22 @@
         }
     }
     ?>
-    <div class="sop-preview-layout sop-preview-with-sidebar">
+    <div class="sop-preview-layout <?php echo $is_provider ? 'sop-preview-with-sidebar' : ''; ?>">
         
         <!-- Left Main Column -->
         <div class="sop-preview-main">
             
             <!-- Header Section -->
             <div class="sop-preview-header">
-                <div class="sop-preview-image">
+                <div class="sop-preview-image-card">
                     <?php
                     $profile_image_id = get_user_meta( $current_user->ID, 'sop_profile_image_id', true );
-                    $profile_image_url = $profile_image_id ? wp_get_attachment_image_url( $profile_image_id, 'medium' ) : SOP_URL . 'assets/images/profile1.png';
+                    $profile_image_url = $profile_image_id ? wp_get_attachment_image_url( $profile_image_id, 'medium' ) : SOP_URL . 'assets/images/no image.png';
                     ?>
-                    <img src="<?php echo esc_url( $profile_image_url ); ?>" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="<?php echo esc_url( $profile_image_url ); ?>" alt="Profile" class="sop-preview-image-img">
+                    <div class="sop-preview-play-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+                    </div>
                 </div>
                 <div class="sop-preview-info">
                     <div class="sop-preview-rating">
@@ -106,21 +109,30 @@
                             <div class="sop-tag"><?php esc_html_e( 'Nivel', 'sistema-pro' ); ?> <span class="sop-tag-gold"><?php echo esc_html( $nivel ); ?></span></div>
                         <?php endif; ?>
                         <?php if ( ! empty( $nationality_name ) ) : ?>
-                            <div class="sop-tag"><?php esc_html_e( 'Nacionalidad', 'sistema-pro' ); ?> <span class="sop-flag-emoji"><?php echo $nationality_flag; ?></span></div>
-                        <?php endif; ?>
-                        <?php if ( ! empty( $categoria_name ) ) : ?>
-                            <div class="sop-tag"><?php esc_html_e( 'Categoría', 'sistema-pro' ); ?> <span><?php echo esc_html( $categoria_name ); ?></span></div>
+                            <div class="sop-tag"><?php esc_html_e( 'Nacionalidad', 'sistema-pro' ); ?> <?php if ($nationality_flag) : ?><img src="<?php echo esc_url($nationality_flag); ?>" alt="Flag" class="sop-flag-img"><?php endif; ?></div>
                         <?php endif; ?>
                     </div>
                     
                     <div class="sop-preview-tags">
+                        <?php if ( $is_provider ) : 
+                            $all_txns = get_option( 'sop_mock_transactions_log', array() );
+                            $total_jugadores = 0;
+                            foreach ( $all_txns as $txn ) {
+                                if ( isset($txn['trainer_id']) && intval($txn['trainer_id']) === $current_user->ID && ( $txn['status'] ?? '' ) === 'SUSCRIPCION_ACTIVA' ) {
+                                    $total_jugadores++;
+                                }
+                            }
+                        ?>
+                            <div class="sop-tag"><?php esc_html_e( 'Total jugadores', 'sistema-pro' ); ?> <span><?php echo $total_jugadores; ?></span></div>
+                        <?php endif; ?>
+
                         <?php if ( ! empty( $edad ) ) : ?>
                             <div class="sop-tag"><?php esc_html_e( 'Edad', 'sistema-pro' ); ?> <span><?php echo esc_html( $edad ); ?></span></div>
                         <?php endif; ?>
                     </div>
 
                     <?php if ( $is_provider ) : ?>
-                        <p class="sop-preview-result-time">⚡ <?php esc_html_e( 'Resultados en 2 dias', 'sistema-pro' ); ?></p>
+                        <p class="sop-preview-result-time"><img src="<?php echo esc_url( SOP_URL . 'assets/images/ray.png' ); ?>" alt="⚡" style="width:18px; height:18px; vertical-align:middle; margin-right:6px;"> <?php esc_html_e( 'Resultados en 2 dias', 'sistema-pro' ); ?></p>
                     <?php endif; ?>
                 </div>
             </div>
@@ -142,7 +154,7 @@
             <!-- Provider: Description below header -->
             <div class="sop-preview-card sop-full-width">
                 <h3 class="sop-preview-card-title"><?php esc_html_e( 'DESCRIPCION PROFESIONAL', 'sistema-pro' ); ?></h3>
-                <p class="sop-preview-text"><?php echo nl2br( esc_html( $perfil_desc ) ); ?></p>
+                <div class="sop-preview-text"><?php echo wp_kses_post( $perfil_desc ); ?></div>
             </div>
 
             <!-- Provider: BACKGROUND -->
@@ -246,7 +258,7 @@
             <div class="sop-preview-content-grid">
                 <div class="sop-preview-card">
                     <h3 class="sop-preview-card-title"><?php esc_html_e( 'QUIEN SOY', 'sistema-pro' ); ?></h3>
-                    <p class="sop-preview-text"><?php echo nl2br( esc_html( $perfil_desc ) ); ?></p>
+                    <div class="sop-preview-text"><?php echo wp_kses_post( $perfil_desc ); ?></div>
                 </div>
                 <div class="sop-preview-card">
                     <h3 class="sop-preview-card-title"><?php esc_html_e( 'MI COMPOSICION', 'sistema-pro' ); ?></h3>
@@ -308,9 +320,11 @@
 
         <!-- Right Sidebar (Subscription) -->
         <?php 
-        $sidebar_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'templates/components/subscription-sidebar.php';
-        if ( file_exists( $sidebar_path ) ) {
-            require $sidebar_path;
+        if ( $is_provider ) {
+            $sidebar_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'templates/components/subscription-sidebar.php';
+            if ( file_exists( $sidebar_path ) ) {
+                require $sidebar_path;
+            }
         }
         ?>
 

@@ -17,8 +17,8 @@ $lugares         = get_terms( array( 'taxonomy' => 'sop_lugar_estudio', 'hide_em
         <div class="sop-coach-form-grid-4">
             <div>
                 <label class="sop-label"><?php esc_html_e( 'Certificado o premio', 'sistema-pro' ); ?></label>
-                <select id="sop-estudios-cert" class="sop-input">
-                    <option value=""><?php esc_html_e( 'Seleccionar', 'sistema-pro' ); ?></option>
+                <select id="sop-estudios-cert" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
+                    <option value=""></option>
                     <?php foreach ($certificaciones as $cert) : ?>
                         <option value="<?php echo $cert->term_id; ?>"><?php echo esc_html($cert->name); ?></option>
                     <?php endforeach; ?>
@@ -30,8 +30,8 @@ $lugares         = get_terms( array( 'taxonomy' => 'sop_lugar_estudio', 'hide_em
             </div>
             <div>
                 <label class="sop-label"><?php esc_html_e( 'Lugar de estudio', 'sistema-pro' ); ?></label>
-                <select id="sop-estudios-lugar" class="sop-input">
-                    <option value=""><?php esc_html_e( 'Seleccionar', 'sistema-pro' ); ?></option>
+                <select id="sop-estudios-lugar" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
+                    <option value=""></option>
                     <?php foreach ($lugares as $lg) : ?>
                         <option value="<?php echo $lg->term_id; ?>"><?php echo esc_html($lg->name); ?></option>
                     <?php endforeach; ?>
@@ -39,7 +39,7 @@ $lugares         = get_terms( array( 'taxonomy' => 'sop_lugar_estudio', 'hide_em
             </div>
             <div>
                 <label class="sop-label"><?php esc_html_e( 'Fecha', 'sistema-pro' ); ?></label>
-                <input type="date" id="sop-estudios-fecha" class="sop-input">
+                <input type="text" id="sop-estudios-fecha" class="sop-input sop-datepicker">
             </div>
             <button type="button" id="sop-add-estudios" class="sop-btn-blue"><?php esc_html_e( 'Agregar', 'sistema-pro' ); ?></button>
         </div>

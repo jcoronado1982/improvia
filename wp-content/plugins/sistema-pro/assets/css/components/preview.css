@@ -143,14 +143,16 @@ body.sop-preview-mode .sop-global-footer {
 /* Default Header Section for generic use (Athletes) */
 .sop-preview-header {
     display: grid;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: min(400px, 35%) 1fr;
     gap: 40px;
     margin-bottom: 40px;
-    align-items: center;
+    align-items: start;
 }
 
 /* Header Section (Profile Image & Info) - Dark for Providers */
 body.sop-is-provider.sop-preview-mode .sop-preview-header {
+    grid-template-columns: 40% 60%;
+    align-items: start;
     background: transparent !important;
     padding: 0 !important;
     box-shadow: none !important;
@@ -219,18 +221,45 @@ body.sop-is-provider.sop-preview-mode .sop-menu-item:hover .sop-menu-icon {
 }
 
 /* ------------------------------------- */
-
-.sop-preview-image img {
+/* Profile Image Card (rectangular with play button) */
+.sop-preview-image-card {
+    position: relative;
     width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    border: none;
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
     aspect-ratio: 1/1;
-    object-fit: cover;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
-body.sop-is-provider.sop-preview-mode .sop-preview-image img {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+.sop-preview-image-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
+
+.sop-preview-play-btn {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+}
+
+body.sop-is-provider.sop-preview-mode .sop-preview-image-card {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
 
 .sop-preview-info {
     display: flex;
@@ -239,7 +268,7 @@ body.sop-is-provider.sop-preview-mode .sop-preview-image img {
 }
 
 .sop-preview-rating {
-    font-size: 1.1rem;
+    font-size: 2rem;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -279,11 +308,11 @@ body.sop-is-provider.sop-preview-mode .sop-preview-name {
 }
 
 body.sop-is-provider.sop-preview-mode .sop-preview-group {
-    color: rgba(255, 255, 255, 0.7);
+    color: #8E8E8E;
 }
 
 .sop-preview-result-time {
-    font-size: 0.95rem;
+    font-size: 2rem;
     font-weight: 500;
     display: flex;
     align-items: center;
@@ -313,11 +342,18 @@ body.sop-is-provider.sop-preview-mode .sop-tag {
     color: rgba(255, 255, 255, 0.6);
 }
 
+.sop-tag .sop-flag-img {
+    height: 2rem;
+    width: 3.75rem;
+    object-fit: cover;
+    margin-left: 10px;
+    border-radius: 4px;
+}
+
 .sop-tag span {
     display: inline-block;
     margin-left: 10px;
     padding: 4px 12px;
-    border: 1px solid #e2e8f0;
     border-radius: 6px;
     color: #1a1e29;
     font-weight: 600;
@@ -384,9 +420,19 @@ body.sop-is-provider.sop-preview-mode .sop-preview-card-title {
 
 .sop-preview-text {
     color: #4a5568;
-    line-height: 1.8;
+    line-height: 1.5;
     font-size: 0.95rem;
     margin: 0;
+}
+
+.sop-preview-text p {
+    margin: 0 0 0.4em 0 !important;
+    padding: 0 !important;
+    line-height: 1.5 !important;
+}
+
+.sop-preview-text p:last-child {
+    margin-bottom: 0 !important;
 }
 
 body.sop-is-provider.sop-preview-mode .sop-preview-text {
@@ -493,4 +539,15 @@ body.sop-is-provider.sop-preview-mode .sop-preview-bg-list li::before {
     .sop-preview-positions-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* Support for Quill formatted text in preview */
+.sop-preview-description strong,
+.sop-preview-description b {
+    font-weight: 700 !important;
+}
+
+.sop-preview-description em,
+.sop-preview-description i {
+    font-style: italic !important;
 }

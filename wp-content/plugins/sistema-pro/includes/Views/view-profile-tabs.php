@@ -74,6 +74,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Handle initial tab from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialTab = urlParams.get('tab');
+    if (initialTab) {
+        const targetBtn = document.querySelector(`.sop-tab-btn[data-tab="${initialTab}"]`);
+        if (targetBtn) {
+            btns.forEach(b => b.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            targetBtn.classList.add('active');
+            document.getElementById(initialTab).classList.add('active');
+            
+            // Apply theme if provider
+            const isProvider = document.querySelector('.sop-tabs-container').getAttribute('data-is-provider') === '1';
+            if (initialTab === 'preview') {
+                document.body.classList.add('sop-preview-mode');
+                if (isProvider) document.body.classList.remove('sop-provider-theme-light');
+            } else {
+                document.body.classList.remove('sop-preview-mode');
+                if (isProvider) document.body.classList.add('sop-provider-theme-light');
+            }
+        }
+    }
+
+
     // --- Lógica Pestaña Personal (Idiomas) ---
     let languages = <?php echo json_encode(get_user_meta($user->ID, 'sop_idiomas_data', true) ?: []); ?>;
     const langList = document.getElementById('sop-languages-list');
@@ -147,32 +171,61 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     renderRrss();
 
-    // -- Lógica Editar Descripción Profesional --
+    // -- Lógica Editar Descripción Profesional (Quill.js) --
     const editDescBtn = document.getElementById('sop-edit-prof-desc-btn');
     const descDisplay = document.getElementById('sop-prof-desc-display');
     const descInput = document.getElementById('sop-prof-desc-input');
+    const editorWrapper = document.getElementById('sop-prof-editor-wrapper');
+    let quill = null;
 
-    if (editDescBtn && descDisplay && descInput) {
+    if (editDescBtn && descDisplay && descInput && editorWrapper) {
+        // Inicializar Quill si no existe
+        if (typeof Quill !== 'undefined' && !quill) {
+            quill = new Quill('#sop-quill-editor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['clean']
+                    ]
+                },
+                placeholder: '<?php echo esc_js( __( 'Escribe aquí tu descripción profesional...', 'sistema-pro' ) ); ?>'
+            });
+
+            // Cargar contenido inicial desde el div de display (tiene HTML real)
+            // No usamos descInput.value porque esc_textarea() escapa las etiquetas HTML
+            const initialHtml = descDisplay.innerHTML.trim();
+            if (initialHtml && initialHtml !== '<?php echo esc_js(__( 'Escribe aquí tu descripción profesional...', 'sistema-pro' )); ?>') {
+                quill.root.innerHTML = initialHtml;
+                descInput.value = initialHtml;
+            }
+
+            // Sincronizar Quill -> Textarea oculto
+            quill.on('text-change', function() {
+                descInput.value = quill.root.innerHTML;
+            });
+        }
+
         editDescBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            if (descInput.style.display === 'none') {
-                descInput.style.display = 'block';
+            if (editorWrapper.style.display === 'none') {
+                editorWrapper.style.display = 'block';
                 descDisplay.style.display = 'none';
-                descInput.focus();
                 
                 // Add active state to icon
                 this.style.background = 'rgba(255,255,255,0.1)';
             } else {
-                descInput.style.display = 'none';
+                editorWrapper.style.display = 'none';
                 descDisplay.style.display = 'block';
                 
                 // Remove active state
                 this.style.background = 'transparent';
                 
                 // Update display preview instantly
-                let newText = descInput.value.trim();
-                if (newText) {
-                    descDisplay.innerHTML = newText.replace(/\n/g, '<br>');
+                let newHtml = quill.root.innerHTML.trim();
+                if (newHtml && newHtml !== '<p><br></p>') {
+                    descDisplay.innerHTML = newHtml;
                 } else {
                     descDisplay.textContent = '<?php echo esc_js( __( 'Escribe aquí tu descripción profesional...', 'sistema-pro' ) ); ?>';
                 }
@@ -270,6 +323,153 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     renderEstudios();
 
+    // --- Lógica Pestaña Seguridad ---
+    const securityContainer = document.querySelector('.sop-security-container');
+    if (securityContainer) {
+        // Toggling edit mode
+        securityContainer.querySelectorAll('.sop-toggle-edit').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const section = this.closest('.sop-security-section');
+                const displayState = section.querySelector('.sop-display-state');
+                const editState = section.querySelector('.sop-edit-state');
+                
+                if (displayState.style.display === 'none') {
+                    displayState.style.display = 'flex';
+                    editState.style.display = 'none';
+                } else {
+                    displayState.style.display = 'none';
+                    editState.style.display = 'block';
+                }
+            });
+        });
+
+        // Update Email AJAX
+        const emailForm = document.getElementById('sop-update-email-form');
+        if (emailForm) {
+            emailForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const msgEl = this.querySelector('.sop-security-msg');
+                const btn = this.querySelector('button[type="submit"]');
+                
+                msgEl.textContent = '<?php echo esc_js( __( 'Guardando...', 'sistema-pro' ) ); ?>';
+                msgEl.style.color = 'inherit';
+                btn.disabled = true;
+
+                const formData = new FormData(this);
+                formData.append('action', 'sop_update_email');
+                formData.append('nonce', '<?php echo wp_create_nonce( 'sop_save_pref_nonce' ); ?>');
+
+                fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    btn.disabled = false;
+                    if (data.success) {
+                        msgEl.textContent = '✓ ' + data.data;
+                        msgEl.style.color = '#10b981';
+                        setTimeout(() => { location.reload(); }, 1500);
+                    } else {
+                        msgEl.textContent = '✕ ' + data.data;
+                        msgEl.style.color = '#ef4444';
+                    }
+                })
+                .catch(err => {
+                    btn.disabled = false;
+                    msgEl.textContent = '✕ Error de conexión';
+                    msgEl.style.color = '#ef4444';
+                });
+            });
+        }
+
+        // Update Password AJAX
+        const passwordForm = document.getElementById('sop-update-password-form');
+        if (passwordForm) {
+            passwordForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const msgEl = this.querySelector('.sop-security-msg');
+                const btn = this.querySelector('button[type="submit"]');
+                
+                msgEl.textContent = '<?php echo esc_js( __( 'Actualizando...', 'sistema-pro' ) ); ?>';
+                msgEl.style.color = 'inherit';
+                btn.disabled = true;
+
+                const formData = new FormData(this);
+                formData.append('action', 'sop_update_password');
+                formData.append('nonce', '<?php echo wp_create_nonce( 'sop_save_pref_nonce' ); ?>');
+
+                fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    btn.disabled = false;
+                    if (data.success) {
+                        msgEl.textContent = '✓ ' + data.data;
+                        msgEl.style.color = '#10b981';
+                        this.reset();
+                        setTimeout(() => { 
+                            const section = this.closest('.sop-security-section');
+                            section.querySelector('.sop-toggle-edit').click();
+                            msgEl.textContent = '';
+                        }, 2000);
+                    } else {
+                        msgEl.textContent = '✕ ' + data.data;
+                        msgEl.style.color = '#ef4444';
+                    }
+                })
+                .catch(err => {
+                    btn.disabled = false;
+                    msgEl.textContent = '✕ Error de conexión';
+                    msgEl.style.color = '#ef4444';
+                });
+            });
+        }
+    }
+
+    // --- Inicialización de Tom Select ---
+    if (typeof TomSelect !== 'undefined') {
+        document.querySelectorAll('.sop-tom-select').forEach(el => {
+            const settings = {
+                create: false,
+                allowEmptyOption: true
+            };
+            
+            // Si el elemento tiene atributo placeholder, Tom Select lo usará automáticamente.
+            // Si no, podemos forzarlo aquí si queremos, pero mejor dejar que lo tome del DOM.
+            
+            new TomSelect(el, settings);
+        });
+    }
+
+    // --- Inicialización de Flatpickr ---
+    if (typeof flatpickr !== 'undefined') {
+        const lang = (sop_ajax.user_lang || 'es_ES').substring(0, 2);
+        flatpickr('.sop-datepicker', {
+            locale: lang === 'en' ? 'en' : 'es',
+            dateFormat: 'Y-m-d',
+            altInput: true,
+            altFormat: 'd / m / Y',
+            allowInput: true,
+            onChange: function(selectedDates, dateStr, instance) {
+                instance.input.setCustomValidity('');
+            }
+        });
+    }
+
+    // --- Manejo de mensajes de validación personalizados ---
+    const requiredInputs = document.querySelectorAll('#sop-profile-form [required], #sop-professional-form [required]');
+    requiredInputs.forEach(input => {
+        input.addEventListener('invalid', function() {
+            this.setCustomValidity(sop_ajax.required_msg || 'Este campo es obligatorio');
+        });
+        input.addEventListener('input', function() {
+            this.setCustomValidity('');
+        });
+    });
+
     // AJAX SAVING
     const forms = [
         { id: 'sop-profile-form', msgId: 'sop-profile-msg', extra: { key: 'sop_idiomas', val: () => languages } },
@@ -309,8 +509,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     msgEl.textContent = '✓ <?php echo esc_js( __( 'Guardado correctamente', 'sistema-pro' ) ); ?>';
                     msgEl.style.color = '#ffde00';
-                    // Recargar para que Preview refleje los cambios guardados
-                    setTimeout(() => { location.reload(); }, 1000);
+                    
+                    // Si es el formulario personal, saltar a profesional
+                    setTimeout(() => { 
+                        if (f.id === 'sop-profile-form') {
+                            window.location.href = window.location.pathname + '?tab=professional';
+                        } else {
+                            location.reload(); 
+                        }
+                    }, 1000);
                 } else {
                     msgEl.textContent = data.data || '<?php echo esc_js( __( 'Error al guardar', 'sistema-pro' ) ); ?>';
                     msgEl.style.color = '#ff4b4b';

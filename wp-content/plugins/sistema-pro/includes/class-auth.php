@@ -98,8 +98,11 @@ class SOP_Auth {
 
         if ( is_wp_error( $user_id ) ) {
             $this->reg_errors[] = $user_id->get_error_message();
+            SOP_Debug::log( 'AUTH', 'Registration failed', [ 'user' => $user_login, 'error' => $user_id->get_error_message() ] );
             return;
         }
+
+        SOP_Debug::log( 'AUTH', 'User registration successful', [ 'user_id' => $user_id, 'user' => $user_login, 'role' => $user_role ] );
 
         // Actualizar nombre y rol
         wp_update_user( array(
@@ -111,6 +114,8 @@ class SOP_Auth {
         // Guardar metadatos
         update_user_meta( $user_id, 'first_name', $user_name );
         update_user_meta( $user_id, 'sop_telefono', $user_tel );
+        update_user_meta( $user_id, 'sop_user_status', 1 ); // Status 1: Inscrito
+        update_user_meta( $user_id, 'sop_user_language', 'es_ES' ); // Default language: Spanish
 
         if ( class_exists( '\Improvia\Modules\Traceability\Classes\Audit_Logger' ) ) {
             \Improvia\Modules\Traceability\Classes\Audit_Logger::log(
@@ -126,15 +131,8 @@ class SOP_Auth {
         wp_set_current_user( $user_id );
         wp_set_auth_cookie( $user_id );
         
-        // Redirección basada en rol
-        $user_obj = get_userdata( $user_id );
-        if ( in_array( 'entrenador', (array) $user_obj->roles ) || in_array( 'especialista', (array) $user_obj->roles ) ) {
-            wp_safe_redirect( home_url( '/mensajes' ) );
-        } elseif ( in_array( 'deportista', (array) $user_obj->roles ) || in_array( 'atleta', (array) $user_obj->roles ) ) {
-            wp_safe_redirect( home_url( '/entrenadores' ) );
-        } else {
-            wp_safe_redirect( home_url( '/suscripcion' ) );
-        }
+        // Redirrección universal al perfil para completar datos tras registro
+        wp_safe_redirect( home_url( '/perfil' ) );
         exit;
     }
 
@@ -177,6 +175,7 @@ class SOP_Auth {
         $user = wp_signon( $creds, false );
 
         if ( is_wp_error( $user ) ) {
+            SOP_Debug::log( 'AUTH', 'Login failed', [ 'user' => $_POST['sop_log'], 'error' => $user->get_error_message() ] );
             if ( class_exists( '\Improvia\Modules\Traceability\Classes\Audit_Logger' ) ) {
                 \Improvia\Modules\Traceability\Classes\Audit_Logger::log(
                     'login_failed',
@@ -188,6 +187,8 @@ class SOP_Auth {
             }
             return;
         }
+
+        SOP_Debug::log( 'AUTH', 'Login successful', [ 'user_id' => $user->ID, 'user' => $_POST['sop_log'] ] );
 
         if ( class_exists( '\Improvia\Modules\Traceability\Classes\Audit_Logger' ) ) {
             \Improvia\Modules\Traceability\Classes\Audit_Logger::log(

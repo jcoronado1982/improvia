@@ -210,7 +210,7 @@ body.sop-is-provider.sop-preview-mode .sop-preview-header {
 }
 
 body.sop-is-provider.sop-preview-mode .sop-preview-name {
-    font-size: 2.5rem;
+    font-size: 3.75rem;
     font-weight: 700;
     color: #0a0e1a;
     margin: 0;
@@ -225,7 +225,7 @@ body.sop-is-provider.sop-preview-mode .sop-preview-name {
 }
 
 body.sop-is-provider.sop-preview-mode .sop-preview-group {
-    font-size: 1.4rem;
+    font-size: 2.5rem;
     color: #1a1e29;
     margin: 0;
     font-weight: 500;
@@ -260,7 +260,6 @@ body.sop-is-provider.sop-preview-mode .sop-tag span {
     display: inline-block;
     margin-left: 10px;
     padding: 4px 12px;
-    border: 1px solid #e2e8f0;
     border-radius: 6px;
     color: #0a0e1a;
     font-weight: 600;

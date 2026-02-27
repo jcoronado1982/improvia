@@ -45,3 +45,7 @@ build/
 # To be safe, let's ignore ALL plugins EXCEPT sistema-pro:
 wp-content/plugins/*
 !wp-content/plugins/sistema-pro/
+
+# Backups
+backups/
+

@@ -200,7 +200,19 @@ class SOP_I18n {
             'Edad' => 'Age',
             'Resultados en 2 dias' => 'Results in 2 days',
             'Escribe aquí tu descripción profesional...' => 'Write your professional description here...',
-            'RRSS' => 'SOCIAL MEDIA'
+            'RRSS' => 'SOCIAL MEDIA',
+            // Validation messages
+            'El nombre completo es obligatorio.' => 'Full name is required.',
+            'La ubicación es obligatoria.' => 'Location is required.',
+            'La nacionalidad es obligatoria.' => 'Nationality is required.',
+            'La fecha de nacimiento es obligatoria.' => 'Birth date is required.',
+            'Debes agregar al menos un idioma.' => 'You must add at least one language.',
+            'La ocupación actual es obligatoria para proveedores.' => 'Current occupation is required for providers.',
+            'La experiencia es obligatoria para proveedores.' => 'Experience is required for providers.',
+            'La descripción profesional es obligatoria.' => 'Professional description is required.',
+            'Debes seleccionar al menos una posición especializada.' => 'You must select at least one specialized position.',
+            'Debes seleccionar al menos una fase de juego.' => 'You must select at least one game phase.',
+            'Este campo es obligatorio' => 'This field is required'
         );
 
         if ( isset( $en_dict[ $text ] ) ) {

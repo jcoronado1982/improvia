@@ -75,9 +75,18 @@
 /* --- Description display --- */
 .sop-prof-desc-text {
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.5;
     opacity: 0.8;
-    white-space: pre-wrap;
+}
+
+.sop-prof-desc-text p {
+    margin: 0 0 0.4em 0 !important;
+    padding: 0 !important;
+    line-height: 1.5 !important;
+}
+
+.sop-prof-desc-text p:last-child {
+    margin-bottom: 0 !important;
 }
 
 /* --- File upload hint --- */
@@ -96,4 +105,21 @@
 .sop-flag-emoji {
     font-size: 1.4em;
     margin-left: 5px;
+}
+
+/* --- Bold/Strong support for editors and display --- */
+.ql-editor strong,
+.ql-editor b,
+.sop-prof-desc-text strong,
+.sop-prof-desc-text b {
+    font-weight: 700 !important;
+    display: inline;
+}
+
+.ql-editor i,
+.ql-editor em,
+.sop-prof-desc-text i,
+.sop-prof-desc-text em {
+    font-style: italic !important;
+    display: inline;
 }

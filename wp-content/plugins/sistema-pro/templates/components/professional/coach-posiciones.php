@@ -16,7 +16,7 @@ $fases_defensivas_act = get_user_meta( $user->ID, 'sop_fase_defensiva_ids', true
 ?>
 
 <div class="sop-tab-panel sop-tab-panel-basic">
-    <h3 class="sop-title-with-line"><?php esc_html_e( 'POSICIONES ESPECIALIZADAS', 'sistema-pro' ); ?></h3>
+    <h3 class="sop-title-with-line"><?php esc_html_e( 'POSICIONES ESPECIALIZADAS', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></h3>
     
     <!-- Sub-box Posición -->
     <div class="sop-posiciones-box">
@@ -36,7 +36,7 @@ $fases_defensivas_act = get_user_meta( $user->ID, 'sop_fase_defensiva_ids', true
 
     <!-- Sub-box Fases de juego -->
     <div class="sop-posiciones-box">
-        <p class="sop-prof-section-label"><?php esc_html_e( 'Fases de juego', 'sistema-pro' ); ?></p>
+        <p class="sop-prof-section-label"><?php esc_html_e( 'Fases de juego', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></p>
         
         <!-- Fase Ofensiva -->
         <p class="sop-prof-sub-label"><?php esc_html_e( 'Fase Ofensiva', 'sistema-pro' ); ?></p>

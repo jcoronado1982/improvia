@@ -1,21 +1,45 @@
+<?php
+/**
+ * View: Mock Checkout
+ * Loads data from user_meta 'sop_pending_checkout_data' saved via AJAX.
+ */
+$user_id = get_current_user_id();
+$checkout_data = get_user_meta( $user_id, 'sop_pending_checkout_data', true );
+
+$trainer_id = 0;
+$trainer_name = __( 'Entrenador Seleccionado', 'sistema-pro' );
+$amount = '0.00';
+$plan_name = __( 'Suscripción', 'sistema-pro' );
+
+if ( ! empty( $checkout_data ) ) {
+    $trainer_id = intval( $checkout_data['trainer_id'] );
+    $amount     = floatval( $checkout_data['amount'] );
+    $plan_name  = sanitize_text_field( $checkout_data['plan_name'] );
+
+    $trainer_user = get_userdata( $trainer_id );
+    if ( $trainer_user ) {
+        $trainer_name = $trainer_user->display_name;
+    }
+}
+?>
 <div class="sop-container sop-mock-checkout">
     <div class="sop-mock-checkout-card">
-        <h2>Simulación de Checkout</h2>
-        <p>Estás a punto de suscribirte al entrenador <strong><span id="sop-mock-trainer-name"></span></strong>.</p>
+        <h2><?php esc_html_e( 'Simulación de Checkout', 'sistema-pro' ); ?></h2>
+        <p><?php esc_html_e( 'Estás a punto de suscribirte al entrenador', 'sistema-pro' ); ?> <strong><span id="sop-mock-trainer-name"><?php echo esc_html($trainer_name); ?></span></strong>.</p>
         <div class="sop-mock-plan-details">
-            <p><strong>Plan:</strong> Premium Mensual</p>
-            <p><strong>Precio:</strong> 50€ / mes</p>
+            <p><strong><?php esc_html_e( 'Plan:', 'sistema-pro' ); ?></strong> <span id="sop-mock-plan-name"><?php echo esc_html($plan_name); ?></span></p>
+            <p><strong><?php esc_html_e( 'Precio:', 'sistema-pro' ); ?></strong> <span id="sop-mock-amount-display"><?php echo esc_html($amount); ?></span>€ / <?php esc_html_e( 'mes', 'sistema-pro' ); ?></p>
         </div>
         
-        <div class="sop-mock-warning">
-            <p><em>⚠️ Esta es una pasarela de prueba para la presentación. No se realizarán cargos reales a ninguna tarjeta.</em></p>
+        <div class="sop-mock-info" style="background: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; color: #3b82f6; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9em; text-align: left;">
+            <p><strong>🔒 <?php esc_html_e( 'Fondos en Garantía:', 'sistema-pro' ); ?></strong> <?php esc_html_e( 'Tu dinero estará reservado de forma segura. El entrenador tiene 48h para aceptar tu solicitud. No se realizará ningún cargo real hasta que el entrenador apruebe la suscripción.', 'sistema-pro' ); ?></p>
         </div>
 
-        <button id="sop-mock-pay-btn" class="sop-btn sop-btn-primary">Simular Pago Exitoso (50€)</button>
-        <button id="sop-mock-cancel-btn" class="sop-btn sop-btn-secondary">Cancelar</button>
+        <button id="sop-mock-pay-btn" class="sop-btn sop-btn-primary"><?php esc_html_e( 'Reservar FONDOS (Authorize)', 'sistema-pro' ); ?></button>
+        <button id="sop-mock-cancel-btn" class="sop-btn sop-btn-secondary"><?php esc_html_e( 'Cancelar', 'sistema-pro' ); ?></button>
         
         <div id="sop-mock-loading" style="display:none; text-align: center; margin-top: 15px;">
-            <p>Procesando pago simulado...</p>
+            <p><?php esc_html_e( 'Reservando fondos en garantía...', 'sistema-pro' ); ?></p>
         </div>
     </div>
 </div>
@@ -65,20 +89,17 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Leer parámetros de URL (ej. ?trainer_id=123)
-    const urlParams = new URLSearchParams(window.location.search);
-    const trainerId = urlParams.get('trainer_id');
-    const trainerName = urlParams.get('tname') || 'Entrenador Seleccionado';
+    const trainerId = '<?php echo $trainer_id; ?>';
+    const amount = '<?php echo $amount; ?>';
+    const planName = '<?php echo esc_js($plan_name); ?>';
     
-    document.getElementById('sop-mock-trainer-name').innerText = trainerName;
-
     document.getElementById('sop-mock-cancel-btn').addEventListener('click', function() {
         window.history.back();
     });
 
     document.getElementById('sop-mock-pay-btn').addEventListener('click', function() {
-        if(!trainerId) {
-            alert("Error: Faltan datos del entrenador.");
+        if(!trainerId || trainerId == '0') {
+            alert("<?php esc_html_e( 'Error: Faltan datos del entrenador.', 'sistema-pro' ); ?>");
             return;
         }
 
@@ -96,17 +117,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 action: 'sop_simulate_subscription',
                 nonce: sop_ajax.nonce,
                 trainer_id: trainerId,
-                amount: 50
+                amount: amount,
+                plan: planName
             })
         })
         .then(response => response.json())
         .then(data => {
             if(data.success) {
-                alert("¡Pago Simulado Exitoso! Ya tienes acceso al entrenador.");
-                // Redirigir al dashboard/mensajes
+                alert("<?php esc_html_e( '¡Reserva de fondos exitosa! Tu solicitud ha sido enviada al entrenador.', 'sistema-pro' ); ?>");
                 window.location.href = '<?php echo esc_url( home_url('/mensajes') ); ?>';
             } else {
-                alert("Error en la simulación: " + (data.data || "Desconocido"));
+                alert("<?php esc_html_e( 'Error en la simulación:', 'sistema-pro' ); ?> " + (data.data || "<?php esc_html_e( 'Desconocido', 'sistema-pro' ); ?>"));
                 document.getElementById('sop-mock-pay-btn').style.display = 'block';
                 document.getElementById('sop-mock-cancel-btn').style.display = 'block';
                 document.getElementById('sop-mock-loading').style.display = 'none';
@@ -114,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert("Error de conexión al simular el pago.");
+            alert("<?php esc_html_e( 'Error de conexión al simular el pago.', 'sistema-pro' ); ?>");
         });
     });
 });

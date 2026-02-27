@@ -1,0 +1,91 @@
+/* ============ QA ACCORDION ============ */
+.sop-qa-container {
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.sop-qa-title {
+    font-size: 36px;
+    font-weight: 500;
+    color: #092189;
+    margin-bottom: 40px;
+}
+
+.sop-qa-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sop-qa-item {
+    border: 1px solid #092189;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(9, 33, 137, 0.03);
+    /* Fondo gris azulado claro */
+    transition: all 0.3s ease;
+}
+
+.sop-qa-item.open {
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(9, 33, 137, 0.1);
+}
+
+.sop-qa-trigger {
+    width: 100%;
+    padding: 20px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.sop-qa-question {
+    font-size: 14px;
+    font-weight: 600;
+    color: #092189;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sop-qa-icon {
+    width: 24px;
+    height: 24px;
+    border: 1.5px solid #092189;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #092189;
+    transition: transform 0.3s ease;
+}
+
+.sop-qa-item.open .sop-qa-icon {
+    transform: rotate(0deg);
+}
+
+.sop-qa-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    padding: 0 25px;
+}
+
+.sop-qa-item.open .sop-qa-content {
+    max-height: 500px;
+    padding: 0 25px 25px 25px;
+}
+
+.sop-qa-answer {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #4b5563;
+}
+
+.sop-qa-answer p {
+    margin: 0 0 10px 0;
+}

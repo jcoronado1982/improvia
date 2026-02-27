@@ -15,6 +15,7 @@ define( 'SOP_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SOP_URL', plugin_dir_url( __FILE__ ) );
 
 // Autocarga de módulos
+require_once SOP_PATH . 'includes/class-logger.php';
 require_once SOP_PATH . 'includes/class-db-setup.php';
 require_once SOP_PATH . 'includes/class-auth.php';
 require_once SOP_PATH . 'includes/class-router.php';

@@ -39,5 +39,7 @@ include $components_path . 'filter-bar.php';
 
 <?php
 // --- Paginator ---
-include $components_path . 'paginator.php';
+if ( isset($total_pages) && $total_pages > 1 ) {
+    include $components_path . 'paginator.php';
+}
 ?>

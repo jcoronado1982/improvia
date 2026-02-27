@@ -27,6 +27,47 @@ body {
     min-height: 100vh;
 }
 
+body.sop-login-page,
+body.sop-register-page {
+    background-color: var(--sop-color-white);
+    color: var(--sop-color-navy);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body.sop-login-page .sop-global-header,
+body.sop-register-page .sop-global-header {
+    background-color: var(--sop-color-white);
+}
+
+body.sop-login-page #content,
+body.sop-login-page .site-content,
+body.sop-login-page main,
+body.sop-register-page #content,
+body.sop-register-page .site-content,
+body.sop-register-page main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+body.sop-login-page h1,
+body.sop-login-page .entry-title,
+body.sop-login-page .page-title,
+body.sop-register-page h1,
+body.sop-register-page .entry-title,
+body.sop-register-page .page-title {
+    display: none !important;
+}
+
+body.home .wp-block-post-title,
+body.home h1,
+body.home .entry-title,
+body.home .page-title,
 #content,
 .site-content {
     padding-top: 0 !important;

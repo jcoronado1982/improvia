@@ -13,19 +13,20 @@ $redes_sociales = get_terms( array( 'taxonomy' => 'sop_red_social', 'hide_empty'
     <h3 class="sop-title-with-line"><?php esc_html_e( 'RRSS PROFESIONAL', 'sistema-pro' ); ?></h3>
     <div class="sop-coach-form-box">
         <div class="sop-prof-row-tight">
-            <div>
+            <div style="flex: 0 0 160px;">
                 <label class="sop-label"><?php esc_html_e( 'Red social', 'sistema-pro' ); ?></label>
-                <select id="sop-rrss-type" class="sop-input" style="min-width: 130px;">
+                <select id="sop-rrss-type" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
+                    <option value=""></option>
                     <?php foreach ($redes_sociales as $red) : ?>
                         <option value="<?php echo $red->term_id; ?>"><?php echo esc_html($red->name); ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div>
-                <label class="sop-label"><?php esc_html_e( '@Ejemplo', 'sistema-pro' ); ?></label>
-                <input type="text" id="sop-rrss-value" class="sop-input" placeholder="<?php esc_attr_e( '@Ejemplo', 'sistema-pro' ); ?>" style="min-width: 130px;">
+            <div style="flex: 1; min-width: 150px;">
+                <label class="sop-label"><?php esc_html_e( 'Usuario', 'sistema-pro' ); ?></label>
+                <input type="text" id="sop-rrss-value" class="sop-input" placeholder="<?php esc_attr_e( '@Ejemplo', 'sistema-pro' ); ?>">
             </div>
-            <button type="button" id="sop-add-rrss" class="sop-btn-blue"><?php esc_html_e( 'Agregar', 'sistema-pro' ); ?></button>
+            <button type="button" id="sop-add-rrss" class="sop-btn-blue" style="margin-bottom: 0;"><?php esc_html_e( 'Agregar', 'sistema-pro' ); ?></button>
         </div>
     </div>
 

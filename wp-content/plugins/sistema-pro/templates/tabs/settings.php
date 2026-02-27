@@ -78,8 +78,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
             ?>
             <div class="sop-lang-box">
                 <span class="sop-lang-badge" id="sop_current_lang_badge"><?php echo esc_html( $display_lang ); ?></span>
-                <select class="sop-lang-select sop-user-lang-preference" id="sop_lang_pref">
-                    <option value=""><?php esc_html_e( 'Cambiar', 'sistema-pro' ); ?></option>
+                <select class="sop-lang-select sop-user-lang-preference sop-tom-select" id="sop_lang_pref" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
+                    <option value=""></option>
                     <option value="es" <?php selected( $current_lang, 'es_ES' ); ?>><?php esc_html_e( 'Español', 'sistema-pro' ); ?></option>
                     <option value="en_US" <?php selected( $current_lang, 'en_US' ); ?>><?php esc_html_e( 'English', 'sistema-pro' ); ?></option>
                 </select>

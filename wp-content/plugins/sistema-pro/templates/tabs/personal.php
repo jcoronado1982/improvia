@@ -7,8 +7,62 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 $user = wp_get_current_user();
 $idiomas = get_terms( array( 'taxonomy' => 'sop_idioma', 'hide_empty' => false ) );
 $niveles = get_terms( array( 'taxonomy' => 'sop_nivel', 'hide_empty' => false ) );
+
+// Sort $idiomas to put Español first
+usort($idiomas, function($a, $b) {
+    if (strtolower($a->name) === 'español') return -1;
+    if (strtolower($b->name) === 'español') return 1;
+    return strcasecmp($a->name, $b->name);
+});
+
+// Sort $niveles to put Nativo first
+usort($niveles, function($a, $b) {
+    if (strtolower($a->name) === 'nativo') return -1;
+    if (strtolower($b->name) === 'nativo') return 1;
+    return strcasecmp($a->name, $b->name);
+});
+
 $nacionalidades = get_terms( array( 'taxonomy' => 'sop_nacionalidad', 'hide_empty' => false ) );
 $ubicaciones = get_terms( array( 'taxonomy' => 'sop_ubicacion', 'hide_empty' => false ) );
+
+// --- Sorting $nacionalidades ---
+// Order: España > Europa > Sudamérica > Rest
+$europe_nacs = array('Alemania', 'Francia', 'Italia', 'Portugal', 'Reino Unido', 'Países Bajos', 'Bélgica', 'Suiza', 'Austria', 'Suecia', 'Noruega', 'Dinamarca', 'Finlandia', 'Polonia', 'Croacia', 'Serbia', 'Grecia', 'Turquía', 'Rumania', 'Ucrania', 'República Checa', 'Hungría', 'Irlanda', 'Escocia');
+$south_america_nacs = array('Argentina', 'Brasil', 'Colombia', 'Chile', 'Uruguay', 'Perú', 'Ecuador', 'Venezuela', 'Paraguay');
+
+usort($nacionalidades, function($a, $b) use ($europe_nacs, $south_america_nacs) {
+    $get_prio = function($name) use ($europe_nacs, $south_america_nacs) {
+        if ($name === 'España') return 1;
+        if (in_array($name, $europe_nacs)) return 2;
+        if (in_array($name, $south_america_nacs)) return 3;
+        return 4;
+    };
+    $pa = $get_prio($a->name);
+    $pb = $get_prio($b->name);
+    if ($pa !== $pb) return $pa - $pb;
+    return strcasecmp($a->name, $b->name);
+});
+
+// --- Sorting $ubicaciones ---
+// Order: Madrid > Barcelona > Rest of Spain > Europa > Latam > Rest
+$other_spain_ubic = array('A Coruña', 'Álava / Vitoria', 'Albacete', 'Alicante', 'Almería', 'Ávila', 'Badajoz', 'Bilbao', 'Burgos', 'Cáceres', 'Cádiz', 'Castellón de la Plana', 'Ceuta', 'Ciudad Real', 'Córdoba', 'Cuenca', 'Girona', 'Granada', 'Guadalajara', 'Huelva', 'Huesca', 'Jaén', 'Las Palmas de Gran Canaria', 'León', 'Lleida', 'Logroño', 'Lugo', 'Málaga', 'Melilla', 'Murcia', 'Ourense', 'Oviedo', 'Palencia', 'Palma de Mallorca', 'Pamplona', 'Pontevedra', 'Salamanca', 'San Sebastián', 'Santa Cruz de Tenerife', 'Santander', 'Segovia', 'Sevilla', 'Soria', 'Tarragona', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vigo', 'Zamora', 'Zaragoza', 'Gijón', 'Elche', 'Cartagena', 'Jerez de la Frontera', 'Marbella', 'Getafe', 'Leganés', 'Alcorcón', 'Cornellà', 'Hospitalet de Llobregat');
+$europe_ubic = array('Londres', 'Mánchester', 'Liverpool', 'París', 'Lyon', 'Marsella', 'Berlín', 'Múnich', 'Dortmund', 'Roma', 'Milán', 'Turín', 'Nápoles', 'Lisboa', 'Oporto', 'Ámsterdam', 'Róterdam', 'Bruselas', 'Viena', 'Zúrich', 'Estocolmo', 'Copenhague', 'Oslo', 'Varsovia', 'Praga', 'Budapest', 'Atenas', 'Estambul', 'Zagreb', 'Belgrado');
+$latam_ubic = array('Buenos Aires', 'Ciudad de México', 'Bogotá', 'Santiago', 'Lima', 'Montevideo', 'São Paulo');
+
+usort($ubicaciones, function($a, $b) use ($other_spain_ubic, $europe_ubic, $latam_ubic) {
+    $get_prio = function($name) use ($other_spain_ubic, $europe_ubic, $latam_ubic) {
+        if ($name === 'Madrid') return 1;
+        if ($name === 'Barcelona') return 2;
+        if (in_array($name, $other_spain_ubic)) return 3;
+        if (in_array($name, $europe_ubic)) return 4;
+        if (in_array($name, $latam_ubic)) return 5;
+        return 6;
+    };
+    $pa = $get_prio($a->name);
+    $pb = $get_prio($b->name);
+    if ($pa !== $pb) return $pa - $pb;
+    return strcasecmp($a->name, $b->name);
+});
 
 $full_name = !empty($user->display_name) ? $user->display_name : '';
 $nacionalidad_act = get_user_meta( $user->ID, 'sop_nacionalidad_id', true );
@@ -18,23 +72,19 @@ $nacimiento = get_user_meta( $user->ID, 'sop_fecha_nacimiento', true );
 
 <form id="sop-profile-form" enctype="multipart/form-data">
     <?php wp_nonce_field( 'sop_profile_nonce', 'nonce' ); ?>
+    <input type="hidden" name="sop_form_section" value="personal">
     
     <div class="sop-tab-panel">
         <h3 class="sop-title-with-line"><?php esc_html_e( 'ABOUT ME', 'sistema-pro' ); ?></h3>
     <div class="sop-tab-split">
 <?php
         $profile_image_id = get_user_meta( $user->ID, 'sop_profile_image_id', true );
-        $profile_image_url = $profile_image_id ? wp_get_attachment_image_url( $profile_image_id, 'thumbnail' ) : '';
+        $profile_image_url = $profile_image_id ? wp_get_attachment_image_url( $profile_image_id, 'medium' ) : SOP_URL . 'assets/images/no image.png';
         ?>
         <div style="text-align: center; position: relative; flex: 0 0 160px;">
             <label for="sop_profile_picture" style="cursor: pointer; display: block;">
                 <div class="sop-profile-img-upload" style="overflow: hidden; position: relative; width: 140px; height: 140px; border-radius: 50%; margin: 0 auto; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <?php if ( $profile_image_url ) : ?>
-                        <img src="<?php echo esc_url( $profile_image_url ); ?>" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover;" id="sop-profile-img-preview">
-                    <?php else : ?>
-                        <i style="opacity: 0.5;" id="sop-profile-img-icon">📷</i>
-                        <img src="" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover; display: none;" id="sop-profile-img-preview">
-                    <?php endif; ?>
+                    <img src="<?php echo esc_url( $profile_image_url ); ?>" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover;" id="sop-profile-img-preview">
                 </div>
                 <p style="font-size: 0.85rem; margin-top: 15px; cursor: pointer;"><?php esc_html_e( 'Upload image', 'sistema-pro' ); ?></p>
             </label>
@@ -44,13 +94,13 @@ $nacimiento = get_user_meta( $user->ID, 'sop_fecha_nacimiento', true );
         <div style="flex: 1; min-width: 300px;">
             <div class="sop-tab-grid-4">
                 <div style="grid-column: span 2;">
-                    <label class="sop-label"><?php esc_html_e( 'Nombre completo', 'sistema-pro' ); ?></label>
-                    <input type="text" name="display_name" value="<?php echo esc_attr($full_name); ?>" class="sop-input" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
+                    <label class="sop-label"><?php esc_html_e( 'Nombre completo', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+                    <input type="text" name="display_name" value="<?php echo esc_attr($full_name); ?>" class="sop-input" placeholder="<?php esc_attr_e( 'Ej. Juan Pérez', 'sistema-pro' ); ?>" required>
                 </div>
                 <div style="grid-column: span 1;">
-                    <label class="sop-label"><?php esc_html_e( 'Ubicación', 'sistema-pro' ); ?></label>
-                    <select name="sop_ubicacion_id" class="sop-input">
-                        <option value=""><?php esc_html_e( 'Seleccionar', 'sistema-pro' ); ?></option>
+                    <label class="sop-label"><?php esc_html_e( 'Ubicación', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+                    <select name="sop_ubicacion_id" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>" required>
+                        <option value=""></option>
                         <?php foreach ($ubicaciones as $ub) : ?>
                             <option value="<?php echo $ub->term_id; ?>" <?php selected($ubicacion_act, $ub->term_id); ?>>
                                 <?php echo esc_html($ub->name); ?>
@@ -59,9 +109,9 @@ $nacimiento = get_user_meta( $user->ID, 'sop_fecha_nacimiento', true );
                     </select>
                 </div>
                 <div style="grid-column: span 1;">
-                    <label class="sop-label"><?php esc_html_e( 'Nacionalidad', 'sistema-pro' ); ?></label>
-                    <select name="sop_nacionalidad_id" class="sop-input">
-                        <option value=""><?php esc_html_e( 'Seleccionar', 'sistema-pro' ); ?></option>
+                    <label class="sop-label"><?php esc_html_e( 'Nacionalidad', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+                    <select name="sop_nacionalidad_id" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>" required>
+                        <option value=""></option>
                         <?php foreach ($nacionalidades as $nac) : ?>
                             <option value="<?php echo $nac->term_id; ?>" <?php selected($nacionalidad_act, $nac->term_id); ?>>
                                 <?php echo esc_html($nac->name); ?>
@@ -70,13 +120,13 @@ $nacimiento = get_user_meta( $user->ID, 'sop_fecha_nacimiento', true );
                     </select>
                 </div>
                 <div style="grid-column: span 1;">
-                    <label class="sop-label"><?php esc_html_e( 'Nacimiento', 'sistema-pro' ); ?></label>
-                    <input type="date" name="sop_fecha_nacimiento" value="<?php echo esc_attr($nacimiento); ?>" class="sop-input">
+                    <label class="sop-label"><?php esc_html_e( 'Nacimiento', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+                    <input type="text" name="sop_fecha_nacimiento" value="<?php echo esc_attr($nacimiento); ?>" class="sop-input sop-datepicker" required>
                 </div>
             </div>
 
             <div class="sop-tab-nested-box">
-                <h4 class="sop-tab-nested-title"><?php esc_html_e( 'Idiomas que manejo', 'sistema-pro' ); ?></h4>
+                <h4 class="sop-tab-nested-title"><?php esc_html_e( 'Idiomas que manejo', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></h4>
                 <div class="sop-tab-inline-form">
                     <div style="flex: 1; max-width: 200px;">
                         <label class="sop-label"><?php esc_html_e( 'Lenguaje', 'sistema-pro' ); ?></label>

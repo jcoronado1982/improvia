@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 $user = wp_get_current_user();
-$display_name = 'LOGIN';
+$display_name = 'INICIAR SESIÓN';
 
 if ( is_user_logged_in() ) {
     $first_name = get_user_meta( $user->ID, 'first_name', true );
@@ -19,20 +19,27 @@ if ( is_user_logged_in() ) {
     <div class="sop-header-left">
         <div class="sop-header-logo">
             <a href="<?php echo home_url('/home'); ?>">
-                <img src="<?php echo esc_url( SOP_URL . 'assets/images/logo_white.png' ); ?>" alt="IMPROVIA">
+                <?php if ( is_page('login') || is_page('registro') ) : ?>
+                    <img src="<?php echo esc_url( SOP_URL . 'assets/images/logo_blue.png' ); ?>" alt="IMPROVIA">
+                <?php else : ?>
+                    <img src="<?php echo esc_url( SOP_URL . 'assets/images/logo_white.png' ); ?>" alt="IMPROVIA">
+                <?php endif; ?>
             </a>
         </div>
     </div>
 
     <div class="sop-header-right">
+        <?php if ( ! is_page('login') && ! is_page('registro') ) : ?>
         <div class="sop-header-top">
             <div class="sop-lang-selector">
                 <span class="sop-lang-text">ES</span>
                 <img src="<?php echo esc_url( SOP_URL . 'assets/images/flag_es.png' ); ?>" alt="Spanish" class="sop-lang-flag">
             </div>
         </div>
+        <?php endif; ?>
         
         <div class="sop-header-bottom">
+            <?php if ( ! is_page('login') && ! is_page('registro') ) : ?>
             <nav class="sop-header-nav">
                 <a href="#" class="sop-nav-item">ATHLETES</a>
                 <div class="sop-nav-item has-dropdown">
@@ -45,6 +52,7 @@ if ( is_user_logged_in() ) {
                     <svg class="sop-dropdown-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                 </div>
             </nav>
+            <?php endif; ?>
 
             <div class="sop-header-user">
                 <?php if ( is_user_logged_in() ) : ?>
@@ -53,7 +61,7 @@ if ( is_user_logged_in() ) {
                     </a>
                 <?php else : ?>
                     <a href="<?php echo home_url('/login'); ?>" class="sop-user-pill">
-                        LOGIN
+                        INICIAR SESIÓN
                     </a>
                 <?php endif; ?>
             </div>

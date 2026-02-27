@@ -13,6 +13,7 @@ $components_path = SOP_PATH . 'templates/components/professional/';
 
 <div>
     <?php wp_nonce_field( 'sop_profile_nonce', 'nonce' ); ?>
+    <input type="hidden" name="sop_form_section" value="professional">
 
     <?php if ( $is_provider ) : ?>
         <!-- Provider: Ocupación arriba, Descripción debajo -->

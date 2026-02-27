@@ -14,6 +14,9 @@ class SOP_Shortcodes_Controller {
         add_shortcode( 'sop_mock_checkout', array( $this, 'render_mock_checkout' ) );
         add_shortcode( 'sop_detalle_entrenador', array( $this, 'render_trainer_detail' ) );
         add_shortcode( 'sop_suscripciones', array( $this, 'render_subscriptions' ) );
+        add_shortcode( 'sop_solicitudes', array( $this, 'render_solicitudes' ) );
+        add_shortcode( 'sop_mensajes', array( $this, 'render_messaging' ) );
+        add_shortcode( 'sop_qa', array( $this, 'render_qa' ) );
         
         // Registrar Shortcode de Layout Envolvente
         add_shortcode( 'sop_layout', array( $this, 'render_generic_layout' ) );
@@ -82,22 +85,55 @@ class SOP_Shortcodes_Controller {
     /**
      * Renderiza la lista de entrenadores
      */
-    public function render_trainer_list() {
+    public function render_trainer_list( $atts ) {
+        $atts = shortcode_atts( array(
+            'role' => 'entrenador',
+        ), $atts, 'sop_lista_entrenadores' );
+
+        $role = sanitize_text_field( $atts['role'] );
+
         // Pagination logic
         $current_page = isset($_GET['pag']) ? max(1, intval($_GET['pag'])) : 1;
         $per_page     = 8;
         $offset       = ($current_page - 1) * $per_page;
 
-        // Get total count for trainers
-        $user_counts = count_users();
-        $total_trainers = isset($user_counts['avail_roles']['entrenador']) ? $user_counts['avail_roles']['entrenador'] : 0;
+        // Meta Query: Debe tener al menos un precio configurado
+        $meta_query = array(
+            'relation' => 'OR'
+        );
+
+        $price_fields = array(
+            'sop_precio_semanal', 'sop_precio_mensual', 'sop_precio_trimestral', 'sop_precio_anual',
+            'sop_precio_sesiones_1', 'sop_precio_sesiones_2', 'sop_precio_sesiones_3',
+            'sop_precio_sesiones_4', 'sop_precio_sesiones_5', 'sop_precio_sesiones_6'
+        );
+
+        foreach ( $price_fields as $field ) {
+            $meta_query[] = array(
+                'key'     => $field,
+                'value'   => 0,
+                'compare' => '>',
+                'type'    => 'NUMERIC'
+            );
+        }
+
+        // Get total count for filtered users
+        $count_args = array(
+            'role'       => $role,
+            'meta_query' => $meta_query,
+            'count_total' => true,
+            'fields'     => 'ID',
+        );
+        $user_query = new WP_User_Query( $count_args );
+        $total_trainers = $user_query->get_total();
         $total_pages    = ceil($total_trainers / $per_page);
 
-        // Fetch limited set of trainers
+        // Fetch limited set of trainees/specialists
         $trainers = get_users( array( 
-            'role'   => 'entrenador',
-            'number' => $per_page,
-            'offset' => $offset
+            'role'       => $role,
+            'number'     => $per_page,
+            'offset'     => $offset,
+            'meta_query' => $meta_query
         ) );
         
         ob_start();
@@ -161,6 +197,48 @@ class SOP_Shortcodes_Controller {
     public function render_subscriptions() {
         ob_start();
         $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-subscriptions.php';
+        if ( file_exists( $view_path ) ) {
+            require $view_path;
+        } else {
+            echo '<p>Error: View file not found.</p>';
+        }
+        return ob_get_clean();
+    }
+
+    /**
+     * Renderiza la vista del panel de Solicitudes
+     */
+    public function render_solicitudes() {
+        ob_start();
+        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-solicitudes.php';
+        if ( file_exists( $view_path ) ) {
+            require $view_path;
+        } else {
+            echo '<p>Error: View file not found.</p>';
+        }
+        return ob_get_clean();
+    }
+
+    /**
+     * Renderiza la vista del panel de Mensajería
+     */
+    public function render_messaging() {
+        ob_start();
+        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-messaging.php';
+        if ( file_exists( $view_path ) ) {
+            require $view_path;
+        } else {
+            echo '<p>Error: View file not found.</p>';
+        }
+        return ob_get_clean();
+    }
+
+    /**
+     * Renderiza la vista del panel de QA
+     */
+    public function render_qa() {
+        ob_start();
+        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-qa.php';
         if ( file_exists( $view_path ) ) {
             require $view_path;
         } else {

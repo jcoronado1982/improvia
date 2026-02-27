@@ -18,7 +18,7 @@ $name    = !empty($trainer->display_name) ? strtoupper($trainer->display_name) :
 
 // Fetch Profile Image
 $profile_image_id  = get_user_meta( $user_id, 'sop_profile_image_id', true );
-$profile_image_url = $profile_image_id ? wp_get_attachment_image_url( $profile_image_id, 'medium' ) : SOP_URL . 'assets/images/coach.png';
+$profile_image_url = $profile_image_id ? wp_get_attachment_image_url( $profile_image_id, 'medium' ) : SOP_URL . 'assets/images/no image.png';
 
 // Fetch Professional Data
 $ocupacion_id   = get_user_meta( $user_id, 'sop_ocupacion_id', true );
@@ -26,14 +26,28 @@ $experiencia_id = get_user_meta( $user_id, 'sop_experiencia_id', true );
 $nivel_id       = get_user_meta( $user_id, 'sop_nivel_prof_id', true );
 $desc           = get_user_meta( $user_id, 'sop_prof_description', true );
 $precio         = get_user_meta( $user_id, 'sop_precio_mensual', true );
-$p_sesiones     = get_user_meta( $user_id, 'sop_precio_sesiones', true );
-$c_sesiones     = get_user_meta( $user_id, 'sop_cantidad_sesiones', true );
+// Determine lowest price for "Desde" display
+$lowest_pkg_price = null;
+$lowest_pkg_qty = 0;
 
-$is_sesiones = !empty($p_sesiones) && floatval($p_sesiones) > 0 && !empty($c_sesiones) && intval($c_sesiones) > 0;
+for ($i = 1; $i <= 6; $i++) {
+    $qty = get_user_meta( $user_id, 'sop_cantidad_sesiones_' . $i, true );
+    $price = get_user_meta( $user_id, 'sop_precio_sesiones_' . $i, true );
+    
+    if (!empty($qty) && !empty($price) && floatval($price) > 0 && intval($qty) > 0) {
+        $p = floatval($price);
+        if ($lowest_pkg_price === null || $p < $lowest_pkg_price) {
+            $lowest_pkg_price = $p;
+            $lowest_pkg_qty = intval($qty);
+        }
+    }
+}
 
-if ($is_sesiones) {
-    $precio_display = floatval($p_sesiones);
-    $suffix_display = intval($c_sesiones) . ' sesiones';
+$precio = get_user_meta( $user_id, 'sop_precio_mensual', true );
+
+if ($lowest_pkg_price !== null) {
+    $precio_display = $lowest_pkg_price;
+    $suffix_display = $lowest_pkg_qty . ' sesiones';
 } else {
     $precio_display = !empty($precio) ? $precio : '50';
     $suffix_display = '/ mes';
@@ -112,7 +126,7 @@ if ( count($focus_names) < 4 && ! empty( $fases_ofensivas_ids ) ) {
                 <?php endif; ?>
                 <?php if ( ! empty( $nationality_flag ) ) : ?>
                     <div class="sop-tc-badge-row">
-                        <span class="sop-tc-flag-icon" style="font-size: 1.2rem; line-height: 1;"><?php echo $nationality_flag; ?></span>
+                        <img src="<?php echo esc_url($nationality_flag); ?>" alt="Flag" class="sop-tc-flag-img" style="height: 1.2rem; display: inline-block; vertical-align: middle;">
                     </div>
                 <?php endif; ?>
             </div>
