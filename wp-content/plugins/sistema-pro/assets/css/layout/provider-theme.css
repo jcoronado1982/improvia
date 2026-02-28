@@ -284,9 +284,10 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-cancellation-box .sop-
 
 /* Language badges: light pill with dark text */
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-badge {
-    background: #f0f2f7 !important;
+    background: #F0F0F0 !important;
     border: 1px solid #e2e8f0 !important;
     color: #0a0e1a !important;
+
 }
 
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-badge * {

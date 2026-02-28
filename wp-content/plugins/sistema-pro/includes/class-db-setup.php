@@ -7,14 +7,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 class SOP_DB_Setup {
 
     public function __construct() {
-        // Asegurar consistencia en cada carga (init)
-        add_action( 'init', array( $this, 'ensure_system_state' ) );
+        // Registrar taxonomías en cada carga (init) para que estén disponibles en frontend y admin
+        add_action( 'init', array( $this, 'create_taxonomies' ) );
+        
+        // Ejecutar check de sistema (siembra, roles, páginas) solo en el admin
+        add_action( 'admin_init', array( $this, 'ensure_system_state' ) );
         add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
 
         // Columnas personalizadas en la lista de usuarios
         add_filter( 'manage_users_columns', array( $this, 'add_user_status_column' ) );
         add_action( 'manage_users_custom_column', array( $this, 'render_user_status_column' ), 10, 3 );
     }
+
+    /**
+     * Versión de los datos del sistema. Incrementar este número para forzar 
+     * una nueva siembra de datos (ej. si añadimos nuevos países).
+     */
+    const SOP_DATA_VERSION = '1.0.1';
 
     /**
      * Agrega la columna "Estado" a la lista de usuarios
@@ -48,6 +57,7 @@ class SOP_DB_Setup {
     }
 
     public function register_admin_menu() {
+        // (Contenido del menú omitido por brevedad)
         // El menú principal ahora apunta a los logs de simulación como página inicial por defecto
         add_menu_page(
             'Sistema PRO',
@@ -112,24 +122,40 @@ class SOP_DB_Setup {
      */
     public static function activate() {
         $setup = new self();
-        $setup->ensure_system_state();
+        $setup->create_taxonomies(); // Registrar para poder sembrar
+        $setup->ensure_system_state( true ); // Forzar ejecución al activar
         flush_rewrite_rules();
     }
 
     /**
      * Verifica y recrea el estado si es necesario
+     * 
+     * @param bool $force_seed Si es true, ignora el check de versión
      */
-    public function ensure_system_state() {
-        $this->create_roles();
-        $this->create_pages();
-        $this->create_taxonomies();
-        $this->seed_data();
+    public function ensure_system_state( $force_seed = false ) {
+        // Solo ejecutar si estamos en el admin o se fuerza
+        if ( ! is_admin() && ! $force_seed ) {
+            return;
+        }
+
+        $installed_version = get_option( 'sop_data_version', '0.0.0' );
+
+        // Si la versión ha cambiado o se fuerza, ejecutar siembra
+        if ( version_compare( $installed_version, self::SOP_DATA_VERSION, '<' ) || $force_seed ) {
+            $this->create_roles();
+            $this->create_pages();
+            // create_taxonomies() ya se llama en 'init', no es necesario aquí
+            $this->seed_data();
+            
+            update_option( 'sop_data_version', self::SOP_DATA_VERSION );
+            SOP_Debug::log( 'DB_SETUP', 'System state ensured and seeded', [ 'version' => self::SOP_DATA_VERSION ] );
+        }
     }
 
     /**
      * Registra taxonomías para organizar datos de perfil
      */
-    private function create_taxonomies() {
+    public function create_taxonomies() {
         $taxonomies = array(
             // Personal Info
             'sop_idioma'         => 'Idiomas',
@@ -172,294 +198,34 @@ class SOP_DB_Setup {
     }
 
     /**
-     * Puebla las taxonomías con datos iniciales
+     * Puebla las taxonomías con datos iniciales desde un archivo JSON
      */
     private function seed_data() {
-        // ===========================
-        // PERSONAL INFO
-        // ===========================
-
-        // Idiomas (principales de Europa + internacionales)
-        $idiomas = array('Español', 'Inglés', 'Francés', 'Alemán', 'Italiano', 'Portugués', 'Catalán', 'Euskera', 'Gallego', 'Holandés', 'Ruso', 'Árabe', 'Chino Mandarín', 'Japonés');
-        foreach ($idiomas as $i) {
-            if (!term_exists($i, 'sop_idioma')) wp_insert_term($i, 'sop_idioma');
+        $json_path = plugin_dir_path( dirname( __FILE__ ) ) . 'assets/data/seed-data.json';
+        
+        if ( ! file_exists( $json_path ) ) {
+            SOP_Debug::log( 'DB_SETUP', 'Seed data JSON not found', [ 'path' => $json_path ] );
+            return;
         }
 
-        // Niveles de Idioma (Marco Común Europeo)
-        $niveles = array('Nativo', 'Bilingüe', 'Avanzado (C1/C2)', 'Intermedio (B1/B2)', 'Básico (A1/A2)');
-        foreach ($niveles as $n) {
-            if (!term_exists($n, 'sop_nivel')) wp_insert_term($n, 'sop_nivel');
+        $json_content = file_get_contents( $json_path );
+        $data = json_decode( $json_content, true );
+
+        if ( ! is_array( $data ) ) {
+            SOP_Debug::log( 'DB_SETUP', 'Invalid seed data JSON content' );
+            return;
         }
 
-        // Nacionalidades (España + Europa + Latinoamérica + África futbolística)
-        $nacionalidades = array(
-            'España', 'Alemania', 'Francia', 'Italia', 'Portugal', 'Reino Unido', 'Países Bajos', 'Bélgica', 'Suiza',
-            'Austria', 'Suecia', 'Noruega', 'Dinamarca', 'Finlandia', 'Polonia', 'Croacia', 'Serbia',
-            'Grecia', 'Turquía', 'Rumania', 'Ucrania', 'República Checa', 'Hungría', 'Irlanda', 'Escocia',
-            'Argentina', 'Brasil', 'México', 'Colombia', 'Chile', 'Uruguay', 'Perú', 'Ecuador', 'Venezuela', 'Paraguay',
-            'EE.UU.', 'Canadá', 'Marruecos', 'Senegal', 'Nigeria', 'Camerún', 'Costa de Marfil', 'Japón', 'Corea del Sur', 'Australia'
-        );
-        foreach ($nacionalidades as $nac) {
-            if (!term_exists($nac, 'sop_nacionalidad')) wp_insert_term($nac, 'sop_nacionalidad');
-        }
+        foreach ( $data as $taxonomy => $terms ) {
+            if ( ! taxonomy_exists( $taxonomy ) ) {
+                continue;
+            }
 
-        // Ubicaciones — Todas las capitales de provincia de España (50) + Ceuta/Melilla + Europa
-        $ubicaciones = array(
-            // España: 50 capitales de provincia + ciudades autónomas
-            'A Coruña', 'Álava / Vitoria', 'Albacete', 'Alicante', 'Almería',
-            'Ávila', 'Badajoz', 'Barcelona', 'Bilbao', 'Burgos',
-            'Cáceres', 'Cádiz', 'Castellón de la Plana', 'Ceuta', 'Ciudad Real',
-            'Córdoba', 'Cuenca', 'Girona', 'Granada', 'Guadalajara',
-            'Huelva', 'Huesca', 'Jaén', 'Las Palmas de Gran Canaria', 'León',
-            'Lleida', 'Logroño', 'Lugo', 'Madrid', 'Málaga',
-            'Melilla', 'Murcia', 'Ourense', 'Oviedo', 'Palencia',
-            'Palma de Mallorca', 'Pamplona', 'Pontevedra', 'Salamanca', 'San Sebastián',
-            'Santa Cruz de Tenerife', 'Santander', 'Segovia', 'Sevilla', 'Soria',
-            'Tarragona', 'Teruel', 'Toledo', 'Valencia', 'Valladolid',
-            'Vigo', 'Zamora', 'Zaragoza',
-            // Otras ciudades relevantes de España
-            'Gijón', 'Elche', 'Cartagena', 'Jerez de la Frontera', 'Marbella',
-            'Getafe', 'Leganés', 'Alcorcón', 'Cornellà', 'Hospitalet de Llobregat',
-            // Europa: principales capitales y ciudades deportivas
-            'Londres', 'Mánchester', 'Liverpool', 'París', 'Lyon', 'Marsella',
-            'Berlín', 'Múnich', 'Dortmund', 'Roma', 'Milán', 'Turín', 'Nápoles',
-            'Lisboa', 'Oporto', 'Ámsterdam', 'Róterdam', 'Bruselas',
-            'Viena', 'Zúrich', 'Estocolmo', 'Copenhague', 'Oslo',
-            'Varsovia', 'Praga', 'Budapest', 'Atenas', 'Estambul', 'Zagreb', 'Belgrado',
-            // Latinoamérica
-            'Buenos Aires', 'Ciudad de México', 'Bogotá', 'Santiago', 'Lima', 'Montevideo', 'São Paulo',
-            // Otros
-            'Online / Remoto'
-        );
-        foreach ($ubicaciones as $ub) {
-            if (!term_exists($ub, 'sop_ubicacion')) wp_insert_term($ub, 'sop_ubicacion');
-        }
-
-        // Pierna Dominante
-        $piernas = array('Derecha', 'Izquierda', 'Ambidiestro');
-        foreach ($piernas as $p) {
-            if (!term_exists($p, 'sop_pierna')) wp_insert_term($p, 'sop_pierna');
-        }
-
-        // Alturas (150–230 cm, cada 2 cm — incluye basquetbolistas)
-        for ($h = 150; $h <= 230; $h += 2) {
-            $v = (string) $h;
-            if (!term_exists($v, 'sop_altura')) wp_insert_term($v, 'sop_altura');
-        }
-
-        // Pesos (45–160 kg — incluye boxeadores de peso pesado)
-        for ($w = 45; $w <= 160; $w++) {
-            $v = (string) $w;
-            if (!term_exists($v, 'sop_peso')) wp_insert_term($v, 'sop_peso');
-        }
-
-        // Niveles Profesionales (España)
-        $niveles_prof = array('Profesional', 'Semiprofesional', 'Amateur', 'Formativo / Cantera');
-        foreach ($niveles_prof as $np) {
-            if (!term_exists($np, 'sop_nivel_prof')) wp_insert_term($np, 'sop_nivel_prof');
-        }
-
-        // Categorías de Fútbol (Prioridad España Pro → Cantera → Europa)
-        $categorias = array(
-            // 1. Niveles de Competición Profesional y Semiprofesional (España)
-            'Primera División (LaLiga EA Sports)', 
-            'Segunda División (LaLiga Hypermotion)', 
-            'Primera Federación (1ª RFEF)', 
-            'Segunda Federación (2ª RFEF)', 
-            'Tercera Federación (3ª RFEF)', 
-            'Regional Preferente', 
-            'Primera Regional',
-            
-            // 2. Por Edad / Cantera (España)
-            'Sénior', 'Sub-23', 'Juvenil A (División de Honor)', 'Juvenil B (Liga Nacional)', 'Juvenil C', 'Cadete', 'Infantil', 'Alevín', 'Benjamín', 'Pre-benjamín', 'Veteranos',
-            
-            // 3. Ligas Europa (Principales)
-            'Premier League (Inglaterra)', 'Bundesliga (Alemania)', 'Serie A (Italia)', 'Ligue 1 (Francia)', 'Primeira Liga (Portugal)', 'Eredivisie (Países Bajos)', 'Scottish Premiership', 'Süper Lig (Turquía)'
-        );
-        foreach ($categorias as $cat) {
-            if (!term_exists($cat, 'sop_categoria')) wp_insert_term($cat, 'sop_categoria');
-        }
-
-        // Redes Sociales
-        $rrss = array('Instagram', 'Facebook', 'X (Twitter)', 'LinkedIn', 'YouTube', 'TikTok', 'Twitch', 'Threads');
-        foreach ($rrss as $red) {
-            if (!term_exists($red, 'sop_red_social')) wp_insert_term($red, 'sop_red_social');
-        }
-
-        // ===========================
-        // COACH / SPECIALIST
-        // ===========================
-
-        // Ocupaciones
-        $ocupaciones = array(
-            'Entrenador Principal', 'Segundo Entrenador', 'Entrenador de Porteros',
-            'Preparador Físico', 'Director Técnico', 'Director Deportivo',
-            'Analista Táctico', 'Analista de Vídeo', 'Ojeador / Scout',
-            'Fisioterapeuta Deportivo', 'Médico Deportivo', 'Nutricionista Deportivo',
-            'Psicólogo Deportivo', 'Readaptador de Lesiones', 'Entrenador Personal',
-            'Coordinador de Cantera', 'Director de Metodología', 'Delegado de Campo'
-        );
-        foreach ($ocupaciones as $oc) {
-            if (!term_exists($oc, 'sop_ocupacion')) wp_insert_term($oc, 'sop_ocupacion');
-        }
-
-        // Experiencia
-        $experiencias = array('Menos de 1 año', '1-2 años', '3-5 años', '5-10 años', '10-15 años', '15-20 años', 'Más de 20 años');
-        foreach ($experiencias as $exp) {
-            if (!term_exists($exp, 'sop_experiencia')) wp_insert_term($exp, 'sop_experiencia');
-        }
-
-        // Títulos de Estudio (grados oficiales)
-        $titulos = array(
-            'Grado en Ciencias de la Actividad Física y del Deporte (CAFYD/INEF)',
-            'Grado en Fisioterapia', 'Grado en Nutrición Humana y Dietética',
-            'Grado en Psicología', 'Grado en Medicina',
-            'Máster en Alto Rendimiento Deportivo', 'Máster en Preparación Física',
-            'Máster en Dirección y Gestión del Deporte', 'Máster en Readaptación de Lesiones',
-            'Máster en Nutrición Deportiva',
-            'Técnico Superior en Enseñanza y Animación Sociodeportiva (TSEAS)',
-            'Técnico Deportivo en Fútbol (Nivel I)', 'Técnico Deportivo en Fútbol (Nivel II)',
-            'Técnico Deportivo Superior en Fútbol (Nivel III)',
-            'Doctorado en Ciencias del Deporte'
-        );
-        foreach ($titulos as $t) {
-            if (!term_exists($t, 'sop_titulo')) wp_insert_term($t, 'sop_titulo');
-        }
-
-        // Institutos (España + Europa + organismos internacionales)
-        $institutos = array(
-            'INEF Madrid', 'INEF Barcelona', 'INEF Granada', 'INEF Galicia',
-            'Universidad Europea de Madrid', 'Universidad Camilo José Cela',
-            'Universidad Autónoma de Madrid', 'Universidad de Barcelona',
-            'Universidad de Valencia', 'Universidad del País Vasco',
-            'Universidad de Sevilla', 'Universidad de Málaga',
-            'Universidad Católica San Antonio (UCAM)', 'Universidad de Vic',
-            'Real Federación Española de Fútbol (RFEF)',
-            'Escuela Nacional de Entrenadores (RFEF)',
-            'Federación Catalana de Fútbol', 'Federación Madrileña de Fútbol',
-            'UEFA', 'FIFA', 'Johan Cruyff Institute', 'LaLiga Business School',
-            'KNVB (Países Bajos)', 'DFB (Alemania)', 'The FA (Inglaterra)',
-            'FFF (Francia)', 'FIGC (Italia)', 'FPF (Portugal)',
-            'Coverciano (Centro Técnico FIGC)',
-            'NSCA', 'ACSM', 'NASM', 'ISSA'
-        );
-        foreach ($institutos as $inst) {
-            if (!term_exists($inst, 'sop_instituto')) wp_insert_term($inst, 'sop_instituto');
-        }
-
-        // Lugares de Estudio — Ciudades españolas con universidades/centros deportivos + Europa
-        $lugares = array(
-            // España (ciudades con universidades o centros de formación deportiva)
-            'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'San Sebastián',
-            'Málaga', 'Granada', 'Zaragoza', 'Murcia', 'Alicante', 'Córdoba',
-            'Valladolid', 'Salamanca', 'Oviedo', 'Pamplona', 'Vitoria',
-            'A Coruña', 'Vigo', 'Santiago de Compostela', 'León', 'Cádiz',
-            'Huelva', 'Jaén', 'Almería', 'Castellón', 'Lleida', 'Girona',
-            'Tarragona', 'Logroño', 'Santander', 'Las Palmas', 'Tenerife',
-            'Palma de Mallorca', 'Cáceres', 'Badajoz', 'Albacete', 'Ciudad Real',
-            'Toledo', 'Cuenca', 'Guadalajara', 'Ávila', 'Segovia', 'Soria',
-            'Teruel', 'Huesca', 'Pontevedra', 'Lugo', 'Ourense', 'Burgos', 'Palencia', 'Zamora',
-            // Europa
-            'Londres', 'Mánchester', 'Liverpool', 'París', 'Lyon', 'Marsella',
-            'Berlín', 'Múnich', 'Colonia', 'Roma', 'Milán', 'Turín', 'Bolonia',
-            'Lisboa', 'Oporto', 'Ámsterdam', 'Róterdam', 'Bruselas',
-            'Viena', 'Zúrich', 'Estocolmo', 'Copenhague', 'Oslo',
-            'Varsovia', 'Praga', 'Budapest', 'Atenas', 'Zagreb', 'Belgrado',
-            // Latinoamérica
-            'Buenos Aires', 'São Paulo', 'Ciudad de México', 'Bogotá', 'Santiago', 'Lima', 'Montevideo',
-            // Otros
-            'Online / A distancia'
-        );
-        foreach ($lugares as $lg) {
-            if (!term_exists($lg, 'sop_lugar_estudio')) wp_insert_term($lg, 'sop_lugar_estudio');
-        }
-
-        // Tipos de Título / Licencia (UEFA + federaciones)
-        $tipos_titulo = array(
-            'UEFA PRO', 'UEFA A', 'UEFA B', 'UEFA C', 'UEFA Futsal B',
-            'UEFA Goalkeeper A', 'UEFA Goalkeeper B', 'UEFA Youth A', 'UEFA Youth B',
-            'UEFA Fitness Coach', 'UEFA Elite Youth A',
-            'Licencia Nacional Nivel I', 'Licencia Nacional Nivel II', 'Licencia Nacional Nivel III',
-            'Monitor Deportivo', 'Grado Universitario', 'Máster Universitario',
-            'Certificación Internacional', 'Diploma de Postgrado'
-        );
-        foreach ($tipos_titulo as $tt) {
-            if (!term_exists($tt, 'sop_tipo_titulo')) wp_insert_term($tt, 'sop_tipo_titulo');
-        }
-
-        // Países (toda Europa + Latinoamérica + otros relevantes)
-        $paises = array(
-            'España', 'Alemania', 'Francia', 'Italia', 'Portugal', 'Reino Unido',
-            'Países Bajos', 'Bélgica', 'Suiza', 'Austria', 'Suecia', 'Noruega',
-            'Dinamarca', 'Finlandia', 'Polonia', 'Croacia', 'Serbia', 'Grecia',
-            'Turquía', 'Rumania', 'Ucrania', 'República Checa', 'Hungría',
-            'Irlanda', 'Escocia', 'Gales', 'Eslovaquia', 'Eslovenia', 'Bulgaria',
-            'Montenegro', 'Bosnia y Herzegovina', 'Albania', 'Macedonia del Norte',
-            'Islandia', 'Luxemburgo', 'Malta', 'Chipre', 'Estonia', 'Letonia', 'Lituania',
-            'Argentina', 'Brasil', 'México', 'Colombia', 'Chile', 'Uruguay', 'Perú',
-            'Ecuador', 'Venezuela', 'Paraguay', 'Bolivia', 'Costa Rica', 'Panamá',
-            'EE.UU.', 'Canadá', 'Marruecos', 'Australia', 'Japón', 'Corea del Sur',
-            'Qatar', 'Arabia Saudita', 'Emiratos Árabes Unidos', 'China'
-        );
-        foreach ($paises as $pa) {
-            if (!term_exists($pa, 'sop_pais')) wp_insert_term($pa, 'sop_pais');
-        }
-
-        // Certificaciones (cursos complementarios)
-        $certificaciones = array(
-            'Certificación FIFA en Dirección Técnica',
-            'Certificación NSCA-CSCS (Fuerza y Acondicionamiento)',
-            'Certificación NSCA-CPT (Entrenador Personal)',
-            'Certificación ACSM', 'Certificación NASM-PES (Rendimiento Deportivo)',
-            'Diploma en Análisis Táctico', 'Diploma en Scouting y Análisis de Rendimiento',
-            'Curso de Psicología Deportiva', 'Curso de Nutrición Deportiva Avanzada',
-            'Curso de Readaptación de Lesiones Deportivas',
-            'Certificación en Entrenamiento Funcional',
-            'Certificación en Pilates / Yoga Deportivo',
-            'Curso de Primeros Auxilios Deportivos',
-            'Diploma en Gestión Deportiva', 'Curso de Videoanálisis Deportivo'
-        );
-        foreach ($certificaciones as $cert) {
-            if (!term_exists($cert, 'sop_certificacion')) wp_insert_term($cert, 'sop_certificacion');
-        }
-
-        // Posiciones de fútbol (demarcaciones oficiales)
-        $posiciones = array(
-            'Portero', 'Lateral Derecho', 'Lateral Izquierdo',
-            'Carrilero Derecho', 'Carrilero Izquierdo',
-            'Central', 'Líbero',
-            'Pivote / Mediocentro Defensivo', 'Mediocentro',
-            'Interior Derecho', 'Interior Izquierdo',
-            'Mediapunta / Enganche', 'Mediocentro Ofensivo',
-            'Extremo Derecho', 'Extremo Izquierdo',
-            'Segundo Delantero', 'Delantero Centro', 'Falso 9'
-        );
-        foreach ($posiciones as $pos) {
-            if (!term_exists($pos, 'sop_posicion')) wp_insert_term($pos, 'sop_posicion');
-        }
-
-        // Fases Ofensivas (modelo de juego)
-        $fases_of = array(
-            'Salida de balón desde portero', 'Construcción / Primera fase ofensiva',
-            'Progresión / Segunda fase ofensiva', 'Finalización / Tercera fase ofensiva',
-            'Transición defensa-ataque', 'Ataque organizado', 'Ataque posicional',
-            'Contraataque', 'Juego combinativo', 'Juego directo',
-            'Acciones a balón parado ofensivas'
-        );
-        foreach ($fases_of as $fo) {
-            if (!term_exists($fo, 'sop_fase_ofensiva')) wp_insert_term($fo, 'sop_fase_ofensiva');
-        }
-
-        // Fases Defensivas (modelo de juego)
-        $fases_def = array(
-            'Presión alta / Pressing', 'Bloque medio / Repliegue medio',
-            'Bloque bajo / Repliegue intensivo', 'Transición ataque-defensa',
-            'Defensa organizada', 'Defensa zonal', 'Defensa individual', 'Defensa mixta',
-            'Pressing tras pérdida (6 segundos)',
-            'Acciones a balón parado defensivas'
-        );
-        foreach ($fases_def as $fd) {
-            if (!term_exists($fd, 'sop_fase_defensiva')) wp_insert_term($fd, 'sop_fase_defensiva');
+            foreach ( $terms as $term ) {
+                if ( ! term_exists( $term, $taxonomy ) ) {
+                    wp_insert_term( $term, $taxonomy );
+                }
+            }
         }
     }
 

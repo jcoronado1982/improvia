@@ -76,37 +76,52 @@ $coach_doc_name = $coach_doc_id ? basename( get_attached_file( $coach_doc_id ) )
     </div>
 
     <!-- Zona de subida de certificación -->
-    <label for="sop_coach_certification_doc" style="cursor: pointer; display: block; width: 100%;">
-        <div class="sop-tab-upload-area" id="sop-coach-doc-upload-area">
-            <div style="text-align: center;">
-                <i style="opacity: 0.5;">📎</i>
-                <span class="sop-prof-file-hint"><?php esc_html_e( 'PDF / JPG', 'sistema-pro' ); ?></span>
-            </div>
-            
-            <div class="sop-tab-warning-box">
-                <div class="sop-prof-row-start">
-                    <i style="color: #ffab00; font-size: 1.2rem;">⚠️</i>
-                    <p style="margin: 0; font-size: 0.85rem; line-height: 1.5; opacity: 0.8;">
-                        <?php esc_html_e( 'Adjunta tu título o certificación para su verificación, de no adjuntarlo tu título no aparecerá para los jugadores', 'sistema-pro' ); ?><br><br>
-                        <?php esc_html_e( 'Recuerda que tus futuros jugadores necesitan claridad y transparencia verificando que coaches como tu son realmente titulados.', 'sistema-pro' ); ?>
-                    </p>
+    <label for="sop_coach_certification_doc" class="sop-pointer-block-full">
+        <div class="sop-tab-upload-area-main">
+            <div class="sop-tab-upload-area" id="sop-coach-doc-upload-area">
+                <div class="sop-upload-inner-flex">
+                    <div class="sop-upload-col-hint">
+                        <div class="sop-text-center">
+                        <img src="<?php echo esc_url( SOP_URL . 'assets/images/adjuntar.png' ); ?>" class="sop-tab-upload-icon-img" alt="Attach">
+                        <span class="sop-upload-hint"><?php esc_html_e( 'PDF / JPG', 'sistema-pro' ); ?></span>
+                    </div>
+                    </div>
+                    
+                    <div class="sop-upload-col-warning">
+                        <div class="sop-tab-warning-box">
+                            <div class="sop-warning-flex-row">
+                                <img class="sop-tab-warning-icon" src="<?php echo esc_url( SOP_URL . 'assets/images/alert-circle.png' ); ?>" alt="Alert">
+                                <div class="sop-tab-warning-text">
+                                    <div>
+                                        <div>
+                                            <?php esc_html_e( 'Adjunta tu título o certificación para su verificación, de no adjuntarlo tu título no aparecerá para los jugadores', 'sistema-pro' ); ?>
+                                        </div>
+                                        <div>
+                                            <?php esc_html_e( 'Recuerda que tus futuros jugadores necesitan claridad y transparencia verificando que coaches como tu son realmente titulados.', 'sistema-pro' ); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div id="sop-coach-doc-preview-container" style="position: absolute; bottom: 20px; left: 20px; display: <?php echo $coach_doc_id ? 'block' : 'none'; ?>;">
+            <div id="sop-coach-doc-preview-container" class="sop-preview-container-base" style="display: <?php echo $coach_doc_id ? 'block' : 'none'; ?>;">
                 <div class="sop-tab-badge">
-                    <i style="font-size: 1rem;">✓</i>
-                    <span id="sop-coach-doc-filename"><?php echo esc_html( $coach_doc_name ); ?></span>
-                </div>
-                <?php if ( $coach_doc_url ) : ?>
-                    <div style="margin-top: 10px; font-size: 0.85rem;">
-                        <a href="<?php echo esc_url( $coach_doc_url ); ?>" target="_blank" style="color: #092189; text-decoration: none;"><?php esc_html_e( 'Ver archivo actual', 'sistema-pro' ); ?></a>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img src="<?php echo esc_url( SOP_URL . 'assets/images/check-circle.png' ); ?>" class="sop-icon-check-img" alt="Check">
+                        <a id="sop-coach-doc-link" href="<?php echo esc_url( $coach_doc_url ); ?>" target="_blank" class="sop-link-no-decor" style="color: inherit;">
+                            <span id="sop-coach-doc-filename"><?php echo esc_html( $coach_doc_name ); ?></span>
+                        </a>
                     </div>
-                <?php endif; ?>
+                    <span class="sop-badge-remove" onclick="sopRemoveCoachDoc(event)">✕</span>
+                </div>
             </div>
         </div>
     </label>
-    <input type="file" id="sop_coach_certification_doc" name="sop_coach_certification_doc" accept=".pdf, image/jpeg, image/jpg, image/png, image/webp" style="display: none;" onchange="sopPreviewCoachDoc(this)">
+
+    <input type="file" id="sop_coach_certification_doc" name="sop_coach_certification_doc" accept=".pdf, image/jpeg, image/jpg, image/png, image/webp" class="sop-hidden-file-input" onchange="sopPreviewCoachDoc(this)">
 </div>
 
 <script>
@@ -117,8 +132,18 @@ function sopPreviewCoachDoc(input) {
         if (container && filename) {
             filename.textContent = input.files[0].name;
             container.style.display = 'block';
-            document.getElementById('sop-coach-doc-upload-area').style.borderColor = '#092189';
+            document.getElementById('sop-coach-doc-upload-area').style.borderColor = '#ffde00';
         }
     }
+}
+
+function sopRemoveCoachDoc(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var input = document.getElementById('sop_coach_certification_doc');
+    var container = document.getElementById('sop-coach-doc-preview-container');
+    if (input) input.value = '';
+    if (container) container.style.display = 'none';
+    document.getElementById('sop-coach-doc-upload-area').style.borderColor = '';
 }
 </script>

@@ -142,10 +142,44 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderRrss() {
         if(!rrssList) return;
         rrssList.innerHTML = '';
+        const iconMap = {
+            'instagram': 'instagram.png',
+            'linkedin': 'linkedin.png',
+            'x': 'x.png',
+            'twitter': 'x.png',
+            'youtube': 'youtube.png'
+        };
         rrss.forEach((item, index) => {
+            let nameRaw = (item.type_name || '').toLowerCase().trim();
+            let nameMapped = '';
+            
+            // Fuzzy Matching
+            if (nameRaw.includes('x') || nameRaw.includes('twitter')) nameMapped = 'x';
+            else if (nameRaw.includes('instagram')) nameMapped = 'instagram';
+            else if (nameRaw.includes('youtube')) nameMapped = 'youtube';
+            else if (nameRaw.includes('linkedin')) nameMapped = 'linkedin';
+            else nameMapped = nameRaw;
+
+            let iconUrl = '';
+            const isLocal = !!iconMap[nameMapped];
+            
+            if (isLocal) {
+                iconUrl = `<?php echo SOP_URL; ?>assets/images/${iconMap[nameMapped]}`;
+            } else if (nameMapped) {
+                // Fallback a favicon si no es de los "nuestros"
+                const domain = nameMapped.includes('.') ? nameMapped : `${nameMapped}.com`;
+                iconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+            } else {
+                iconUrl = `<?php echo SOP_URL; ?>assets/images/link.png`;
+            }
+
             const tag = document.createElement('div');
             tag.className = 'sop-tab-badge';
-            tag.innerHTML = `<span>${item.type_name}: ${item.value}</span><span style="cursor: pointer; opacity: 0.5;" onclick="removeRrss(${index})">✕</span>`;
+            tag.innerHTML = `
+                <img src="${iconUrl}" class="sop-rrss-icon ${isLocal ? 'sop-rrss-icon-local' : ''}" alt="${item.type_name}" onerror="this.src='<?php echo SOP_URL; ?>assets/images/link.png'">
+                <span>${item.value}</span>
+                <span class="sop-badge-remove" onclick="removeRrss(${index})">✕</span>
+            `;
             rrssList.appendChild(tag);
         });
     }

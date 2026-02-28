@@ -73,10 +73,54 @@
 }
 
 /* --- Description display --- */
+.sop-prof-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.sop-edit-icon-btn {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.sop-edit-icon-btn img {
+    filter: brightness(0) invert(1);
+    /* Default: White */
+}
+
+.sop-provider-theme-light .sop-edit-icon-btn img {
+    filter: brightness(0);
+    /* Provider Theme: Black */
+}
+
+.sop-edit-icon-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
 .sop-prof-desc-text {
     font-size: 1rem;
     line-height: 1.5;
     opacity: 0.8;
+}
+
+.sop-prof-desc-display {
+    min-height: 120px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .sop-prof-desc-text p {
@@ -122,4 +166,48 @@
 .sop-prof-desc-text em {
     font-style: italic !important;
     display: inline;
+}
+
+/* --- Social Media Layout (Flexible) --- */
+.sop-rrss-row {
+    --sop-rrss-type-w: 20%;
+    --sop-rrss-value-w: 1fr;
+    --sop-rrss-btn-w: auto;
+}
+
+.sop-rrss-col-type {
+    flex: 0 0 var(--sop-rrss-type-w);
+    min-width: 120px;
+}
+
+.sop-rrss-col-value {
+    flex: var(--sop-rrss-value-w);
+    min-width: 150px;
+}
+
+.sop-rrss-col-btn {
+    flex: 0 0 var(--sop-rrss-btn-w);
+}
+
+.sop-btn-no-margin {
+    margin-bottom: 0 !important;
+}
+
+/* Social Media Icons in Chips */
+.sop-rrss-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+    margin-right: 8px;
+}
+
+/* Adjust icon color for Dark Theme (when light theme class is NOT present) */
+body:not(.sop-provider-theme-light) .sop-rrss-icon {
+    filter: brightness(0) invert(1);
+}
+
+/* Light Theme: icons should be dark/original unless specified */
+.sop-provider-theme-light .sop-rrss-icon {
+    filter: brightness(0);
 }

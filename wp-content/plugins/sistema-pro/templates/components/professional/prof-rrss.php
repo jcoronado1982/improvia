@@ -12,8 +12,8 @@ $redes_sociales = get_terms( array( 'taxonomy' => 'sop_red_social', 'hide_empty'
 <div class="sop-tab-panel sop-tab-panel-basic">
     <h3 class="sop-title-with-line"><?php esc_html_e( 'RRSS PROFESIONAL', 'sistema-pro' ); ?></h3>
     <div class="sop-coach-form-box">
-        <div class="sop-prof-row-tight">
-            <div style="flex: 0 0 160px;">
+        <div class="sop-prof-row-tight sop-rrss-row">
+            <div class="sop-rrss-col-type">
                 <label class="sop-label"><?php esc_html_e( 'Red social', 'sistema-pro' ); ?></label>
                 <select id="sop-rrss-type" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
                     <option value=""></option>
@@ -22,11 +22,13 @@ $redes_sociales = get_terms( array( 'taxonomy' => 'sop_red_social', 'hide_empty'
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div style="flex: 1; min-width: 150px;">
+            <div class="sop-rrss-col-value">
                 <label class="sop-label"><?php esc_html_e( 'Usuario', 'sistema-pro' ); ?></label>
                 <input type="text" id="sop-rrss-value" class="sop-input" placeholder="<?php esc_attr_e( '@Ejemplo', 'sistema-pro' ); ?>">
             </div>
-            <button type="button" id="sop-add-rrss" class="sop-btn-blue" style="margin-bottom: 0;"><?php esc_html_e( 'Agregar', 'sistema-pro' ); ?></button>
+            <div class="sop-rrss-col-btn">
+                <button type="button" id="sop-add-rrss" class="sop-btn-blue sop-btn-no-margin"><?php esc_html_e( 'Agregar', 'sistema-pro' ); ?></button>
+            </div>
         </div>
     </div>
 

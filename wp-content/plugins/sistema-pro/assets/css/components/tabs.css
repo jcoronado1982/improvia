@@ -94,7 +94,7 @@
     text-transform: uppercase;
     color: var(--sop-color-white);
     margin-top: 0;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     /* Default margin, underline class overrides */
 }
 
@@ -119,6 +119,14 @@
     flex-wrap: wrap;
 }
 
+.sop-tab-split-md>*:first-child {
+    flex: 0 0 calc(57% - 14px);
+}
+
+.sop-tab-split-md>*:nth-child(2) {
+    flex: 0 0 calc(32% - 6px);
+}
+
 .sop-tab-panel-flex-main {
     flex: 1;
     min-width: 400px;
@@ -126,7 +134,7 @@
 }
 
 .sop-tab-panel-flex-side {
-    flex: 0 0 350px;
+    flex: 1 0 350px;
     padding: 30px;
 }
 
@@ -197,29 +205,130 @@
     background: rgba(255, 255, 255, 0.1);
 }
 
+.sop-tab-upload-area-main {
+    width: calc(100%-40px);
+    border: 1px solid #777777;
+    padding: 20px;
+    border-radius: 12px;
+    display: block;
+    position: relative;
+}
+
 .sop-tab-upload-area {
-    border: 1px dashed rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-    min-height: 250px;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    color: #fff;
+    border-radius: 12px;
+    min-height: 170px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
     padding: 30px;
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 .sop-tab-warning-box {
-    position: absolute;
-    right: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 450px;
     background: transparent;
     border: 1px solid rgba(255, 171, 0, 0.5);
     border-radius: 8px;
-    padding: 20px;
+    padding: 10px;
 }
+
+.sop-tab-warning-text {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #fff;
+}
+
+.sop-tab-warning-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* UTILITY CLASSES FOR PROFILE COMPONENTS */
+.sop-pointer-block-full {
+    cursor: pointer;
+    display: block;
+    width: 100%;
+}
+
+.sop-upload-inner-flex {
+    display: flex;
+    width: 100%;
+    gap: 30px;
+    align-items: center;
+}
+
+.sop-upload-col-hint {
+    flex: 1;
+    text-align: center;
+}
+
+.sop-upload-col-warning {
+    flex: 1;
+}
+
+.sop-text-center {
+    text-align: center;
+}
+
+.sop-opacity-50 {
+    opacity: 0.5;
+}
+
+.sop-upload-hint {
+    font-size: 1rem;
+    opacity: 0.7;
+}
+
+.sop-tab-upload-icon-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.sop-warning-flex-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 1rem;
+}
+
+.sop-preview-container-base {
+    margin-top: 15px;
+    display: block;
+}
+
+.sop-icon-check-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.sop-current-file-info {
+    margin-top: 10px;
+    font-size: 0.85rem;
+}
+
+.sop-link-no-decor {
+    text-decoration: none;
+}
+
+.sop-link-yellow {
+    color: #ffde00;
+}
+
+.sop-link-blue {
+    color: #092189;
+}
+
 
 .sop-tab-badge {
     display: inline-flex;
@@ -228,17 +337,28 @@
     border-radius: 50px;
     align-items: center;
     gap: 10px;
-    font-size: 0.85rem;
+    font-size: 1.125rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sop-badge-remove {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    font-size: 1.2rem;
+    line-height: 1;
+    margin-left: 10px;
+}
+
+.sop-badge-remove:hover {
+    opacity: 1;
 }
 
 /* ========================================
    COACH FORM CONTAINER (Bordered inner box)
    ======================================== */
 .sop-coach-form-box {
-    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 10px;
-    padding: 25px;
     margin-bottom: 15px;
 }
 
@@ -332,18 +452,43 @@
 }
 
 .sop-provider-theme-light .sop-tab-badge {
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    color: #333;
+    background: #EEEEEE;
+    border: none;
+    color: #333333;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sop-provider-theme-light .sop-icon-check-img {
+    filter: brightness(0);
 }
 
 .sop-provider-theme-light .sop-tab-upload-area {
-    border-color: rgba(0, 0, 0, 0.2);
+    border-color: rgba(0, 0, 0, 0.15);
+
+    background: #F5F5F4;
+    color: #444;
+}
+
+.sop-provider-theme-light .sop-tab-upload-area-main {
+    border-color: rgba(0, 0, 0, 0.1);
+    background: #FFFFFF;
+}
+
+.sop-provider-theme-light .sop-upload-hint {
+    color: #000;
+    opacity: 1;
 }
 
 .sop-provider-theme-light .sop-tab-warning-box {
     background: #fff8e1;
-    border-color: rgba(255, 171, 0, 0.5);
+    border-color: #F59E0B;
+}
+
+.sop-provider-theme-light .sop-tab-warning-text {
+    color: #333;
+    opacity: 1;
 }
 
 .sop-provider-theme-light .sop-tab-warning-box p {
