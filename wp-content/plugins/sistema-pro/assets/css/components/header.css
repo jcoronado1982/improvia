@@ -1,18 +1,29 @@
 .sop-global-header {
     background: transparent;
     color: var(--sop-color-white);
-    padding: 0px 60px;
     height: 100px;
-    /* Exclusively use CSS Grid Layout as per standards */
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center;
     font-family: var(--sop-font-main);
     top: 0;
     z-index: 9999;
     box-sizing: border-box;
     container-type: inline-size;
     container-name: sop-header;
+    display: flex;
+    justify-content: center;
+}
+
+.header-content {
+    width: 100%;
+    max-width: 1600px;
+    /* Max width to match main layout */
+    padding: 0px 40px;
+    /* Original padding for edges */
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    margin: 0 auto;
+    box-sizing: border-box;
+    height: 100%;
 }
 
 .sop-header-left {
@@ -21,16 +32,19 @@
 }
 
 .sop-header-logo img {
-    height: 38px;
+    height: 60px;
     width: auto;
     display: block;
+    padding-top: 40px;
+    padding-left: 10px;
 }
 
 .sop-header-right {
     display: grid;
-    grid-template-rows: auto auto;
+    grid-template-rows: 50px auto;
     justify-items: end;
-    gap: 12px;
+    gap: 0px;
+    height: 100px;
 }
 
 /* TOP BAR: Language Selector */
@@ -38,6 +52,8 @@
     /* Simple 1D alignment = Flexbox is OK */
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    height: 40px;
 }
 
 .sop-lang-selector {
@@ -45,7 +61,7 @@
     align-items: center;
     gap: 10px;
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: 500;
 }
 
@@ -67,6 +83,7 @@
     display: flex;
     align-items: center;
     gap: 40px;
+    height: 30px;
 }
 
 .sop-header-nav {
@@ -106,7 +123,7 @@
 
 .sop-user-pill {
     display: inline-block;
-    padding: 0px 12px;
+    padding: 2px 12px;
     border: 1px solid var(--sop-color-white);
     border-radius: 8px;
     color: var(--sop-color-white) !important;
@@ -126,7 +143,7 @@
 
 /* SMART COMPONENTS: Container Queries as per standards */
 @container sop-header (max-width: 1024px) {
-    .sop-global-header {
+    .header-content {
         padding: 15px 30px;
     }
 
@@ -152,10 +169,10 @@
 }
 
 .sop-menu-item {
-    margin-bottom: 25px !important;
+    margin-bottom: 20px !important;
     display: flex !important;
     align-items: center !important;
-    gap: 15px !important;
+    gap: 10px !important;
     cursor: pointer;
     transition: all 0.3s ease;
     opacity: 0.7;

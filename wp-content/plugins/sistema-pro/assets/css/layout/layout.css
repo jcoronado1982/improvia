@@ -4,20 +4,24 @@
     display: grid !important;
     grid-template-columns: 300px 1fr;
     gap: 20px;
-    margin: 0 !important;
+    margin: 0 auto !important;
+    /* Center the container */
     padding: 0 !important;
     width: 100% !important;
-    max-width: 100% !important;
+    max-width: 1600px !important;
+    /* Cap width at 1600px */
     box-sizing: border-box;
     clear: both;
 }
 
 .entry-content .sop-cols-container,
 .wp-site-blocks .sop-cols-container {
-    margin: 0 !important;
+    margin: 0 auto !important;
+    /* Center the container */
     padding: 0 !important;
     width: 100% !important;
-    max-width: 100% !important;
+    max-width: 1600px !important;
+    /* Cap width at 1600px */
 }
 
 /* Fix horizontal scrolling and theme paddings */
@@ -67,9 +71,8 @@ body:has(.sop-cols-container) .entry-content {
 /* 3. Forzar el fondo oscuro general en el body para quitar los bordes blancos */
 body:has(.sop-cols-container),
 html:has(.sop-cols-container) {
-    background-color: var(--sop-color-navy) !important;
-    /* Estirado gigante para evitar la oscuridad excesiva */
-    background-image: radial-gradient(ellipse 150% 150% at center, var(--sop-color-bg-primary) 0%, var(--sop-color-navy) 90%) !important;
+    background-color: #020617 !important;
+    background-image: radial-gradient(circle at top left, #1e293b 0%, #020617 50%) !important;
     background-attachment: fixed !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
@@ -96,7 +99,7 @@ SOP COLUMNS CONTAINER
 .sop-col-right {
     background: transparent !important;
     /* Le dejas el fondo global */
-    padding: 30px 40px 80px 20px !important;
+    padding: 30px 40px 60px 20px !important;
     border: none !important;
     color: var(--sop-color-white) !important;
 }

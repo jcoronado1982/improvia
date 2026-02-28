@@ -12,7 +12,7 @@
 .sop-tab-grid-4 .ts-wrapper.sop-tom-select,
 .sop-tab-grid-4-sm .ts-wrapper.sop-tom-select,
 .sop-tab-panel .ts-wrapper.sop-tom-select {
-    width: 100% !important;
+    width: 90% !important;
 }
 
 .ts-control {
@@ -28,6 +28,7 @@
     /* Match sop-input height */
     display: flex !important;
     align-items: center !important;
+    width: 90% !important;
 }
 
 .ts-control:focus,

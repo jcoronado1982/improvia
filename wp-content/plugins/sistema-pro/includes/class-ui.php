@@ -377,11 +377,64 @@ class SOP_UI {
             }
         }
 
-        // --- ACTUALIZACIÓN DE ESTATUS (1 -> 2) ---
-        $current_status = get_user_meta( $user_id, 'sop_user_status', true );
-        if ( intval($current_status) === 1 && self::check_profile_completion( $user_id ) ) {
-            update_user_meta( $user_id, 'sop_user_status', 2 ); // Upgrade to Preactivo
-            SOP_Debug::log( 'UI', 'User status upgraded to 2 (Preactivo)', [ 'user_id' => $user_id ] );
+        // --- GESTIÓN DE SUSCRIPCIONES ---
+        if ($form_type === 'subscriptions') {
+            // Guardar precios de suscripción estándar
+            $price_fields = array('sop_precio_semanal', 'sop_precio_mensual', 'sop_precio_trimestral', 'sop_precio_anual');
+            foreach ($price_fields as $field) {
+                if (isset($_POST[$field])) {
+                    update_user_meta($user_id, $field, sanitize_text_field($_POST[$field]));
+                }
+            }
+
+            // Guardar paquetes de sesiones
+            for ($i = 1; $i <= 6; $i++) {
+                $qty_key = 'sop_cantidad_sesiones_' . $i;
+                $prc_key = 'sop_precio_sesiones_' . $i;
+                
+                if (isset($_POST[$qty_key])) {
+                    update_user_meta($user_id, $qty_key, sanitize_text_field($_POST[$qty_key]));
+                }
+                if (isset($_POST[$prc_key])) {
+                    update_user_meta($user_id, $prc_key, sanitize_text_field($_POST[$prc_key]));
+                }
+            }
+
+            // Guardar consulta gratis (checkbox)
+            $consulta_gratis = isset($_POST['sop_consulta_gratis']) ? 'yes' : 'no';
+            update_user_meta($user_id, 'sop_consulta_gratis', $consulta_gratis);
+        }
+
+        // --- ACTUALIZACIÓN DE ESTATUS ---
+        $current_status = intval( get_user_meta( $user_id, 'sop_user_status', true ) );
+
+        // 1 -> 2: Paso a Aprobado en proceso (Perfil completo)
+        if ( $current_status === 1 && self::check_profile_completion( $user_id ) ) {
+            update_user_meta( $user_id, 'sop_user_status', 2 ); // 2: Aprobado en proceso
+            $current_status = 2;
+            SOP_Debug::log( 'UI', 'User status upgraded to 2 (Aprobado en proceso)', [ 'user_id' => $user_id ] );
+        }
+
+        // Manejo de etapa 2 <-> 3
+        if ( $current_status >= 2 ) {
+            $has_active = false;
+            if ( user_can($user_id, 'entrenador') || user_can($user_id, 'especialista') ) {
+                $has_active = SOP_Auth::has_active_plans( $user_id );
+            } elseif ( user_can($user_id, 'deportista') || user_can($user_id, 'atleta') ) {
+                $has_active = SOP_Auth::has_active_subscriptions( $user_id );
+            }
+
+            if ( $has_active ) {
+                if ( $current_status !== 3 ) {
+                    update_user_meta( $user_id, 'sop_user_status', 3 ); // 3: Aprobado / Suscrito
+                    SOP_Debug::log( 'UI', 'User status changed to 3', [ 'user_id' => $user_id ] );
+                }
+            } else {
+                if ( $current_status !== 2 ) {
+                    update_user_meta( $user_id, 'sop_user_status', 2 ); // Downgrade to Aprobado en proceso
+                    SOP_Debug::log( 'UI', 'User status changed to 2', [ 'user_id' => $user_id ] );
+                }
+            }
         }
 
         wp_send_json_success( 'Perfil actualizado correctamente' );
@@ -510,13 +563,7 @@ class SOP_UI {
             wp_send_json_error( 'Datos inválidos para la suscripción.' );
         }
 
-        // 1. OMITIMOS la asignación inmediata aquí. 
-        // El deportista solo tendrá al entrenador en 'sop_subscribed_trainers' 
-        // cuando el entrenador haga clic en [ACEPTAR] en el panel de solicitudes.
-        
-        // 2. Registrar el pago simulado (Fondos Reservados)
-        // Ejemplo de tabla logs (la guardaremos en wp_options por ser simulación rápida, o en CPT custom)
-        // Usaremos get_option para apilar un array masivo de logs transaccionales 
+        // Procesa el registro de la transacción simulada en los logs del sistema.
         $transaction_logs = get_option( 'sop_mock_transactions_log', array() );
         
         // Simulación lógica Split (Improvia cobra 10% por ej.)
@@ -579,7 +626,7 @@ class SOP_UI {
             wp_send_json_error( 'No tienes permisos' );
         }
 
-        SOP_Debug::log( 'UI', 'Handling solicitude action', [ 'action' => $action, 'txn_id' => $txn_id ] );
+        SOP_Debug::log( 'UI', 'Handling solicitude action', [ 'txn_id' => $txn_id ] );
         $txn_id = sanitize_text_field( $_POST['txn_id'] );
         $action = sanitize_text_field( $_POST['action_type'] ); // 'accept' o 'reject'
 
@@ -597,6 +644,13 @@ class SOP_UI {
                     if ( !in_array($user_id, $athlete_trainers) ) {
                         $athlete_trainers[] = $user_id;
                         update_user_meta( $log['athlete_id'], 'sop_subscribed_trainers', $athlete_trainers );
+                        
+                        // Actualizar estatus del atleta a 3 (Suscrito)
+                        $athlete_status = intval( get_user_meta( $log['athlete_id'], 'sop_user_status', true ) );
+                        if ( $athlete_status === 2 ) {
+                            update_user_meta( $log['athlete_id'], 'sop_user_status', 3 );
+                            SOP_Debug::log( 'UI', 'Athlete status upgraded to 3 after subscription approval', [ 'athlete_id' => $log['athlete_id'] ] );
+                        }
                     }
                 } else {
                     $log['status'] = 'SOLICITUD_RECHAZADA_LIBERADA';
@@ -952,8 +1006,22 @@ class SOP_UI {
                 break;
             case 'status':
                 $status = get_post_meta( $post_id, 'status', true );
-                $color = ($status === 'SUSCRIPCION_ACTIVA') ? 'green' : (($status === 'SOLICITUD_RECHAZADA_LIBERADA') ? 'red' : 'orange');
-                echo '<span style="color:' . $color . ';font-weight:bold;">' . esc_html( $status ) . '</span>';
+                $status_labels = [
+                    'SUSCRIPCION_ACTIVA'           => [ 'text' => __( 'ACTIVA', 'sistema-pro' ), 'color' => '#10b981' ],
+                    'FONDOS_RESERVADOS_SIMULADOS' => [ 'text' => __( 'RESERVADO', 'sistema-pro' ), 'color' => '#f59e0b' ],
+                    'SOLICITUD_RECHAZADA_LIBERADA' => [ 'text' => __( 'LIBERADO', 'sistema-pro' ), 'color' => '#ef4444' ],
+                ];
+
+                if ( isset( $status_labels[$status] ) ) {
+                    $label = $status_labels[$status];
+                    printf( 
+                        '<span style="color: %s; font-weight: bold;">%s</span>', 
+                        esc_attr( $label['color'] ), 
+                        esc_html( $label['text'] ) 
+                    );
+                } else {
+                    echo esc_html( $status );
+                }
                 break;
         }
     }

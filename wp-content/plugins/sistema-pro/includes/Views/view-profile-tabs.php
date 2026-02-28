@@ -451,8 +451,23 @@ document.addEventListener('DOMContentLoaded', function() {
             locale: lang === 'en' ? 'en' : 'es',
             dateFormat: 'Y-m-d',
             altInput: true,
-            altFormat: 'd / m / Y',
+            altFormat: 'd/m/Y', // Formato más estándar sin espacios extra para evitar fallos de parseo
             allowInput: true,
+            onReady: function(selectedDates, dateStr, instance) {
+                // Vincular eventos al input visible (altInput) para limpiar validación
+                if (instance.altInput) {
+                    instance.altInput.addEventListener('input', function() {
+                        instance.input.setCustomValidity('');
+                    });
+                    instance.altInput.addEventListener('blur', function() {
+                        // Forzar validación de flatpickr al salir para evitar que el real quede vacío si el formato es inválido
+                        if (!instance.selectedDates.length && this.value !== '') {
+                            // Si el usuario escribió algo pero no se detecta fecha, intentar parsear o limpiar
+                            // Esto ayuda a que 'required' funcione bien
+                        }
+                    });
+                }
+            },
             onChange: function(selectedDates, dateStr, instance) {
                 instance.input.setCustomValidity('');
             }

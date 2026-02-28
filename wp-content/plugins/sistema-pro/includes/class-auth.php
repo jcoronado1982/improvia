@@ -32,6 +32,52 @@ class SOP_Auth {
         exit;
     }
 
+    /**
+     * Verifica si un entrenador o especialista tiene planes o paquetes de sesiones activos.
+     */
+    public static function has_active_plans( $user_id ) {
+        $fields = array(
+            'sop_precio_semanal',
+            'sop_precio_mensual',
+            'sop_precio_trimestral',
+            'sop_precio_anual'
+        );
+
+        // Comprobar suscripciones periódicas
+        foreach ( $fields as $field ) {
+            $val = get_user_meta( $user_id, $field, true );
+            if ( ! empty( $val ) && floatval( $val ) > 0 ) {
+                return true;
+            }
+        }
+
+        // Comprobar paquetes de sesiones (del 1 al 6)
+        for ( $i = 1; $i <= 6; $i++ ) {
+            $price = get_user_meta( $user_id, 'sop_precio_sesiones_' . $i, true );
+            $qty   = get_user_meta( $user_id, 'sop_cantidad_sesiones_' . $i, true );
+            if ( ! empty( $price ) && floatval( $price ) > 0 && ! empty( $qty ) && intval( $qty ) > 0 ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Verifica si un deportista tiene al menos una suscripción activa.
+     */
+    public static function has_active_subscriptions( $user_id ) {
+        $logs = get_option( 'sop_mock_transactions_log', array() );
+        foreach ( $logs as $log ) {
+            if ( isset( $log['athlete_id'] ) && intval( $log['athlete_id'] ) === intval( $user_id ) ) {
+                if ( isset( $log['status'] ) && $log['status'] === 'SUSCRIPCION_ACTIVA' ) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private $reg_errors = array();
 
     /**
@@ -188,8 +234,6 @@ class SOP_Auth {
             return;
         }
 
-        SOP_Debug::log( 'AUTH', 'Login successful', [ 'user_id' => $user->ID, 'user' => $_POST['sop_log'] ] );
-
         if ( class_exists( '\Improvia\Modules\Traceability\Classes\Audit_Logger' ) ) {
             \Improvia\Modules\Traceability\Classes\Audit_Logger::log(
                 'user_logged_in',
@@ -197,15 +241,25 @@ class SOP_Auth {
             );
         }
 
-        // Redirección dinámica basada en el rol
         $user_obj = get_userdata( $user->ID );
-        if ( in_array( 'entrenador', (array) $user_obj->roles ) || in_array( 'especialista', (array) $user_obj->roles ) ) {
-            wp_safe_redirect( home_url( '/mensajes' ) );
-        } elseif ( in_array( 'deportista', (array) $user_obj->roles ) || in_array( 'atleta', (array) $user_obj->roles ) ) {
-            wp_safe_redirect( home_url( '/entrenadores' ) );
+        $user_status = intval( get_user_meta( $user->ID, 'sop_user_status', true ) );
+        $roles = (array) $user_obj->roles;
+
+        if ( in_array( 'entrenador', $roles ) || in_array( 'especialista', $roles ) ) {
+            if ( $user_status === 1 ) {
+                $url = home_url( '/perfil' );
+            } elseif ( $user_status === 2 ) {
+                $url = home_url( '/suscripciones?tab=prices' );
+            } else {
+                $url = home_url( '/mensajes' );
+            }
+        } elseif ( in_array( 'deportista', $roles ) || in_array( 'atleta', $roles ) ) {
+            $url = ( $user_status === 1 ) ? home_url( '/perfil' ) : home_url( '/entrenadores' );
         } else {
-            wp_safe_redirect( home_url( '/suscripcion' ) );
+            $url = home_url( '/perfil' );
         }
+
+        wp_redirect( $url );
         exit;
     }
 }

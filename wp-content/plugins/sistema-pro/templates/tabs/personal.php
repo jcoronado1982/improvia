@@ -81,24 +81,24 @@ $nacimiento = get_user_meta( $user->ID, 'sop_fecha_nacimiento', true );
         $profile_image_id = get_user_meta( $user->ID, 'sop_profile_image_id', true );
         $profile_image_url = $profile_image_id ? wp_get_attachment_image_url( $profile_image_id, 'medium' ) : SOP_URL . 'assets/images/no image.png';
         ?>
-        <div style="text-align: center; position: relative; flex: 0 0 160px;">
-            <label for="sop_profile_picture" style="cursor: pointer; display: block;">
-                <div class="sop-profile-img-upload" style="overflow: hidden; position: relative; width: 140px; height: 140px; border-radius: 50%; margin: 0 auto; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img src="<?php echo esc_url( $profile_image_url ); ?>" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover;" id="sop-profile-img-preview">
+        <div class="sop-tab-profile-col-left">
+            <label for="sop_profile_picture" class="sop-profile-picture-label">
+                <div class="sop-profile-img-upload">
+                    <img src="<?php echo esc_url( $profile_image_url ); ?>" alt="Profile Picture" class="sop-profile-img-preview" id="sop-profile-img-preview">
                 </div>
-                <p style="font-size: 0.85rem; margin-top: 15px; cursor: pointer;"><?php esc_html_e( 'Upload image', 'sistema-pro' ); ?></p>
+                <p class="sop-profile-upload-text"><?php esc_html_e( 'Upload image', 'sistema-pro' ); ?></p>
             </label>
-            <input type="file" id="sop_profile_picture" name="sop_profile_picture" accept="image/jpeg, image/png, image/webp" style="display: none;" onchange="sopPreviewImage(this)">
+            <input type="file" id="sop_profile_picture" name="sop_profile_picture" accept="image/jpeg, image/png, image/webp" class="sop-hidden-file-input" onchange="sopPreviewImage(this)">
         </div>
 
-        <div style="flex: 1; min-width: 300px;">
+        <div class="sop-tab-profile-col-right">
             <div class="sop-tab-grid-4">
-                <div style="grid-column: span 2;">
-                    <label class="sop-label"><?php esc_html_e( 'Nombre completo', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+                <div class="sop-col-span-2">
+                    <label class="sop-label"><?php esc_html_e( 'Nombre completo', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></label>
                     <input type="text" name="display_name" value="<?php echo esc_attr($full_name); ?>" class="sop-input" placeholder="<?php esc_attr_e( 'Ej. Juan Pérez', 'sistema-pro' ); ?>" required>
                 </div>
-                <div style="grid-column: span 1;">
-                    <label class="sop-label"><?php esc_html_e( 'Ubicación', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+                <div class="sop-col-span-1">
+                    <label class="sop-label"><?php esc_html_e( 'Ubicación', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></label>
                     <select name="sop_ubicacion_id" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>" required>
                         <option value=""></option>
                         <?php foreach ($ubicaciones as $ub) : ?>
@@ -108,8 +108,8 @@ $nacimiento = get_user_meta( $user->ID, 'sop_fecha_nacimiento', true );
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div style="grid-column: span 1;">
-                    <label class="sop-label"><?php esc_html_e( 'Nacionalidad', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+                <div class="sop-col-span-1">
+                    <label class="sop-label"><?php esc_html_e( 'Nacionalidad', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></label>
                     <select name="sop_nacionalidad_id" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>" required>
                         <option value=""></option>
                         <?php foreach ($nacionalidades as $nac) : ?>
@@ -119,16 +119,16 @@ $nacimiento = get_user_meta( $user->ID, 'sop_fecha_nacimiento', true );
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div style="grid-column: span 1;">
-                    <label class="sop-label"><?php esc_html_e( 'Nacimiento', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+                <div class="sop-col-span-1">
+                    <label class="sop-label"><?php esc_html_e( 'Nacimiento', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></label>
                     <input type="text" name="sop_fecha_nacimiento" value="<?php echo esc_attr($nacimiento); ?>" class="sop-input sop-datepicker" required>
                 </div>
             </div>
 
             <div class="sop-tab-nested-box">
-                <h4 class="sop-tab-nested-title"><?php esc_html_e( 'Idiomas que manejo', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></h4>
+                <h4 class="sop-tab-nested-title"><?php esc_html_e( 'Idiomas que manejo', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></h4>
                 <div class="sop-tab-inline-form">
-                    <div style="flex: 1; max-width: 200px;">
+                    <div class="sop-language-field-col">
                         <label class="sop-label"><?php esc_html_e( 'Lenguaje', 'sistema-pro' ); ?></label>
                         <select id="new-lang-id" class="sop-input">
                             <?php foreach ($idiomas as $i) : ?>
@@ -136,7 +136,7 @@ $nacimiento = get_user_meta( $user->ID, 'sop_fecha_nacimiento', true );
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <div style="flex: 1; max-width: 200px;">
+                    <div class="sop-language-field-col">
                         <label class="sop-label"><?php esc_html_e( 'Nivel', 'sistema-pro' ); ?></label>
                         <select id="new-lang-level" class="sop-input">
                             <?php foreach ($niveles as $niv) : ?>
@@ -144,10 +144,10 @@ $nacimiento = get_user_meta( $user->ID, 'sop_fecha_nacimiento', true );
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <button type="button" id="sop-add-lang" class="sop-btn-blue" style="width: auto; min-width: 100px;"><?php esc_html_e( 'Agregar', 'sistema-pro' ); ?></button>
+                    <button type="button" id="sop-add-lang" class="sop-btn-blue sop-btn-auto-width"><?php esc_html_e( 'Agregar', 'sistema-pro' ); ?></button>
                 </div>
 
-                <div id="sop-languages-list" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <div id="sop-languages-list" class="sop-languages-list-container">
                     <!-- Dinámico vía JS -->
                 </div>
             </div>

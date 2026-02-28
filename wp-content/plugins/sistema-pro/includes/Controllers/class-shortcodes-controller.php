@@ -74,12 +74,14 @@ class SOP_Shortcodes_Controller {
     public function render_generic_layout( $atts, $content = null ) {
         $menu = $this->render_sidebar_menu();
         
-        $html = '<div class="sop-cols-container">';
-        $html .= '<div class="sop-col-left">' . $menu . '</div>';
-        $html .= '<div class="sop-col-right">' . do_shortcode( $content ) . '</div>';
-        $html .= '</div>';
-        
-        return $html;
+        ob_start();
+        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-generic-layout.php';
+        if ( file_exists( $view_path ) ) {
+            require $view_path;
+        } else {
+            echo '<p>' . esc_html__( 'Error: Layout view not found.', 'sistema-pro' ) . '</p>';
+        }
+        return ob_get_clean();
     }
 
     /**

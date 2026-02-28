@@ -20,7 +20,7 @@ textarea {
 }
 
 .sop-input {
-    width: 100%;
+    width: 95%;
     background: rgba(255, 255, 255, 0.05) !important;
     border-radius: var(--sop-radius-md) !important;
     color: var(--sop-color-white) !important;

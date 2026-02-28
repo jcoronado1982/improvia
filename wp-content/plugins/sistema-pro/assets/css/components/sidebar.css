@@ -1,7 +1,8 @@
 /* SIDEBAR MENU - Flat Aesthetic Design */
 .sop-sidebar-menu {
-    /* Flat slate-navy background matching the latest screenshot */
-    background: #313847;
+    /* Glassmorphism sidebar */
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
     border-radius: 0 40px 40px 0;
     padding: 60px 40px 50px 50px !important;
     height: auto;
@@ -62,6 +63,5 @@
 /* Push "Salir" to bottom if needed, though gap handles it for now */
 .sop-menu-item:last-child {
     margin-top: auto;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 0px;
 }

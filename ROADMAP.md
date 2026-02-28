@@ -8,7 +8,7 @@ This document serves as the source of truth for the project's progress and futur
 
 ---
 
-## 1. Current Progress (V1.2 - Full UI Sections Built)
+## 1. Current Progress (V1.3 - Simulation & Cleanup)
 
 ### ✅ Core Architecture
 - [x] **Architecture Pivot**: Legacy Next.js frontend deleted. All UI lives inside `sistema-pro` WordPress plugin.
@@ -88,6 +88,17 @@ This document serves as the source of truth for the project's progress and futur
 ### ✅ Landing Page
 - [x] **Hero Section** (`view-hero-landing.php`): Landing hero content.
 
+### ✅ Mock Financial Simulation
+- [x] **Checkout Simulado** (`view-mock-checkout.php`): AJAX-based plan preparation and secure redirection.
+- [x] **Transaction Logs** (`sop_mock_transactions_log`): Persistent mock logs stored in `wp_options`.
+- [x] **Subscription CPT**: Automated creation of `subscription` post type for administrative visibility.
+- [x] **Solicitude Panel** (`view-solicitudes.php`): Full Accept/Reject flow with funds release simulation and meta-data synchronization.
+
+### ✅ Maintenance & Documentation
+- [x] **Code Cleanup**: Removed all debugging remnants (`console.log`, `var_dump`), commented-out blocks, and redundant files (`preview-backup.css`).
+- [x] **File Inventory** (`FILE_INVENTORY.md`): Centralized documentation of all plugin files and their purposes.
+- [x] **Standardization**: Formalized placeholder messages and i18n usage across views.
+
 ---
 
 ## 2. Core Architecture Reference
@@ -107,9 +118,10 @@ This document serves as the source of truth for the project's progress and futur
 - [ ] **Pagination Logic**: Implement real WP_Query pagination for the trainer directory.
 - [ ] **Search & Filters**: Wire up the filter bar to actual query parameters.
 
-### Phase 2: Coach Detail Profile
+### Phase 2: Refinement & Advanced Logic
+- [x] **Checkout Simulado**: Completed logic for plan selection and mock payment.
+- [x] **Solicitude Flow**: Completed logic for trainer approval.
 - [ ] **Single Coach View**: Implement the dynamic view for visiting a single coach's profile.
-- [ ] **Subscription Flow**: Implementation of the "Subscribe" action tied to pricing card.
 - [ ] **Media Handling**: Video/image content from WordPress inside the coach profile.
 
 ### Phase 3: Messaging & Q&A

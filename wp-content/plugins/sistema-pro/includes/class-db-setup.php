@@ -10,6 +10,41 @@ class SOP_DB_Setup {
         // Asegurar consistencia en cada carga (init)
         add_action( 'init', array( $this, 'ensure_system_state' ) );
         add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
+
+        // Columnas personalizadas en la lista de usuarios
+        add_filter( 'manage_users_columns', array( $this, 'add_user_status_column' ) );
+        add_action( 'manage_users_custom_column', array( $this, 'render_user_status_column' ), 10, 3 );
+    }
+
+    /**
+     * Agrega la columna "Estado" a la lista de usuarios
+     */
+    public function add_user_status_column( $columns ) {
+        $columns['sop_status'] = 'Estado';
+        return $columns;
+    }
+
+    /**
+     * Renderiza el contenido de la columna "Estado"
+     */
+    public function render_user_status_column( $output, $column_name, $user_id ) {
+        if ( 'sop_status' !== $column_name ) {
+            return $output;
+        }
+
+        $status = intval( get_user_meta( $user_id, 'sop_user_status', true ) );
+        
+        switch ( $status ) {
+            case 1:
+                return '<span style="color: #6b7280; font-weight: bold;">Inscrito</span>';
+            case 2:
+                return '<span style="color: #f59e0b; font-weight: bold;">Aprobado en proceso</span>';
+            case 3:
+                $label = ( user_can( $user_id, 'deportista' ) || user_can( $user_id, 'atleta' ) ) ? 'Suscrito' : 'Aprobado';
+                return '<span style="color: #10b981; font-weight: bold;">' . $label . '</span>';
+            default:
+                return '<span style="color: #9ca3af; font-style: italic;">Sin estado</span>';
+        }
     }
 
     public function register_admin_menu() {
@@ -140,26 +175,6 @@ class SOP_DB_Setup {
      * Puebla las taxonomías con datos iniciales
      */
     private function seed_data() {
-        // Limpiar términos antiguos que fueron reemplazados por versiones actualizadas
-        $old_terms = array(
-            'sop_posicion'       => array('Porteros', 'Laterales', 'Carrileros', 'Defensas centrales', 'Pivotes', 'Mediocentros', 'Mediocentros ofensivos', 'Extremos', 'Delanteros'),
-            'sop_fase_ofensiva'  => array('Salida de balón', 'Atacar estando', 'Transición defensa/ataque', 'Ataque de área'),
-            'sop_fase_defensiva' => array('Salida de balón', 'Bloque Alto/Medio/Bajo', 'Transición defensa/ataque', 'Defensa de área'),
-            'sop_nivel_prof'     => array('Master', 'Senior', 'Junior'),
-            'sop_red_social'     => array('Twitter'),
-            'sop_ocupacion'      => array('Entrenador Personal', 'Fisioterapeuta'),
-            'sop_certificacion'  => array('Curso de nutrición mitrobiana', 'Diploma en Coaching'),
-            'sop_instituto'      => array('Instituto ABC'),
-            'sop_categoria'      => array('Peso Pesado', 'Peso Crucero', 'Peso Semipesado', 'Peso Supermediano', 'Peso Mediano', 'Peso Superwélter', 'Peso Wélter', 'Peso Superligero', 'Peso Ligero', 'Peso Superpluma', 'Peso Pluma', 'Peso Supergallo', 'Peso Gallo', 'Peso Supermosca', 'Peso Mosca', 'Peso Minimosca', 'Peso Paja'),
-        );
-        foreach ($old_terms as $tax => $terms) {
-            foreach ($terms as $name) {
-                $term = term_exists($name, $tax);
-                if ($term) {
-                    wp_delete_term((int) $term['term_id'], $tax);
-                }
-            }
-        }
         // ===========================
         // PERSONAL INFO
         // ===========================

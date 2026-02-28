@@ -276,7 +276,7 @@ $c_sesiones = get_user_meta( $user_id, 'sop_cantidad_sesiones', true );
                     <input type="number" 
                            name="sop_cantidad_sesiones_<?php echo $index; ?>" 
                            class="sop-subs-quantity-input" 
-                           placeholder="Nº"
+                           placeholder="<?php esc_attr_e( 'Nº', 'sistema-pro' ); ?>"
                            value="<?php echo esc_attr($data['qty']); ?>" 
                            oninput="sopCalculateRow(this)"
                            style="width: 50px; padding: 4px; border: 1px solid #d1d5db; border-radius: 4px; text-align: center; font-size: 14px;">
@@ -400,7 +400,7 @@ $c_sesiones = get_user_meta( $user_id, 'sop_cantidad_sesiones', true );
         </script>
 
         <div class="sop-subs-actions">
-            <button type="submit" id="sop-subs-save-btn" class="sop-btn-blue" style="min-width: 150px; border-radius: 8px;">Save</button>
+            <button type="submit" id="sop-subs-save-btn" class="sop-btn-blue" style="min-width: 150px; border-radius: 8px;"><?php esc_html_e( 'Guardar', 'sistema-pro' ); ?></button>
         </div>
         <div id="sop-subs-msg" style="text-align: right; margin-top: 10px; font-size: 0.9rem;"></div>
     </form>
@@ -412,7 +412,7 @@ $c_sesiones = get_user_meta( $user_id, 'sop_cantidad_sesiones', true );
     <div class="sop-sub-tab-panel" data-panel="collection" style="display: none;">
         <div style="text-align: center; padding: 60px 20px; color: #9ca3af;">
             <span class="dashicons dashicons-bank" style="font-size: 48px; width: 48px; height: 48px; margin-bottom: 15px;"></span>
-            <p style="font-size: 16px;">Métodos de cobro — Próximamente</p>
+            <p style="font-size: 16px;"><?php esc_html_e( 'Próximamente: Configura tus métodos de cobro.', 'sistema-pro' ); ?></p>
         </div>
     </div>
 
@@ -772,6 +772,18 @@ function sopSwitchSubTab(btn) {
         activePanel.style.display = 'block';
     }
 }
+
+// Handle initial tab from URL
+document.addEventListener('DOMContentLoaded', function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var tab = urlParams.get('tab');
+    if (tab) {
+        var btn = document.querySelector('.sop-subs-tab-btn[data-tab="' + tab + '"]');
+        if (btn) {
+            sopSwitchSubTab(btn);
+        }
+    }
+});
 </script>
 
 <script>

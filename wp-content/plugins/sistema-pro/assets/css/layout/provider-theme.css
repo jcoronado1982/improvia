@@ -4,14 +4,21 @@
  */
 
 /* 1. Global Reset to Light Mode */
-body.sop-provider-theme-light:not(.sop-preview-mode),
+/* Reset html and body background to modern gradient */
+html:has(body.sop-provider-theme-light:not(.sop-preview-mode)),
+body.sop-provider-theme-light:not(.sop-preview-mode) {
+    background-color: #F0F4F8 !important;
+    background: linear-gradient(135deg, #F6F8FB 0%, #E9EFF5 100%) !important;
+}
+
+/* Inner containers blend with the background */
 body.sop-provider-theme-light:not(.sop-preview-mode) #content,
 body.sop-provider-theme-light:not(.sop-preview-mode) .site-content,
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-cols-container,
 body.sop-provider-theme-light:not(.sop-preview-mode) #primary,
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-panel,
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tabs-container {
-    background-color: #f8f9fa !important;
+    background: transparent !important;
     color: #0a0e1a !important;
 }
 
@@ -26,7 +33,7 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-global-header * {
 }
 
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-header-logo img {
-    filter: brightness(0.2);
+    /* No filter needed since we dynamically load logo_blue.png */
 }
 
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-user-pill {
@@ -41,7 +48,8 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-user-pill:hover {
 
 /* 3. Sidebar Menu Overrides for Light Mode */
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-sidebar-menu {
-    background-color: #ffffff !important;
+    background: #fff !important;
+    backdrop-filter: blur(10px);
     box-shadow: 2px 0 15px rgba(0, 0, 0, 0.03);
 }
 
