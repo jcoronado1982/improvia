@@ -28,6 +28,8 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
     </div>
 
+    <div class="sop-reviews-separator"></div>
+
     <div class="sop-reviews-filters">
         <button class="sop-review-filter-btn"><?php echo sprintf( esc_html__( 'Todas las opiniones (%s)', 'sistema-pro' ), '10' ); ?></button>
         <button class="sop-review-filter-btn active"><?php echo sprintf( esc_html__( 'Positivas (%s) ✕', 'sistema-pro' ), '7' ); ?></button>
@@ -37,8 +39,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
     <div class="sop-reviews-grid">
         <?php for($i=0; $i<4; $i++): ?>
-        <div class="sop-review-card">
-            <p class="sop-review-text">Lorem ipsum dolor sit amet consectetur. Amet velit aliquet adipiscing et amet consequat donec. Pharetra et venenatis cras et aliquet senectus. Diam lorem morbi sit commodo.</p>
+        <div class="sop-review-item">
+            <div class="sop-review-card">
+                <p class="sop-review-text">Lorem ipsum dolor sit amet consectetur. Amet velit aliquet adipiscing et amet consequat donec. Pharetra et venenatis cras et aliquet senectus. Diam lorem morbi sit commodo.</p>
+            </div>
             <div class="sop-review-author">
                 <img src="<?php echo esc_url( SOP_URL . 'assets/images/img_review.png' ); ?>" alt="Devon Lane" class="sop-review-avatar">
                 <div>
@@ -48,5 +52,9 @@ if ( ! defined( 'ABSPATH' ) ) {
             </div>
         </div>
         <?php endfor; ?>
+    </div>
+
+    <div class="sop-reviews-footer">
+        <button class="sop-btn-ver-todos"><?php esc_html_e( 'Ver todos', 'sistema-pro' ); ?></button>
     </div>
 </div>

@@ -10,6 +10,8 @@
     margin-bottom: 0;
     border-right: 2px solid #e2e8f0;
     padding-right: 40px;
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
 }
 
 body.sop-is-provider.sop-preview-mode .sop-rrss-card .sop-preview-card-title {

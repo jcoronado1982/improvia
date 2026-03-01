@@ -69,10 +69,13 @@ body:has(.sop-cols-container) .entry-content {
 }
 
 /* 3. Forzar el fondo oscuro general en el body para quitar los bordes blancos */
+
+
+
 body:has(.sop-cols-container),
 html:has(.sop-cols-container) {
-    background-color: #020617 !important;
-    background-image: radial-gradient(circle at top left, #1e293b 0%, #020617 50%) !important;
+    background-color: #020308 !important;
+    background-image: radial-gradient(circle at 50% 50%, rgba(25, 45, 85, 1) 20%, rgba(8, 12, 25, 1) 60%, rgba(2, 3, 8, 1) 85%) !important;
     background-attachment: fixed !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;

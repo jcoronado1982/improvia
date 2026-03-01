@@ -32,20 +32,8 @@ if ( is_user_logged_in() ) {
         <div class="sop-header-left">
             <div class="sop-header-logo">
                 <a href="<?php echo home_url('/home'); ?>">
-                    <?php 
-                    $use_blue_logo = is_page('login') || is_page('registro');
-                    if ( is_user_logged_in() ) {
-                        $user_roles = (array) $user->roles;
-                        if ( in_array('entrenador', $user_roles) || in_array('especialista', $user_roles) ) {
-                            $use_blue_logo = true;
-                        }
-                    }
-                    
-                    if ( $use_blue_logo ) : ?>
-                        <img src="<?php echo esc_url( SOP_URL . 'assets/images/logo_blue.png' ); ?>" alt="IMPROVIA">
-                    <?php else : ?>
-                        <img src="<?php echo esc_url( SOP_URL . 'assets/images/logo_white.png' ); ?>" alt="IMPROVIA">
-                    <?php endif; ?>
+                    <img src="<?php echo esc_url( SOP_URL . 'assets/images/logo_blue.png' ); ?>" alt="IMPROVIA" class="sop-logo-blue">
+                    <img src="<?php echo esc_url( SOP_URL . 'assets/images/logo_white.png' ); ?>" alt="IMPROVIA" class="sop-logo-white">
                 </a>
             </div>
         </div>

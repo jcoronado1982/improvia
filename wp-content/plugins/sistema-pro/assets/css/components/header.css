@@ -1,7 +1,7 @@
 .sop-global-header {
     background: transparent;
     color: var(--sop-color-white);
-    height: 100px;
+    height: 120px;
     font-family: var(--sop-font-main);
     top: 0;
     z-index: 9999;
@@ -34,9 +34,101 @@
 .sop-header-logo img {
     height: 60px;
     width: auto;
-    display: block;
+    display: none;
     padding-top: 40px;
     padding-left: 10px;
+}
+
+/* Default state: Show white logo (for athletes or generic light-on-dark) */
+.sop-header-logo .sop-logo-white {
+    display: block;
+}
+
+/* Login/Register: Show blue logo */
+.sop-login-page .sop-logo-blue,
+.sop-register-page .sop-logo-blue {
+    display: block;
+}
+
+.sop-login-page .sop-logo-white,
+.sop-register-page .sop-logo-white {
+    display: none;
+}
+
+/* Provider Light Theme: Show blue logo */
+body.sop-provider-theme-light .sop-logo-blue {
+    display: block;
+}
+
+body.sop-provider-theme-light .sop-logo-white {
+    display: none;
+}
+
+/* Athlete PERFIL PREVISUALIZACION: White Header + Blue Logo EXCLUSIVELY in profile tab */
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-global-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-logo-blue {
+    display: block !important;
+}
+
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-logo-white {
+    display: none !important;
+}
+
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-global-header .sop-nav-item,
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-global-header .sop-lang-text,
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-global-header .sop-user-pill {
+    color: #1a1e29 !important;
+    border-color: #1a1e29 !important;
+}
+
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-global-header .sop-dropdown-icon {
+    color: #1a1e29 !important;
+}
+
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-global-header .sop-user-pill:hover {
+    background: #1a1e29 !important;
+    color: #ffffff !important;
+}
+
+/* Athlete Profile Preview: Sidebar Styling */
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-col-left {
+    background: transparent !important;
+}
+
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-sidebar-menu {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+}
+
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-menu-item,
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-menu-item span {
+    color: #092189 !important;
+    opacity: 1 !important;
+}
+
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-menu-item:hover,
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-menu-item.active {
+    opacity: 1;
+    color: #092189 !important;
+}
+
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-menu-icon {
+    filter: brightness(0) saturate(100%) invert(11%) sepia(86%) saturate(6011%) hue-rotate(229deg) brightness(85%) contrast(106%) !important;
+}
+
+/* Provider Preview Mode / Detail Page: Force white logo (Default for Athletes too elsewhere) */
+body.sop-preview-mode:not(.sop-profile-page) .sop-logo-white,
+body.sop-preview-mode:not(.sop-is-atleta) .sop-logo-white {
+    display: block !important;
+}
+
+body.sop-preview-mode:not(.sop-profile-page) .sop-logo-blue,
+body.sop-preview-mode:not(.sop-is-atleta) .sop-logo-blue {
+    display: none !important;
 }
 
 .sop-header-right {
@@ -44,7 +136,7 @@
     grid-template-rows: 50px auto;
     justify-items: end;
     gap: 0px;
-    height: 100px;
+    height: 120px;
 }
 
 /* TOP BAR: Language Selector */

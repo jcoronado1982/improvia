@@ -5,17 +5,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 20px;
 }
 
 .sop-td-results {
     display: flex;
     align-items: center;
     gap: 15px;
+    font-weight: bold;
     color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9rem;
+    font-size: 1.125rem;
 }
 
 .sop-td-filters {
@@ -26,15 +27,19 @@
 }
 
 .sop-td-filter-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.7);
-    padding: 8px 18px;
-    border-radius: 8px;
+    background: transparent;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    padding: 10px 22px;
+    border-radius: 50px;
     font-family: var(--sop-font-main);
-    font-size: 0.82rem;
+    font-size: 1.125rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
 }
 
 .sop-td-filter-btn:hover {
@@ -43,29 +48,41 @@
 }
 
 .sop-td-fav-btn {
-    background: rgba(255, 184, 0, 0.1);
-    border-color: rgba(255, 184, 0, 0.3);
-    color: #ffb800;
+    background: linear-gradient(#0d121c, #0d121c) padding-box,
+        linear-gradient(135deg, #669DED 0%, #406AC4 20%, #092189 40%, #5889DD 70%, #092189 100%) border-box;
+    border: 1.5px solid transparent;
+    color: #ffffff;
+}
+
+.sop-td-fav-icon {
+    width: 20px;
+    height: auto;
 }
 
 .sop-td-search {
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    padding: 8px 18px;
-    border-radius: 8px;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.82rem;
+    gap: 10px;
+    background: transparent;
+    border: 1px solid #ffffff;
+    padding: 10px 22px;
+    border-radius: 50px;
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+.sop-td-search-icon {
+    width: 18px;
+    height: auto;
+    opacity: 0.8;
 }
 
 /* === TRAINER GRID === */
 .sop-trainer-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(360px, 31.6%));
+    grid-template-columns: repeat(auto-fit, minmax(360px, 32.5%));
     justify-content: start;
-    gap: 30px;
+    gap: 15px;
     padding: 0px;
 }
 
@@ -80,6 +97,14 @@
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+.sop-tc-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .sop-trainer-card:hover {
@@ -99,7 +124,7 @@
 
 .sop-tc-image-wrapper {
     position: relative;
-    width: 45%;
+    width: 200px;
     /* 40% of the header width */
     flex-shrink: 0;
     aspect-ratio: 1 / 1;
@@ -115,7 +140,7 @@
 
 .sop-tc-icon-btn {
     position: absolute;
-    top: -5px;
+    top: 10px;
     left: 10px;
     background: #ffffff;
     border: none;
@@ -131,13 +156,17 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+.sop-tc-rayo-img {
+    width: 18px;
+    height: 18px;
+}
+
 .sop-tc-header-right {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
     gap: 15px;
-    width: 55%;
-    /* 60% of the header width */
+    flex: 1;
 }
 
 .sop-tc-header-top-row {
@@ -145,17 +174,27 @@
     align-items: center;
     gap: 10px;
     width: 100%;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
 .sop-tc-menu-btn {
     background: none;
     border: none;
-    color: #ffffff;
-    font-size: 1.2rem;
     cursor: pointer;
-    line-height: 1;
-    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sop-tc-more-img {
+    height: 24px;
+    width: auto;
+}
+
+.sop-tc-menu-btn:hover {
+    opacity: 0.7;
 }
 
 .sop-tc-badges {
@@ -165,8 +204,6 @@
     gap: 12px;
     width: 100%;
     /* Take full width of right column, left-aligned internally */
-    padding-left: 10px;
-    /* Slight indent from center line */
 }
 
 .sop-tc-rating {
@@ -176,14 +213,20 @@
 }
 
 .sop-stars-sm {
-    color: #ffb800;
-    font-size: 0.8rem;
+    color: #F59E0B;
+    font-size: 1rem;
     letter-spacing: 2px;
 }
 
 .sop-tc-rating-count {
     color: rgba(255, 255, 255, 0.8);
-    font-size: 0.8rem;
+    font-size: 1rem;
+}
+
+.sop-tc-flag-img {
+    height: 1.2rem;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .sop-tc-badge-row {
@@ -194,7 +237,7 @@
 
 .sop-tc-badge-label {
     color: rgba(255, 255, 255, 0.6);
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 .sop-tc-badge-box {
@@ -203,7 +246,7 @@
     color: #ffffff;
     padding: 3px 10px;
     border-radius: 4px;
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-weight: 400;
     display: inline-block;
     width: fit-content;
@@ -217,7 +260,7 @@
 
 .sop-tc-name {
     font-family: var(--sop-font-main);
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: #ffffff;
     margin: 0 0 2px 0;
@@ -226,8 +269,8 @@
 
 .sop-tc-role {
     display: block;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.125rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 12px;
@@ -235,7 +278,7 @@
 
 .sop-tc-desc {
     color: rgba(255, 255, 255, 0.45);
-    font-size: 0.9rem;
+    font-size: 1.125rem;
     line-height: 1.5;
     margin: 0 0 20px 0;
 }
@@ -244,14 +287,18 @@
 .sop-tc-tags-row {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 15px;
     margin-bottom: 12px;
     flex-wrap: wrap;
 }
 
 .sop-tc-tag-label {
     color: rgba(255, 255, 255, 0.6);
-    font-size: 0.75rem;
+    font-size: 1rem;
+}
+
+.sop-tc-tag-spacer {
+    margin-left: 15px;
 }
 
 .sop-tc-tag-val {
@@ -260,8 +307,14 @@
     color: #ffffff;
     padding: 2px 8px;
     border-radius: 4px;
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-weight: 500;
+}
+
+.sop-tc-tag-nivel {
+    border-color: #00f0ff;
+    /* Teal/Cyan border per design */
+    color: #ffffff;
 }
 
 .sop-tc-tag-cupos {
@@ -281,24 +334,25 @@
 .sop-tc-focus-label {
     display: block;
     color: rgba(255, 255, 255, 0.6);
-    font-size: 0.75rem;
+    font-size: 1rem;
     margin-bottom: 10px;
 }
 
 .sop-tc-focus-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
     align-items: center;
 }
 
 .sop-tc-focus-tag {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.7);
+    background: linear-gradient(#0d121c, #0d121c) padding-box,
+        linear-gradient(135deg, #669DED 0%, #406AC4 20%, #092189 40%, #5889DD 70%, #092189 100%) border-box;
+    border: 1.5px solid transparent;
+    color: #ffffff;
     padding: 4px 12px;
     border-radius: 50px;
-    font-size: 0.75rem;
+    font-size: 1rem;
     transition: all 0.3s ease;
 }
 
@@ -331,23 +385,28 @@
 
 .sop-tc-desde {
     color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9rem;
+    font-size: 1.125rem;
 }
 
 .sop-tc-price-pill {
-    background: transparent;
-    border: 1px solid #891b22;
+    border: 1px solid #DB4446;
     /* Red accent */
     color: #ffffff;
-    padding: 6px 20px;
+    padding: 3px 40px;
     border-radius: 50px;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
+.sop-tc-price-suffix {
+    font-size: 1rem;
+    opacity: 0.6;
+    color: #ffffff;
+}
+
 .sop-tc-price-pill strong {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: #ffffff;
 }
 
@@ -361,7 +420,7 @@
 .sop-tc-pricing-card {
     justify-content: center;
     align-items: center;
-    padding: 40px;
+    padding: 60px 50px 50px 50px;
     gap: 35px;
     background: #070d19;
     /* Extremely dark background */
@@ -382,7 +441,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
     /* Gap between blue box and the text below */
 }
 
@@ -395,7 +454,8 @@
     border-radius: 8px;
     /* Full rounded corners on all sides */
     padding: 30px 10px;
-    width: 100%;
+    width: 140px;
+    height: 140px;
     box-sizing: border-box;
     text-align: center;
     display: flex;
@@ -405,17 +465,16 @@
 
 .sop-tc-price-amount {
     color: #ffffff;
-    font-size: 2.2rem;
-    /* Larger, thinner prices */
-    font-weight: 300;
+    font-size: 2.5rem;
+    font-weight: 400;
 }
 
 .sop-tc-price-period {
     color: #ffffff;
-    /* Solid white period text */
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: 300;
-    text-transform: capitalize;
+    margin-top: 5px;
+    display: block;
 }
 
 .sop-tc-pricing-actions {
@@ -424,16 +483,15 @@
     gap: 15px;
     /* More gap between buttons */
     width: 100%;
-    margin-top: 5px;
+    margin-top: 40px;
 }
 
 .sop-tc-action-btn {
-    width: 100%;
     padding: 16px 20px;
     border-radius: 50px;
     /* Fully rounded buttons */
     font-family: var(--sop-font-main);
-    font-size: 1rem;
+    font-size: 1.125rem;
     font-weight: 400;
     /* Thinner font */
     cursor: pointer;
@@ -441,7 +499,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 15px;
+    text-decoration: none;
+}
+
+.sop-tc-btn-icon {
+    width: 24px;
+    height: 24px;
 }
 
 .sop-tc-action-fav {
@@ -456,10 +520,10 @@
 }
 
 .sop-tc-action-ver {
-    background: #0a219e;
+    background: #092189;
     /* Solid royal blue background */
-    border: 1px solid #0a219e;
     color: #ffffff;
+    font-size: 1.125rem;
     /* White text */
 }
 

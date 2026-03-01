@@ -96,6 +96,16 @@ body.sop-is-provider.sop-preview-mode .sop-bar-track {
     flex-wrap: wrap;
 }
 
+.sop-reviews-separator {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 30px 0;
+}
+
+body.sop-is-provider.sop-preview-mode .sop-reviews-separator {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 .sop-review-filter-btn {
     background: transparent;
     border: 1px solid #092189;
@@ -120,6 +130,12 @@ body.sop-is-provider.sop-preview-mode .sop-review-filter-btn {
     border-color: #092189;
 }
 
+body.sop-is-provider.sop-preview-mode .sop-review-filter-btn.active {
+    background: #ffffff;
+    color: #1a1e29;
+    border-color: #ffffff;
+}
+
 /* Review Cards Grid */
 .sop-reviews-grid {
     display: grid;
@@ -127,33 +143,47 @@ body.sop-is-provider.sop-preview-mode .sop-review-filter-btn {
     gap: 24px;
 }
 
+.sop-review-item {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
 .sop-review-card {
     background: #f8f9fb;
     border-radius: 12px;
     padding: 24px;
     border: 1px solid #e2e8f0;
+    margin-bottom: 0;
+    /* Removing bottom margin, using gap in parent */
 }
 
 body.sop-is-provider.sop-preview-mode .sop-review-card {
-    background: rgba(255, 255, 255, 0.03) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    /* Darker, solid color like the photo */
+    border: none !important;
+    /* Removing border in preview mode */
 }
 
 .sop-review-card .sop-review-text {
     color: #4a5568;
-    font-size: 0.9rem;
-    line-height: 1.7;
-    margin: 0 0 20px 0;
+    font-size: 1rem;
+    /* Slightly larger like the photo */
+    line-height: 1.6;
+    margin: 0;
 }
 
 body.sop-is-provider.sop-preview-mode .sop-review-card .sop-review-text {
-    color: rgba(255, 255, 255, 0.7);
+    color: #ffffff;
+    /* Brighter white for text in dark mode */
 }
 
 .sop-review-author {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
+    padding-left: 10px;
+    /* Slight alignment with the box */
 }
 
 .sop-review-avatar {
@@ -181,4 +211,39 @@ body.sop-is-provider.sop-preview-mode .sop-review-author strong {
 
 body.sop-is-provider.sop-preview-mode .sop-review-author span {
     color: rgba(255, 255, 255, 0.5);
+}
+
+/* Reviews Footer: Ver todos button */
+.sop-reviews-footer {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.sop-btn-ver-todos {
+    background: transparent;
+    border: 1px solid #092189;
+    color: #092189;
+    padding: 12px 0;
+    width: 100%;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+body.sop-is-provider.sop-preview-mode .sop-btn-ver-todos {
+    border: 1px solid #ffffff;
+    color: #ffffff;
+}
+
+.sop-btn-ver-todos:hover {
+    background: #092189;
+    color: #ffffff;
+}
+
+body.sop-is-provider.sop-preview-mode .sop-btn-ver-todos:hover {
+    background: #ffffff;
+    color: #1a1e29;
 }

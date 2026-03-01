@@ -132,7 +132,7 @@
                     </div>
 
                     <?php if ( $is_provider ) : ?>
-                        <p class="sop-preview-result-time"><img src="<?php echo esc_url( SOP_URL . 'assets/images/ray.png' ); ?>" alt="⚡" style="width:18px; height:18px; vertical-align:middle; margin-right:6px;"> <?php esc_html_e( 'Resultados en 2 dias', 'sistema-pro' ); ?></p>
+                        <p class="sop-preview-result-time"><img src="<?php echo esc_url( SOP_URL . 'assets/images/ray.png' ); ?>" alt="⚡" style="width:18px; height:18px; vertical-align:middle; margin-right:6px;"> <?php esc_html_e( 'Resultados en 2 días', 'sistema-pro' ); ?></p>
                     <?php endif; ?>
                 </div>
             </div>
@@ -151,48 +151,55 @@
             $fases_ofensivas_ids  = get_user_meta( $current_user->ID, 'sop_fase_ofensiva_ids', true ) ?: array();
             $fases_defensivas_ids = get_user_meta( $current_user->ID, 'sop_fase_defensiva_ids', true ) ?: array();
             ?>
-            <!-- Provider: Description below header -->
-            <div class="sop-preview-card sop-full-width">
-                <h3 class="sop-preview-card-title"><?php esc_html_e( 'DESCRIPCION PROFESIONAL', 'sistema-pro' ); ?></h3>
-                <div class="sop-preview-text"><?php echo wp_kses_post( $perfil_desc ); ?></div>
+            <!-- Provider: Description free text -->
+            <div class="sop-preview-description-free">
+                <?php echo wp_kses_post( $perfil_desc ); ?>
             </div>
 
             <!-- Provider: BACKGROUND -->
             <div class="sop-preview-card sop-full-width">
-                <h3 class="sop-preview-card-title"><?php esc_html_e( 'BACKGROUND', 'sistema-pro' ); ?></h3>
+                <h3 class="sop-preview-card-title"><?php esc_html_e( 'EDUCACIÓN', 'sistema-pro' ); ?></h3>
                 <div class="sop-preview-bg-grid">
                     <div>
                         <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'Experiencia', 'sistema-pro' ); ?></h4>
-                        <ul class="sop-preview-bg-list">
+                        <div class="sop-preview-bg-text-wrapper">
                             <?php if ( $ocupacion_term && ! is_wp_error( $ocupacion_term ) ) : ?>
-                                <li><?php echo esc_html( $ocupacion_term->name ); ?></li>
+                                <div class="sop-preview-bg-text-item"><?php echo esc_html( $ocupacion_term->name ); ?></div>
                             <?php endif; ?>
                             <?php if ( $experiencia_term && ! is_wp_error( $experiencia_term ) ) : ?>
-                                <li><?php echo esc_html( $experiencia_term->name ); ?></li>
+                                <div class="sop-preview-bg-text-item"><?php echo esc_html( $experiencia_term->name ); ?></div>
                             <?php endif; ?>
                             <?php if ( empty( $ocupacion_term ) && empty( $experiencia_term ) ) : ?>
-                                <li class="sop-empty-state"><?php esc_html_e( 'Sin datos registrados', 'sistema-pro' ); ?></li>
+                                <div class="sop-empty-state"><?php esc_html_e( 'Sin datos registrados', 'sistema-pro' ); ?></div>
                             <?php endif; ?>
-                        </ul>
+                        </div>
                     </div>
                     <div>
-                        <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'Formación Reglada', 'sistema-pro' ); ?></h4>
-                        <ul class="sop-preview-bg-list">
+                        <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'License', 'sistema-pro' ); ?></h4>
+                        <div class="sop-preview-bg-text-wrapper">
                             <?php if ( ! empty( $formacion_data ) ) : ?>
-                                <?php foreach ( $formacion_data as $f ) : ?>
-                                    <li><?php echo esc_html( ( $f['cert_name'] ?? '' ) . ' — ' . ( $f['instituto_name'] ?? '' ) ); ?></li>
+                                <?php foreach ( $formacion_data as $f ) : 
+                                    $cert_name = !empty($f['cert_name']) ? esc_html($f['cert_name']) : '';
+                                    $inst_name = !empty($f['instituto_name']) ? esc_html($f['instituto_name']) : '';
+                                    $display_text = trim(($cert_name ? $cert_name : '') . ($cert_name && $inst_name ? ' — ' : '') . ($inst_name ? $inst_name : ''));
+                                ?>
+                                    <div class="sop-preview-bg-text-item"><?php echo $display_text; ?></div>
                                 <?php endforeach; ?>
                             <?php else : ?>
-                                <li class="sop-empty-state"><?php esc_html_e( 'Sin datos registrados', 'sistema-pro' ); ?></li>
+                                <div class="sop-empty-state"><?php esc_html_e( 'Sin datos registrados', 'sistema-pro' ); ?></div>
                             <?php endif; ?>
-                        </ul>
+                        </div>
                     </div>
                     <div>
-                        <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'Certificaciones', 'sistema-pro' ); ?></h4>
+                        <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'Otros estudios', 'sistema-pro' ); ?></h4>
                         <ul class="sop-preview-bg-list">
                             <?php if ( ! empty( $estudios_data ) ) : ?>
-                                <?php foreach ( $estudios_data as $e ) : ?>
-                                    <li><?php echo esc_html( ( $e['cert_name'] ?? '' ) . ' — ' . ( $e['instituto_name'] ?? '' ) ); ?></li>
+                                <?php foreach ( $estudios_data as $e ) : 
+                                    $cert_name = !empty($e['cert_name']) ? esc_html($e['cert_name']) : '';
+                                    $inst_name = !empty($e['instituto_name']) ? esc_html($e['instituto_name']) : '';
+                                    $display_text = trim(($cert_name ? $cert_name : '') . ($cert_name && $inst_name ? ' — ' : '') . ($inst_name ? $inst_name : ''));
+                                ?>
+                                    <li><?php echo $display_text; ?></li>
                                 <?php endforeach; ?>
                             <?php else : ?>
                                 <li class="sop-empty-state"><?php esc_html_e( 'Sin datos registrados', 'sistema-pro' ); ?></li>
@@ -222,32 +229,40 @@
                         </div>
                     </div>
                     <div>
-                        <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'Fase Ofensiva', 'sistema-pro' ); ?></h4>
-                        <div class="sop-comp-tags">
-                            <?php if ( ! empty( $fases_ofensivas_ids ) ) : ?>
-                                <?php foreach ( $fases_ofensivas_ids as $foid ) :
-                                    $term = get_term( $foid );
-                                    if ( $term && ! is_wp_error( $term ) ) : ?>
-                                        <span class="sop-comp-tag"><?php echo esc_html( $term->name ); ?></span>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            <?php else : ?>
-                                <span class="sop-comp-tag sop-empty-state"><?php esc_html_e( 'Sin fases seleccionadas', 'sistema-pro' ); ?></span>
-                            <?php endif; ?>
+                        <h4 class="sop-preview-bg-subtitle"><?php esc_html_e( 'Fases de juego a dominar', 'sistema-pro' ); ?></h4>
+                        
+                        <div class="sop-preview-phase-section">
+                            <h5 class="sop-preview-phase-subtitle"><?php esc_html_e( 'Fase Ofensiva', 'sistema-pro' ); ?></h5>
+                            <div class="sop-comp-tags">
+                                <?php if ( ! empty( $fases_ofensivas_ids ) ) : ?>
+                                    <?php foreach ( $fases_ofensivas_ids as $foid ) :
+                                        $term = get_term( $foid );
+                                        if ( $term && ! is_wp_error( $term ) ) : ?>
+                                            <span class="sop-comp-tag"><?php echo esc_html( $term->name ); ?></span>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <span class="sop-comp-tag sop-empty-state"><?php esc_html_e( 'Sin fases seleccionadas', 'sistema-pro' ); ?></span>
+                                <?php endif; ?>
+                            </div>
                         </div>
 
-                        <h4 class="sop-preview-bg-subtitle" style="margin-top: 20px;"><?php esc_html_e( 'Fase Defensiva', 'sistema-pro' ); ?></h4>
-                        <div class="sop-comp-tags">
-                            <?php if ( ! empty( $fases_defensivas_ids ) ) : ?>
-                                <?php foreach ( $fases_defensivas_ids as $fdid ) :
-                                    $term = get_term( $fdid );
-                                    if ( $term && ! is_wp_error( $term ) ) : ?>
-                                        <span class="sop-comp-tag"><?php echo esc_html( $term->name ); ?></span>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            <?php else : ?>
-                                <span class="sop-comp-tag sop-empty-state"><?php esc_html_e( 'Sin fases seleccionadas', 'sistema-pro' ); ?></span>
-                            <?php endif; ?>
+                        <div class="sop-preview-phase-separator"></div>
+
+                        <div class="sop-preview-phase-section">
+                            <h5 class="sop-preview-phase-subtitle"><?php esc_html_e( 'Fase Defensiva', 'sistema-pro' ); ?></h5>
+                            <div class="sop-comp-tags">
+                                <?php if ( ! empty( $fases_defensivas_ids ) ) : ?>
+                                    <?php foreach ( $fases_defensivas_ids as $fdid ) :
+                                        $term = get_term( $fdid );
+                                        if ( $term && ! is_wp_error( $term ) ) : ?>
+                                            <span class="sop-comp-tag"><?php echo esc_html( $term->name ); ?></span>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <span class="sop-comp-tag sop-empty-state"><?php esc_html_e( 'Sin fases seleccionadas', 'sistema-pro' ); ?></span>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -257,11 +272,11 @@
             <!-- Non-Provider: Original Sections -->
             <div class="sop-preview-content-grid">
                 <div class="sop-preview-card">
-                    <h3 class="sop-preview-card-title"><?php esc_html_e( 'QUIEN SOY', 'sistema-pro' ); ?></h3>
+                    <h3 class="sop-preview-card-title"><?php esc_html_e( 'QUIÉN SOY', 'sistema-pro' ); ?></h3>
                     <div class="sop-preview-text"><?php echo wp_kses_post( $perfil_desc ); ?></div>
                 </div>
                 <div class="sop-preview-card">
-                    <h3 class="sop-preview-card-title"><?php esc_html_e( 'MI COMPOSICION', 'sistema-pro' ); ?></h3>
+                    <h3 class="sop-preview-card-title"><?php esc_html_e( 'MI COMPOSICIÓN', 'sistema-pro' ); ?></h3>
                     <div class="sop-comp-tags">
                         <?php if ( ! empty( $pierna ) ) : ?>
                             <span class="sop-comp-tag"><?php esc_html_e( 'Pierna dominante', 'sistema-pro' ); ?> / <?php echo esc_html( $pierna ); ?></span>
@@ -295,7 +310,7 @@
             </div>
 
             <div class="sop-preview-card sop-full-width">
-                <h3 class="sop-preview-card-title"><?php esc_html_e( 'REPORTE MEDICO / ESPECIALISTA', 'sistema-pro' ); ?></h3>
+                <h3 class="sop-preview-card-title"><?php esc_html_e( 'REPORTE MÉDICO / ESPECIALISTA', 'sistema-pro' ); ?></h3>
                 <p class="sop-preview-text">Lorem ipsum dolor sit amet consectetur. Pretium at libero fermentum in vulputate. Viverra cum non ultricies tempor arcu in accumsan eu. Fringilla ut nulla neque leo phasellus tellus...</p>
             </div>
             <?php endif; ?>

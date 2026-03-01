@@ -25,7 +25,6 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tabs-container {
 /* 2. Global Header Overrides for Light Mode */
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-global-header {
     background-color: #ffffff !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-global-header * {

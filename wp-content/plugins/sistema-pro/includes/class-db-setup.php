@@ -284,7 +284,7 @@ class SOP_DB_Setup {
             ),
             'Especialistas' => array(
                 'slug'    => 'especialistas',
-                'content' => '[sop_layout][sop_lista_entrenadores role="especialista"][/sop_layout]'
+                'content' => '[sop_layout][sop_lista_especialistas][/sop_layout]'
             ),
             'QA' => array(
                 'slug'    => 'qa',

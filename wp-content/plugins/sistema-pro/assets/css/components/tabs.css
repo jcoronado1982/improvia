@@ -424,6 +424,33 @@
     margin-bottom: 15px;
 }
 
+/* ====================================================================
+   ATHLETE PREVIEW TAB OVERRIDES (Outline Style - Image Reference)
+   ==================================================================== */
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-tab-btn {
+    background: transparent !important;
+    color: #092189 !important;
+    border: 1px solid #092189 !important;
+    box-shadow: none !important;
+}
+
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-tab-btn img {
+    /* Blue icon for outline tabs */
+    filter: brightness(0) saturate(100%) invert(11%) sepia(86%) saturate(6011%) hue-rotate(229deg) brightness(85%) contrast(106%) !important;
+}
+
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-tab-btn.active {
+    background: #092189 !important;
+    color: #ffffff !important;
+    border-color: #092189 !important;
+    box-shadow: 0 4px 15px rgba(9, 33, 137, 0.2) !important;
+}
+
+body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-tab-btn.active img {
+    /* White icon for solid active tab */
+    filter: brightness(0) invert(1) !important;
+}
+
 /* ========================================
    PROVIDER LIGHT THEME OVERRIDES
    ======================================== */

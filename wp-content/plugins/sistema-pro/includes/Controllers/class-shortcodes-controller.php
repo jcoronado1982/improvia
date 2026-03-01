@@ -11,6 +11,7 @@ class SOP_Shortcodes_Controller {
         add_shortcode( 'sop_menu_lateral', array( $this, 'render_sidebar_menu' ) );
         add_shortcode( 'sop_hero_landing', array( $this, 'render_hero_landing' ) );
         add_shortcode( 'sop_lista_entrenadores', array( $this, 'render_trainer_list' ) );
+        add_shortcode( 'sop_lista_especialistas', array( $this, 'render_specialist_list' ) );
         add_shortcode( 'sop_mock_checkout', array( $this, 'render_mock_checkout' ) );
         add_shortcode( 'sop_detalle_entrenador', array( $this, 'render_trainer_detail' ) );
         add_shortcode( 'sop_suscripciones', array( $this, 'render_subscriptions' ) );
@@ -40,7 +41,7 @@ class SOP_Shortcodes_Controller {
         );
 
         ob_start();
-        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-sidebar-menu.php';
+        $view_path = SOP_PATH . 'includes/Views/view-sidebar-menu.php';
         if ( file_exists( $view_path ) ) {
             require $view_path;
         } else {
@@ -57,7 +58,7 @@ class SOP_Shortcodes_Controller {
         
         ob_start();
         
-        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-profile-tabs.php';
+        $view_path = SOP_PATH . 'includes/Views/view-profile-tabs.php';
         if ( file_exists( $view_path ) ) {
             require $view_path;
         } else {
@@ -75,7 +76,7 @@ class SOP_Shortcodes_Controller {
         $menu = $this->render_sidebar_menu();
         
         ob_start();
-        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-generic-layout.php';
+        $view_path = SOP_PATH . 'includes/Views/view-generic-layout.php';
         if ( file_exists( $view_path ) ) {
             require $view_path;
         } else {
@@ -141,7 +142,7 @@ class SOP_Shortcodes_Controller {
         ob_start();
         
         // Pass the $trainers variable to the view
-        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-trainer-directory.php';
+        $view_path = SOP_PATH . 'includes/Views/view-trainer-directory.php';
         if ( file_exists( $view_path ) ) {
             require $view_path;
         } else {
@@ -152,11 +153,61 @@ class SOP_Shortcodes_Controller {
     }
 
     /**
+     * Renderiza la lista de especialistas (copia de la lógica de entrenadores)
+     */
+    public function render_specialist_list( $atts ) {
+        $atts = shortcode_atts( array(
+            'role' => 'entrenador', // Placeholder: Use trainers until specialists are registered
+        ), $atts, 'sop_lista_especialistas' );
+
+        $role = sanitize_text_field( $atts['role'] );
+
+        // Paginación
+        $current_page = isset($_GET['pag']) ? max(1, intval($_GET['pag'])) : 1;
+        $per_page     = 8;
+        $offset       = ($current_page - 1) * $per_page;
+
+        // Meta Query: Debe tener al menos un precio configurado
+        $meta_query = array( 'relation' => 'OR' );
+        $price_fields = array(
+            'sop_precio_semanal', 'sop_precio_mensual', 'sop_precio_trimestral', 'sop_precio_anual',
+            'sop_precio_sesiones_1', 'sop_precio_sesiones_2', 'sop_precio_sesiones_3',
+            'sop_precio_sesiones_4', 'sop_precio_sesiones_5', 'sop_precio_sesiones_6'
+        );
+        foreach ( $price_fields as $field ) {
+            $meta_query[] = array( 'key' => $field, 'value' => 0, 'compare' => '>', 'type' => 'NUMERIC' );
+        }
+
+        // Conteo total
+        $count_args = array( 'role' => $role, 'meta_query' => $meta_query, 'count_total' => true, 'fields' => 'ID' );
+        $user_query = new WP_User_Query( $count_args );
+        $total_trainers = $user_query->get_total();
+        $total_pages    = ceil($total_trainers / $per_page);
+
+        // Fetch de usuarios
+        $trainers = get_users( array( 
+            'role'       => $role,
+            'number'     => $per_page,
+            'offset'     => $offset,
+            'meta_query' => $meta_query
+        ) );
+        
+        ob_start();
+        $view_path = SOP_PATH . 'includes/Views/view-specialist-directory.php';
+        if ( file_exists( $view_path ) ) {
+            require $view_path;
+        } else {
+            echo '<p>Error: View file not found.</p>';
+        }
+        return ob_get_clean();
+    }
+
+    /**
      * Renderiza el contenido dinámico del Hero en la Landing
      */
     public function render_hero_landing() {
         ob_start();
-        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-hero-landing.php';
+        $view_path = SOP_PATH . 'includes/Views/view-hero-landing.php';
         if ( file_exists( $view_path ) ) {
             require $view_path;
         } else {
@@ -170,7 +221,7 @@ class SOP_Shortcodes_Controller {
      */
     public function render_mock_checkout() {
         ob_start();
-        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-mock-checkout.php';
+        $view_path = SOP_PATH . 'includes/Views/view-mock-checkout.php';
         if ( file_exists( $view_path ) ) {
             require $view_path;
         } else {
@@ -184,7 +235,7 @@ class SOP_Shortcodes_Controller {
      */
     public function render_trainer_detail() {
         ob_start();
-        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-trainer-detail.php';
+        $view_path = SOP_PATH . 'includes/Views/view-trainer-detail.php';
         if ( file_exists( $view_path ) ) {
             require $view_path;
         } else {
@@ -198,7 +249,7 @@ class SOP_Shortcodes_Controller {
      */
     public function render_subscriptions() {
         ob_start();
-        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-subscriptions.php';
+        $view_path = SOP_PATH . 'includes/Views/view-subscriptions.php';
         if ( file_exists( $view_path ) ) {
             require $view_path;
         } else {
@@ -212,7 +263,7 @@ class SOP_Shortcodes_Controller {
      */
     public function render_solicitudes() {
         ob_start();
-        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-solicitudes.php';
+        $view_path = SOP_PATH . 'includes/Views/view-solicitudes.php';
         if ( file_exists( $view_path ) ) {
             require $view_path;
         } else {
@@ -226,7 +277,7 @@ class SOP_Shortcodes_Controller {
      */
     public function render_messaging() {
         ob_start();
-        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-messaging.php';
+        $view_path = SOP_PATH . 'includes/Views/view-messaging.php';
         if ( file_exists( $view_path ) ) {
             require $view_path;
         } else {
@@ -240,7 +291,7 @@ class SOP_Shortcodes_Controller {
      */
     public function render_qa() {
         ob_start();
-        $view_path = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'includes/Views/view-qa.php';
+        $view_path = SOP_PATH . 'includes/Views/view-qa.php';
         if ( file_exists( $view_path ) ) {
             require $view_path;
         } else {
