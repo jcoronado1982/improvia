@@ -6,7 +6,7 @@
     padding: 24px 40px;
 }
 
-.sop-rrss-card .sop-preview-card-title {
+body.sop-preview-mode .sop-rrss-card .sop-preview-card-title {
     margin-bottom: 0;
     border-right: 2px solid #e2e8f0;
     padding-right: 40px;
