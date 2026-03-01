@@ -107,12 +107,12 @@ body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-sidebar-menu {
 body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-menu-item,
 body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-menu-item span {
     color: #092189 !important;
-    opacity: 1 !important;
+    opacity: 0.5 !important;
 }
 
 body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-menu-item:hover,
 body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-menu-item.active {
-    opacity: 1;
+    opacity: 1 !important;
     color: #092189 !important;
 }
 
@@ -261,7 +261,7 @@ body.sop-preview-mode:not(.sop-is-atleta) .sop-logo-blue {
 }
 
 .sop-menu-item {
-    margin-bottom: 20px !important;
+    margin-bottom: 30px !important;
     display: flex !important;
     align-items: center !important;
     gap: 10px !important;
