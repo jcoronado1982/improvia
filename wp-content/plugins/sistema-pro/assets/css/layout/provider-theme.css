@@ -73,16 +73,16 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-item:hover {
     opacity: 1 !important;
 }
 
-/* Remove box styles from active state */
+/* Remove box styles from active state and fix indentation/sangria */
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-item.active {
     border-left: none !important;
     background: transparent !important;
     box-shadow: none !important;
-    padding-left: 30px !important;
+    padding-left: 0 !important;
 }
 
 /* Colorize sidebar icons */
-/* Inactive icons: use color via filter but let parent opacity handle the "disabled" look */
+/* Inactive icons: use color via filter but let parent opacity handle the look */
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-icon {
     filter: brightness(0) saturate(100%) invert(13%) sepia(85%) saturate(3736%) hue-rotate(224deg) brightness(96%) contrast(101%) !important;
     opacity: 1 !important;

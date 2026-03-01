@@ -274,7 +274,6 @@ body.sop-preview-mode:not(.sop-is-atleta) .sop-logo-blue {
 
 .sop-menu-item:hover {
     opacity: 1;
-    transform: translateX(5px);
 }
 
 .sop-menu-item.active {
