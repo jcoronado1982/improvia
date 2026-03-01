@@ -93,7 +93,7 @@ body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-preview-image-card {
 /* Header Section (Profile Image & Info) */
 .sop-preview-header {
     display: grid;
-    grid-template-columns: 0.35fr .65fr;
+    grid-template-columns: 320px 1fr;
     align-items: start;
     background: transparent !important;
     padding: 0 !important;
