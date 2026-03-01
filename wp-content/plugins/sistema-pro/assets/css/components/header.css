@@ -281,6 +281,7 @@ body.sop-preview-mode:not(.sop-is-atleta) .sop-logo-blue {
 }
 
 .sop-menu-icon {
+    filter: brightness(0) invert(1);
     width: 24px;
     height: 24px;
     object-fit: contain;
