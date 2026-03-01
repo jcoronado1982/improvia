@@ -52,11 +52,11 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-sidebar-menu {
     box-shadow: 2px 0 15px rgba(0, 0, 0, 0.03);
 }
 
-/* Inactive items: soft gray-blue, reset opacity from sidebar.css's 0.5 value */
+/* Inactive items: use primary navy but with opacity for consistency */
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-item {
-    color: #b0c1c8 !important;
+    color: #092189 !important;
+    opacity: 0.5 !important;
     font-weight: 400 !important;
-    opacity: 1 !important;
 }
 
 /* Force the span to inherit parent color instead of using its own white */
@@ -82,10 +82,10 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-item.active {
 }
 
 /* Colorize sidebar icons */
-/* Inactive icons light gray */
+/* Inactive icons: use color via filter but let parent opacity handle the "disabled" look */
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-icon {
-    filter: brightness(0) saturate(100%) invert(85%) sepia(8%) saturate(350%) hue-rotate(145deg) brightness(85%) contrast(85%) !important;
-    opacity: 0.8 !important;
+    filter: brightness(0) saturate(100%) invert(13%) sepia(85%) saturate(3736%) hue-rotate(224deg) brightness(96%) contrast(101%) !important;
+    opacity: 1 !important;
 }
 
 /* Active icons exact Navy Blue #092189 */
