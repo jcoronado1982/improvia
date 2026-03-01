@@ -135,7 +135,6 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-form-box,
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-settings-section,
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-card,
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-panel,
-body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-split,
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-section {
     background: #ffffff !important;
     border: none !important;

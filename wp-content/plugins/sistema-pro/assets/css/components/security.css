@@ -1,6 +1,6 @@
 /* ACCOUNT SECURITY COMPONENTS */
 .sop-security-section {
-    background: #212849;
+    background-color: rgba(255, 255, 255, 0.08);
     border-radius: var(--sop-radius-lg);
     padding: 30px;
     margin-bottom: 20px;
@@ -16,6 +16,7 @@
     text-transform: uppercase;
     color: var(--sop-color-white);
     margin-bottom: 15px;
+    margin-top: 0px;
 }
 
 .sop-security-box {

@@ -75,7 +75,18 @@ body:has(.sop-cols-container) .entry-content {
 body:has(.sop-cols-container),
 html:has(.sop-cols-container) {
     background-color: #020308 !important;
-    background-image: radial-gradient(circle at 50% 50%, rgba(25, 45, 85, 1) 20%, rgba(8, 12, 25, 1) 60%, rgba(2, 3, 8, 1) 85%) !important;
+
+    /* Centramos la luz al 50% (medio) y bajamos un poco el centro al 15% */
+    /* Usamos 100% de ancho en la elipse para que se expanda bien hacia los lados */
+    background-image: radial-gradient(ellipse 100% 96% at 50% 50%,
+            #1c2d54 25%,
+            /* Azul luminoso en el centro */
+            #0b1325 60%,
+            /* Transición a azul oscuro un poco más abajo */
+            #020308 100%
+            /* Negro profundo para el resto de la página */
+        ) !important;
+
     background-attachment: fixed !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;

@@ -12,7 +12,7 @@
     --sop-color-light: #f8f9fa;
     --sop-color-primary: #0047b3;
     /* Accent color / active states */
-    --sop-border-light: rgba(255, 255, 255, 0.1);
+    --sop-border-light: #fff;
     --sop-radius-lg: 20px;
     --sop-radius-md: 12px;
     --sop-radius-sm: 8px;

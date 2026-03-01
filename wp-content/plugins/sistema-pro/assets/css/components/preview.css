@@ -242,7 +242,7 @@ body.sop-is-provider.sop-preview-mode .sop-rating-count {
 }
 
 .sop-preview-card {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.14);
 
     /* 2. El efecto de cristal (desenfoque del fondo) */
     backdrop-filter: blur(200px);

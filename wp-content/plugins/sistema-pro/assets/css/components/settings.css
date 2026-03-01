@@ -7,10 +7,9 @@
 }
 
 .sop-settings-panel {
-    background: #212849;
+    background-color: rgba(255, 255, 255, 0.08);
     border-radius: var(--sop-radius-md);
     padding: 25px 30px;
-    border: 1px solid var(--sop-border-light);
 }
 
 .sop-settings-panel.full-width {
