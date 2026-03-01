@@ -101,12 +101,17 @@ $consulta_gratis = get_user_meta( $user_id, 'sop_consulta_gratis', true );
         </div>
 
         <div class="sop-preview-slots">
-            <?php esc_html_e( 'Cupos', 'sistema-pro' ); ?> 
-            <span>0/5</span>
+            <div class="sop-slots-icon">
+                <img src="<?php echo esc_url( SOP_URL . 'assets/images/group.png' ); ?>" alt="Group">
+            </div>
+            <div class="sop-slots-text">
+                <?php esc_html_e( 'Cupos', 'sistema-pro' ); ?> 
+                <span>8-10</span>
+            </div>
         </div>
         <p class="sop-preview-sub-desc"><?php esc_html_e( 'Lorem ipsum dolor sit amet consectetur. Pretium at libero fermentum in vulputate. Est hendrerit elit ante vivamus', 'sistema-pro' ); ?></p>
         <?php if ( ! $is_my_own_profile ) : ?>
-        <button class="sop-preview-subscribe-btn" id="sop-subscribe-trigger"><?php esc_html_e( 'SUSCRIBIRSE', 'sistema-pro' ); ?></button>
+        <button class="sop-preview-subscribe-btn" id="sop-subscribe-trigger"><?php esc_html_e( 'SUSCRIBIRME', 'sistema-pro' ); ?></button>
         <?php endif; ?>
     </div>
 </div>

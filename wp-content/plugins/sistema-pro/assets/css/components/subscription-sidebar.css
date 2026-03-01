@@ -6,13 +6,14 @@
 
 .sop-preview-subscription {
     width: 100%;
-    background-color: #1a1e29 !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
     /* Unified dark background */
+    backdrop-filter: blur(200px);
+    -webkit-backdrop-filter: blur(200px);
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     padding: 25px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .sop-preview-consultation-gratis {
@@ -41,7 +42,7 @@
 
 .sop-preview-sub-title {
     text-align: left !important;
-    font-size: 18px !important;
+    font-size: 2rem !important;
     font-weight: 400 !important;
     color: #ffffff !important;
     margin: 0 0 15px;
@@ -51,8 +52,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     /* Default 2 cols */
-    gap: 10px;
-    margin-bottom: 25px;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
 .sop-preview-period-tabs.sop-grid-4 {
@@ -60,21 +61,22 @@
 }
 
 .sop-period-tab {
-    padding: 12px 10px;
-    border: 1px solid #374151;
+    padding: 8px;
+    border: 1px solid #fff;
     border-radius: 8px;
     background: transparent;
     color: #d1d5db;
-    font-size: 15px;
+    font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.2s ease;
+    font-weight: 400 !important;
 }
 
 .sop-period-tab.active {
     background: #ffffff !important;
     color: #000000 !important;
-    border-color: #ffffff !important;
-    font-weight: 500;
+    border-color: #092189 !important;
+    font-weight: 400 !important;
 }
 
 .sop-period-tab:hover:not(.active) {
@@ -83,43 +85,65 @@
 }
 
 .sop-preview-price-box {
-    border: 1px solid #374151;
+    border: 1px solid #fff;
     border-radius: 12px;
-    padding: 30px;
+    padding: 12px 30px;
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
 }
 
 .sop-preview-price {
-    font-size: 42px;
+    font-size: 3.75rem;
     font-weight: 300;
     color: #ffffff;
     line-height: 1;
 }
 
 .sop-preview-slots {
-    color: #9ca3af;
-    font-size: 14px;
-    margin-bottom: 15px;
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
     display: flex;
-    gap: 10px;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.sop-slots-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.sop-slots-icon img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.sop-slots-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .sop-preview-slots span {
-    font-weight: 600;
-    color: #ef4444;
-    /* Figma red */
-    background: rgba(239, 68, 68, 0.2);
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 12px;
+    color: #fff;
+    background: #AD1519;
+    padding: 0px 12px;
+    border-radius: 6px;
+    font-size: 1.5rem;
+    font-weight: 500;
 }
 
 .sop-preview-sub-desc {
     font-size: 13px;
-    color: #6b7280;
+    color: #fff;
     line-height: 1.5;
     margin-bottom: 25px;
     text-align: left;

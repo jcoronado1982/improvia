@@ -774,7 +774,7 @@ class SOP_UI {
         foreach ( $css_files as $file ) {
             $filename = basename( $file, '.css' );
             $url = SOP_URL . str_replace( SOP_PATH, '', $file );
-            wp_enqueue_style( 'sop-' . $filename, $url, array('sop-base-style'), '1.1.7' );
+            wp_enqueue_style( 'sop-' . $filename, $url, array('sop-base-style'), '1.1.9' );
         }
         
         // Tom Select
