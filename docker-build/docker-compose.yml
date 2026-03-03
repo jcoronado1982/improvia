@@ -1,0 +1,57 @@
+version: "3.8"
+services:
+  nginx-proxy-manager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx_proxy_manager
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - npm_data:/data
+      - npm_letsencrypt:/etc/letsencrypt
+    networks:
+      - proxy-tier
+
+  db:
+    image: mysql:8.0
+    container_name: improvia_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: improviadbpass
+      MYSQL_DATABASE: improvia_db
+      MYSQL_USER: improvia_user
+      MYSQL_PASSWORD: improviadbpass
+    volumes:
+      - db_data:/var/lib/mysql
+      # Inject the SQL dump to be imported automatically on first start
+      - ../db_backup.sql:/docker-entrypoint-initdb.d/db_backup.sql
+    networks:
+      - proxy-tier
+
+  wordpress:
+    build: .
+    container_name: improvia_wp
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: improvia_user
+      WORDPRESS_DB_PASSWORD: improviadbpass
+      WORDPRESS_DB_NAME: improvia_db
+    volumes:
+      - wp_data:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - proxy-tier
+
+volumes:
+  db_data:
+  wp_data:
+  npm_data:
+  npm_letsencrypt:
+
+networks:
+  proxy-tier:
+    driver: bridge
