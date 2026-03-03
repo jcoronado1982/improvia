@@ -3,7 +3,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 ?>
 <footer class="sop-global-footer">
     <div class="sop-footer-container">
-        <!-- Logo Row -->
+        <div class="sop-footer-container-main">
+             <!-- Logo Row -->
         <div class="sop-footer-logo">
             <img src="<?php echo esc_url( SOP_URL . 'assets/images/logo_white.png' ); ?>" alt="IMPROVIA">
         </div>
@@ -79,5 +80,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
                 <a href="#">AVISO LEGAL</a>
             </nav>
         </div>
+
+        </div>
+       
     </div>
 </footer>

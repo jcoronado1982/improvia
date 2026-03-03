@@ -12,17 +12,17 @@ $default_desc = __( 'Escribe aquí tu descripción profesional...', 'sistema-pro
 
 <div class="sop-tab-panel sop-tab-panel-flex-side">
     <div class="sop-title-with-line sop-prof-title-row">
-        <h3 style="margin: 0;">
-            <?php esc_html_e( 'DESCRIPCION PROFESIONAL', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span>
+        <h3 class="sop-margin-0">
+            <?php esc_html_e( 'DESCRIPCION PROFESIONAL', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span>
         </h3>
         <span id="sop-edit-prof-desc-btn" class="sop-edit-icon-btn" title="<?php esc_attr_e( 'Editar descripción', 'sistema-pro' ); ?>">
-            <img src="<?php echo esc_url( SOP_URL . 'assets/images/edit.png' ); ?>" alt="Edit" style="width: 24px; height: 24px;">
+            <img src="<?php echo esc_url( SOP_URL . 'assets/images/edit.png' ); ?>" alt="Edit" class="sop-icon-check-img">
         </span>
     </div>
     
     <!-- Professional Editor UI (Quill.js) -->
-    <div id="sop-prof-editor-wrapper" style="display: none; margin-bottom: 20px;">
-        <div id="sop-quill-editor" style="height: 200px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 0 0 8px 8px; color: inherit; font-size: 1rem;"></div>
+    <div id="sop-prof-editor-wrapper" class="sop-prof-editor-wrapper">
+        <div id="sop-quill-editor" class="sop-quill-editor-custom"></div>
     </div>
 
     <div id="sop-prof-desc-display" class="sop-prof-desc-display sop-prof-desc-text">

@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 $user = wp_get_current_user();
-$display_name = 'INICIAR SESIÓN';
+$display_name = 'LOGIN';
 
 if ( is_user_logged_in() ) {
     // Tratamos de obtener el nombre completo desde el display_name o los meta datos directamente
@@ -39,17 +39,14 @@ if ( is_user_logged_in() ) {
         </div>
 
         <div class="sop-header-right">
-            <?php if ( ! is_page('login') && ! is_page('registro') ) : ?>
             <div class="sop-header-top">
                 <div class="sop-lang-selector">
                     <span class="sop-lang-text">ES</span>
                     <img src="<?php echo esc_url( SOP_URL . 'assets/images/flag_es.png' ); ?>" alt="Spanish" class="sop-lang-flag">
                 </div>
             </div>
-            <?php endif; ?>
             
             <div class="sop-header-bottom">
-                <?php if ( ! is_page('login') && ! is_page('registro') ) : ?>
                 <nav class="sop-header-nav">
                     <a href="#" class="sop-nav-item">ATHLETES</a>
                     <div class="sop-nav-item has-dropdown">
@@ -62,7 +59,6 @@ if ( is_user_logged_in() ) {
                         <svg class="sop-dropdown-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                     </div>
                 </nav>
-                <?php endif; ?>
 
                 <div class="sop-header-user">
                     <?php if ( is_user_logged_in() ) : ?>
@@ -70,8 +66,11 @@ if ( is_user_logged_in() ) {
                             <?php echo esc_html( $display_name ); ?>
                         </a>
                     <?php else : ?>
-                        <a href="<?php echo home_url('/login'); ?>" class="sop-user-pill">
-                            INICIAR SESIÓN
+                        <a href="<?php echo home_url('/login'); ?>" class="sop-user-pill sop-pill-login">
+                            LOGIN
+                        </a>
+                        <a href="<?php echo home_url('/registro'); ?>" class="sop-user-pill sop-pill-register">
+                            REGÍSTRATE
                         </a>
                     <?php endif; ?>
                 </div>

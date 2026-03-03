@@ -42,9 +42,9 @@ $prof_doc_name = $prof_doc_id ? basename( get_attached_file( $prof_doc_id ) ) : 
                 </div>
              </div>
               <div>
-             <div id="sop-doc-preview-container" class="sop-preview-container-base" style="display: <?php echo $prof_doc_id ? 'block' : 'none'; ?>;">
+          <div id="sop-doc-preview-container" class="sop-preview-container-base" style="display: <?php echo $prof_doc_id ? 'block' : 'none'; ?>;">
         <div class="sop-tab-badge">
-            <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="sop-flex-center-gap">
                 <img src="<?php echo esc_url( SOP_URL . 'assets/images/check-circle.png' ); ?>" class="sop-icon-check-img" alt="Check">
                 <a id="sop-doc-link" href="<?php echo esc_url( $prof_doc_url ); ?>" target="_blank" class="sop-link-no-decor" style="color: inherit;">
                     <span id="sop-doc-filename"><?php echo esc_html( $prof_doc_name ); ?></span>

@@ -16,7 +16,7 @@ $fases_defensivas_act = get_user_meta( $user->ID, 'sop_fase_defensiva_ids', true
 ?>
 
 <div class="sop-tab-panel sop-tab-panel-basic">
-    <h3 class="sop-title-with-line"><?php esc_html_e( 'POSICIONES ESPECIALIZADAS', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></h3>
+    <h3 class="sop-title-with-line"><?php esc_html_e( 'POSICIONES ESPECIALIZADAS', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></h3>
     
     <!-- Sub-box Posición -->
     <div class="sop-posiciones-box">
@@ -26,7 +26,7 @@ $fases_defensivas_act = get_user_meta( $user->ID, 'sop_fase_defensiva_ids', true
                 $is_active = in_array($pos->term_id, (array)$posiciones_act);
             ?>
                 <label class="sop-tag-checkbox <?php echo $is_active ? 'active' : ''; ?>">
-                    <input type="checkbox" name="sop_posiciones_ids[]" value="<?php echo $pos->term_id; ?>" <?php checked($is_active); ?> style="display: none;">
+                    <input type="checkbox" name="sop_posiciones_ids[]" value="<?php echo $pos->term_id; ?>" <?php checked($is_active); ?> class="sop-hidden">
                     <span><?php echo esc_html($pos->name); ?></span>
                     <?php if ($is_active) : ?><span class="sop-tag-x">✕</span><?php endif; ?>
                 </label>
@@ -36,7 +36,7 @@ $fases_defensivas_act = get_user_meta( $user->ID, 'sop_fase_defensiva_ids', true
 
     <!-- Sub-box Fases de juego -->
     <div class="sop-posiciones-box">
-        <p class="sop-prof-section-label"><?php esc_html_e( 'Fases de juego', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></p>
+        <p class="sop-prof-section-label"><?php esc_html_e( 'Fases de juego', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></p>
         
         <!-- Fase Ofensiva -->
         <p class="sop-prof-sub-label"><?php esc_html_e( 'Fase Ofensiva', 'sistema-pro' ); ?></p>
@@ -45,7 +45,7 @@ $fases_defensivas_act = get_user_meta( $user->ID, 'sop_fase_defensiva_ids', true
                 $is_active_fo = in_array($fo->term_id, (array)$fases_ofensivas_act);
             ?>
                 <label class="sop-tag-checkbox <?php echo $is_active_fo ? 'active' : ''; ?>">
-                    <input type="checkbox" name="sop_fase_ofensiva_ids[]" value="<?php echo $fo->term_id; ?>" <?php checked($is_active_fo); ?> style="display: none;">
+                    <input type="checkbox" name="sop_fase_ofensiva_ids[]" value="<?php echo $fo->term_id; ?>" <?php checked($is_active_fo); ?> class="sop-hidden">
                     <span><?php echo esc_html($fo->name); ?></span>
                     <?php if ($is_active_fo) : ?><span class="sop-tag-x">✕</span><?php endif; ?>
                 </label>
@@ -59,7 +59,7 @@ $fases_defensivas_act = get_user_meta( $user->ID, 'sop_fase_defensiva_ids', true
                 $is_active_fd = in_array($fd->term_id, (array)$fases_defensivas_act);
             ?>
                 <label class="sop-tag-checkbox <?php echo $is_active_fd ? 'active' : ''; ?>">
-                    <input type="checkbox" name="sop_fase_defensiva_ids[]" value="<?php echo $fd->term_id; ?>" <?php checked($is_active_fd); ?> style="display: none;">
+                    <input type="checkbox" name="sop_fase_defensiva_ids[]" value="<?php echo $fd->term_id; ?>" <?php checked($is_active_fd); ?> class="sop-hidden">
                     <span><?php echo esc_html($fd->name); ?></span>
                     <?php if ($is_active_fd) : ?><span class="sop-tag-x">✕</span><?php endif; ?>
                 </label>

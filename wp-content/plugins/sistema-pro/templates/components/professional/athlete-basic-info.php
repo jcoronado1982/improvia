@@ -22,7 +22,7 @@ $categoria_act  = get_user_meta( $user->ID, 'sop_categoria_id', true );
     <h3 class="sop-title-with-line"><?php esc_html_e( 'INFORMACIÓN PARA MI ESPECIALISTA', 'sistema-pro' ); ?></h3>
     <div class="sop-tab-grid-4-sm">
         <div>
-            <label class="sop-label"><?php esc_html_e( 'Pierna dominante', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+            <label class="sop-label"><?php esc_html_e( 'Pierna dominante', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></label>
             <select name="sop_pierna_id" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
                 <option value=""></option>
                 <?php foreach ($piernas as $p) : ?>
@@ -31,7 +31,7 @@ $categoria_act  = get_user_meta( $user->ID, 'sop_categoria_id', true );
             </select>
         </div>
         <div>
-            <label class="sop-label"><?php esc_html_e( 'Altura (cm)', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+            <label class="sop-label"><?php esc_html_e( 'Altura (cm)', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></label>
             <select name="sop_altura_id" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
                 <option value=""></option>
                 <?php foreach ($alturas as $a) : ?>
@@ -40,7 +40,7 @@ $categoria_act  = get_user_meta( $user->ID, 'sop_categoria_id', true );
             </select>
         </div>
         <div>
-            <label class="sop-label"><?php esc_html_e( 'Peso', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+            <label class="sop-label"><?php esc_html_e( 'Peso', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></label>
             <select name="sop_peso_id" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
                 <option value=""></option>
                 <?php foreach ($pesos as $pes) : ?>
@@ -49,7 +49,7 @@ $categoria_act  = get_user_meta( $user->ID, 'sop_categoria_id', true );
             </select>
         </div>
         <div>
-            <label class="sop-label"><?php esc_html_e( 'Categoría', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+            <label class="sop-label"><?php esc_html_e( 'Categoría', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></label>
             <select name="sop_categoria_id" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
                 <option value=""></option>
                 <?php foreach ($categorias as $cat) : ?>
@@ -57,8 +57,8 @@ $categoria_act  = get_user_meta( $user->ID, 'sop_categoria_id', true );
                 <?php endforeach; ?>
             </select>
         </div>
-        <div style="grid-column: span 1;">
-            <label class="sop-label"><?php esc_html_e( 'Nivel', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+        <div class="sop-col-span-1">
+            <label class="sop-label"><?php esc_html_e( 'Nivel', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></label>
             <select name="sop_nivel_prof_id" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>">
                 <option value=""></option>
                 <?php foreach ($niveles_prof as $np) : ?>

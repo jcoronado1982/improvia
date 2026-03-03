@@ -774,7 +774,7 @@ class SOP_UI {
         foreach ( $css_files as $file ) {
             $filename = basename( $file, '.css' );
             $url = SOP_URL . str_replace( SOP_PATH, '', $file );
-            wp_enqueue_style( 'sop-' . $filename, $url, array('sop-base-style'), '1.1.9' );
+            wp_enqueue_style( 'sop-' . $filename, $url, array('sop-base-style'), '1.1.12' );
         }
         
         // Tom Select
@@ -920,6 +920,10 @@ class SOP_UI {
 
         if ( is_page('perfil') ) {
             $classes[] = 'sop-profile-page';
+        }
+
+        if ( is_front_page() || is_home() ) {
+            $classes[] = 'sop-home-page';
         }
 
         return $classes;

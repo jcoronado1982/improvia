@@ -13,9 +13,15 @@
 
 /* --- Flex row para dropdowns (ocupación, formación inputs) --- */
 .sop-prof-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 0.25fr 0.25fr 0.5fr;
     gap: 20px;
-    flex-wrap: wrap;
+}
+
+/* --- Column for professional forms --- */
+.sop-prof-col {
+    flex: 1;
+    min-width: 200px;
 }
 
 .sop-prof-row-tight {
@@ -56,7 +62,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    padding-top: 20px;
 }
 
 /* --- Section labels --- */
@@ -64,6 +71,10 @@
     font-weight: 500;
     margin-top: 0;
     margin-bottom: 12px;
+}
+
+.sop-margin-0 {
+    margin: 0 !important;
 }
 
 .sop-prof-sub-label {
@@ -85,8 +96,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     background: transparent;
     border-radius: 6px;
     transition: all 0.3s ease;
@@ -115,18 +126,16 @@
 
 .sop-prof-desc-display {
     min-height: 120px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.03);
+    font-size: 1.125rem;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
+    color: #FFFFFF;
 }
 
 .sop-prof-desc-text p {
     margin: 0 0 0.4em 0 !important;
     padding: 0 !important;
-    line-height: 1.5 !important;
+    line-height: 27px !important;
 }
 
 .sop-prof-desc-text p:last-child {
@@ -210,4 +219,83 @@ body:not(.sop-provider-theme-light) .sop-rrss-icon {
 /* Light Theme: icons should be dark/original unless specified */
 .sop-provider-theme-light .sop-rrss-icon {
     filter: brightness(0);
+}
+
+/* --- Quill Editor Toolbar Styling --- */
+.ql-toolbar.ql-snow {
+    background-color: #f0f0f0 !important;
+    /* Light gray */
+    border: 1px solid #ccc !important;
+    border-bottom: none !important;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Ensure icons and text are black */
+.ql-snow .ql-stroke {
+    stroke: #000000 !important;
+}
+
+.ql-snow .ql-fill {
+    fill: #000000 !important;
+}
+
+.ql-snow .ql-picker {
+    color: #000000 !important;
+}
+
+.ql-snow.ql-toolbar button:hover .ql-stroke,
+.ql-snow.ql-toolbar button:focus .ql-stroke,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke {
+    stroke: #000000 !important;
+}
+
+.ql-snow.ql-toolbar button:hover .ql-fill,
+.ql-snow.ql-toolbar button:focus .ql-fill,
+.ql-snow.ql-toolbar button.ql-active .ql-fill,
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-fill,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-fill,
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-fill,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-fill {
+    fill: #000000 !important;
+}
+
+/* Container for the editor area */
+.sop-prof-editor-wrapper {
+    display: none;
+    margin-bottom: 20px;
+}
+
+.sop-quill-editor-custom {
+    height: 200px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0 0 8px 8px;
+    color: inherit;
+    font-size: 1rem;
+}
+
+.sop-flex-center-gap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sop-hidden {
+    display: none;
+}
+
+.sop-link-no-decor-inherit {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+.ql-container.ql-snow {
+    border: 1px solid #ccc !important;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background: transparent;
 }

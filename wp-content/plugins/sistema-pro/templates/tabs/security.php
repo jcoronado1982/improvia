@@ -16,7 +16,7 @@ $user_email = $current_user->user_email;
         
         <!-- Display State -->
         <div class="sop-security-box sop-display-state">
-            <span class="sop-security-label"><?php esc_html_e( 'Correo actual', 'sistema-pro' ); ?></span>
+            <span class="sop-security-label sop-security-label-large"><?php esc_html_e( 'Correo actual', 'sistema-pro' ); ?></span>
             <span class="sop-security-badge"><?php echo esc_html($user_email); ?></span>
             <button type="button" class="sop-btn-blue sop-toggle-edit"><?php esc_html_e( 'Cambiar correo', 'sistema-pro' ); ?></button>
         </div>
@@ -25,7 +25,7 @@ $user_email = $current_user->user_email;
         <div class="sop-security-box sop-edit-state" style="display: none;">
             <form id="sop-update-email-form">
                 <div class="sop-security-form-row">
-                    <label class="sop-security-label"><?php esc_html_e( 'Nuevo correo', 'sistema-pro' ); ?></label>
+                    <label class="sop-security-label sop-security-label-large"><?php esc_html_e( 'Nuevo correo', 'sistema-pro' ); ?></label>
                     <input type="email" name="new_email" class="sop-security-input" value="<?php echo esc_attr($user_email); ?>" required>
                 </div>
                 <div class="sop-security-actions">
@@ -43,7 +43,7 @@ $user_email = $current_user->user_email;
         
         <!-- Display State -->
         <div class="sop-security-box sop-display-state">
-            <span class="sop-security-label"><?php esc_html_e( 'Contraseña actual', 'sistema-pro' ); ?></span>
+            <span class="sop-security-label sop-security-label-large"><?php esc_html_e( 'Contraseña actual', 'sistema-pro' ); ?></span>
             <span class="sop-security-badge">********</span>
             <button type="button" class="sop-btn-blue sop-toggle-edit"><?php esc_html_e( 'Cambiar contraseña', 'sistema-pro' ); ?></button>
         </div>
@@ -52,15 +52,15 @@ $user_email = $current_user->user_email;
         <div class="sop-security-box sop-edit-state" style="display: none;">
             <form id="sop-update-password-form">
                 <div class="sop-security-form-row">
-                    <label class="sop-security-label"><?php esc_html_e( 'Contraseña actual', 'sistema-pro' ); ?></label>
+                    <label class="sop-security-label sop-security-label-large"><?php esc_html_e( 'Contraseña actual', 'sistema-pro' ); ?></label>
                     <input type="password" name="current_password" class="sop-security-input" required>
                 </div>
                 <div class="sop-security-form-row">
-                    <label class="sop-security-label"><?php esc_html_e( 'Nueva contraseña', 'sistema-pro' ); ?></label>
+                    <label class="sop-security-label sop-security-label-large"><?php esc_html_e( 'Nueva contraseña', 'sistema-pro' ); ?></label>
                     <input type="password" name="new_password" class="sop-security-input" required>
                 </div>
                 <div class="sop-security-form-row">
-                    <label class="sop-security-label"><?php esc_html_e( 'Confirmar nueva contraseña', 'sistema-pro' ); ?></label>
+                    <label class="sop-security-label sop-security-label-large"><?php esc_html_e( 'Confirmar nueva contraseña', 'sistema-pro' ); ?></label>
                     <input type="password" name="confirm_password" class="sop-security-input" required>
                 </div>
                 <div class="sop-security-actions">
@@ -76,34 +76,21 @@ $user_email = $current_user->user_email;
 
 <style>
 .sop-security-form-row {
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-}
-.sop-security-input {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px;
-    padding: 10px 15px;
-    color: #fff;
-    width: 100%;
-}
-.sop-provider-theme-light .sop-security-input {
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    color: #111827;
+    gap: 12px;
 }
 .sop-security-actions {
     display: flex;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 15px;
+    margin-top: 15px;
 }
 .sop-security-box form {
     width: 100%;
 }
 .sop-security-msg {
-    margin-top: 10px;
-    font-size: 13px;
+    margin-top: 12px;
+    font-size: 14px;
 }
 </style>

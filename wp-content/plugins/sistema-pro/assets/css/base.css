@@ -28,7 +28,8 @@ body {
 }
 
 body.sop-login-page,
-body.sop-register-page {
+body.sop-register-page,
+body.sop-home-page {
     background-color: var(--sop-color-white);
     color: var(--sop-color-navy);
     display: flex;
@@ -37,7 +38,8 @@ body.sop-register-page {
 }
 
 body.sop-login-page .sop-global-header,
-body.sop-register-page .sop-global-header {
+body.sop-register-page .sop-global-header,
+body.sop-home-page .sop-global-header {
     background-color: var(--sop-color-white);
 }
 
@@ -60,7 +62,10 @@ body.sop-login-page .entry-title,
 body.sop-login-page .page-title,
 body.sop-register-page h1,
 body.sop-register-page .entry-title,
-body.sop-register-page .page-title {
+body.sop-register-page .page-title,
+body.sop-home-page h1,
+body.sop-home-page .entry-title,
+body.sop-home-page .page-title {
     display: none !important;
 }
 
@@ -68,6 +73,11 @@ body.home .wp-block-post-title,
 body.home h1,
 body.home .entry-title,
 body.home .page-title,
+body.sop-home-page #content,
+body.sop-home-page .site-content,
+body.sop-home-page .entry-content,
+body.sop-home-page .wp-block-group,
+body.sop-home-page .wp-site-blocks,
 #content,
 .site-content {
     padding-top: 0 !important;
@@ -99,7 +109,7 @@ footer:not(.sop-global-footer),
     color: var(--sop-color-white);
     padding: 12px 24px;
     border-radius: var(--sop-radius-sm);
-    border: none;
+    border: 1px solid #FFFFFF !important;
     cursor: pointer;
     font-size: 0.9rem;
     font-weight: 500;

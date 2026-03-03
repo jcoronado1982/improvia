@@ -100,9 +100,9 @@
 
 /* Class for titles that have a dividing line underneath (ABOUT ME, INFORMACIÓN, etc.) */
 .sop-title-with-line {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid #8E8E8E;
     padding-bottom: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 /* Structural Classes for Tab Content layout */
@@ -134,7 +134,7 @@
 }
 
 .sop-tab-panel-flex-side {
-    flex: 1 0 350px;
+    flex: 1 0 150px;
     padding: 30px;
 }
 
@@ -362,6 +362,15 @@
     margin-bottom: 15px;
 }
 
+.sop-coach-form-grid-main {
+    display: grid;
+    background: transparent !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: none !important;
+    padding: 20px;
+    border-radius: 12px;
+}
+
 .sop-coach-form-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -525,7 +534,7 @@ body.sop-is-atleta.sop-profile-page.sop-preview-mode .sop-tab-btn.active img {
 .sop-provider-theme-light .sop-tab-nested-box,
 .sop-provider-theme-light .sop-coach-form-box,
 .sop-provider-theme-light .sop-posiciones-box {
-    border-color: rgba(0, 0, 0, 0.12);
+    border-color: #e2e8f0;
 }
 
 .sop-provider-theme-light .sop-tag-checkbox {

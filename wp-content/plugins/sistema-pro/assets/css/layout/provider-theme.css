@@ -62,7 +62,7 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-item {
 /* Force the span to inherit parent color instead of using its own white */
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-menu-item span {
     color: inherit !important;
-    font-size: 16px !important;
+    font-size: 1.5rem !important;
 }
 
 /* Active / hover: exact Navy Blue */
@@ -119,7 +119,7 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-btn.active img {
 
 /* 5. Forms and Inputs Overrides */
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-label {
-    color: #092189 !important;
+    color: #404040 !important;
 }
 
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-input,
@@ -143,13 +143,11 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-section {
     color: #0a0e1a !important;
 }
 
-/* Nested box (Idiomas): remove its own border/background since the parent already has one */
+/* Nested box (Idiomas): e2e8f0 border for light theme */
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-nested-box {
     background: transparent !important;
-    border: none !important;
+    border: 1px solid #e2e8f0 !important;
     box-shadow: none !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
 }
 
 /* 7. Footer Overrides */
@@ -180,10 +178,12 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-tab-nested-title {
 
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-title {
     color: #092189 !important;
+    margin-bottom: 25px;
 }
 
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-label {
     color: #0a0e1a !important;
+    font-weight: 500 !important;
 }
 
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-badge {
@@ -194,6 +194,53 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-badge {
 
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-box {
     border-color: #e2e8f0 !important;
+    padding: 30px !important;
+}
+
+/* Form inputs in security tab */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-input {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0a0e1a !important;
+    width: 100% !important;
+    max-width: 450px !important;
+    border-radius: 10px !important;
+    padding: 14px 20px !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-input:focus {
+    border-color: #092189 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(9, 33, 137, 0.1) !important;
+}
+
+/* Security Button Overrides */
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-section .sop-btn-blue {
+    border: none !important;
+    height: 48px !important;
+    padding: 0 35px !important;
+    box-shadow: 0 4px 12px rgba(9, 33, 137, 0.2) !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-section .sop-btn-white {
+    background: transparent !important;
+    color: #092189 !important;
+    border: 1px solid #092189 !important;
+    height: 48px !important;
+    padding: 0 35px !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-section .sop-btn-white:hover {
+    background: rgba(9, 33, 137, 0.05) !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-label-large {
+    font-size: 1.1rem !important;
+}
+
+body.sop-provider-theme-light:not(.sop-preview-mode) .sop-security-msg {
+    color: #4b5563 !important;
+    font-weight: 500 !important;
 }
 
 /* ======== 9. Settings Tab Overrides ======== */
@@ -233,15 +280,31 @@ body.sop-provider-theme-light:not(.sop-preview-mode) .sop-slider {
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-lang-box {
     background: #f8f9fa !important;
     border: 1px solid #e2e8f0 !important;
+    display: grid !important;
+    grid-template-columns: 0.6fr 0.4fr !important;
+    align-items: center !important;
+    width: 90% !important;
+    max-width: 100% !important;
+    padding: 12px 25px !important;
+    gap: 20px !important;
 }
 
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-lang-badge {
-    background: #092189 !important;
-    color: #ffffff !important;
+    background: #404040 !important;
+    color: #fff !important;
+    flex-shrink: 0 !important;
+    width: fit-content !important;
+    padding: 6px 20px !important;
 }
 
 body.sop-provider-theme-light:not(.sop-preview-mode) .sop-lang-select {
     color: #6b7280 !important;
+    width: 100% !important;
+    text-align: left !important;
+    background: #fff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 4px 0px !important;
 }
 
 /* Cancellation box */

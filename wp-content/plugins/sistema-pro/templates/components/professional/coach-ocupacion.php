@@ -15,8 +15,8 @@ $experiencia_act = get_user_meta( $user->ID, 'sop_experiencia_id', true );
 <div class="sop-tab-panel sop-tab-panel-flex-main">
     <h3 class="sop-title-with-line"><?php esc_html_e( 'OCUPACION', 'sistema-pro' ); ?></h3>
     <div class="sop-prof-row">
-        <div style="flex: 1; min-width: 200px;">
-            <label class="sop-label"><?php esc_html_e( 'Ocupación actual', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+        <div class="sop-prof-col">
+            <label class="sop-label"><?php esc_html_e( 'Ocupación actual', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></label>
             <select name="sop_ocupacion_id" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>" required>
                 <option value=""></option>
                 <?php foreach ($ocupaciones as $oc) : ?>
@@ -24,8 +24,8 @@ $experiencia_act = get_user_meta( $user->ID, 'sop_experiencia_id', true );
                 <?php endforeach; ?>
             </select>
         </div>
-        <div style="flex: 1; min-width: 200px;">
-            <label class="sop-label"><?php esc_html_e( 'Experiencia', 'sistema-pro' ); ?> <span style="color: #ff4b4b;">*</span></label>
+        <div class="sop-prof-col">
+            <label class="sop-label"><?php esc_html_e( 'Experiencia', 'sistema-pro' ); ?> <span class="sop-required-asterisk">*</span></label>
             <select name="sop_experiencia_id" class="sop-input sop-tom-select" placeholder="<?php esc_attr_e( 'Seleccionar', 'sistema-pro' ); ?>" required>
                 <option value=""></option>
                 <?php foreach ($experiencias as $exp) : ?>

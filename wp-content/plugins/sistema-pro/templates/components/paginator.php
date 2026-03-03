@@ -25,7 +25,9 @@ if ( $total_pages > 1 ) $visible_pages[] = $total_pages;
     $prev_url = add_query_arg( 'pag', max( 1, $current_page - 1 ) );
     $next_url = add_query_arg( 'pag', min( $total_pages, $current_page + 1 ) );
     ?>
-    <a href="<?php echo esc_url( $prev_url ); ?>" class="sop-pag-btn sop-pag-arrow <?php echo ($current_page <= 1) ? 'sop-pag-disabled' : ''; ?>" aria-label="Previous Page">‹</a>
+    <a href="<?php echo esc_url( $prev_url ); ?>" class="sop-pag-btn sop-pag-arrow <?php echo ($current_page <= 1) ? 'sop-pag-disabled' : ''; ?>" aria-label="Previous Page">
+        <img src="<?php echo SOP_URL . 'assets/images/pag-left.png'; ?>" alt="Prev" class="sop-pag-img">
+    </a>
     
     <?php foreach ( $visible_pages as $page ) : ?>
         <?php if ( $page === '...' ) : ?>
@@ -38,5 +40,7 @@ if ( $total_pages > 1 ) $visible_pages[] = $total_pages;
         <?php endif; ?>
     <?php endforeach; ?>
     
-    <a href="<?php echo esc_url( $next_url ); ?>" class="sop-pag-btn sop-pag-arrow <?php echo ($current_page >= $total_pages) ? 'sop-pag-disabled' : ''; ?>" aria-label="Next Page">›</a>
+    <a href="<?php echo esc_url( $next_url ); ?>" class="sop-pag-btn sop-pag-arrow <?php echo ($current_page >= $total_pages) ? 'sop-pag-disabled' : ''; ?>" aria-label="Next Page">
+        <img src="<?php echo SOP_URL . 'assets/images/pag-right.png'; ?>" alt="Next" class="sop-pag-img">
+    </a>
 </div>

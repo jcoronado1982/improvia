@@ -105,21 +105,24 @@ input:checked+.sop-slider:before {
 
 /* Language Box */
 .sop-lang-box {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 0.6fr 0.4fr;
     align-items: center;
-    padding: 15px 20px;
+    padding: 12px 25px;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: var(--sop-radius-sm);
+    width: 90%;
+    gap: 20px;
 }
 
 .sop-lang-badge {
     background: #000;
     color: var(--sop-color-white);
-    padding: 5px 15px;
+    padding: 6px 20px;
     border-radius: var(--sop-radius-pill);
     font-size: 0.9rem;
+    width: fit-content;
 }
 
 .sop-lang-select {
@@ -129,6 +132,15 @@ input:checked+.sop-slider:before {
     font-size: 0.9rem;
     cursor: pointer;
     outline: none;
+    width: 100%;
+    padding: 0px 0px !important;
+}
+
+/* Athlete specific (Dark Theme) */
+body.sop-is-atleta .sop-lang-select {
+    border: 1px solid #fff;
+    border-radius: var(--sop-radius-md);
+    padding: 8px 15px;
 }
 
 /* Cancellation Section */
