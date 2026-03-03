@@ -42,3 +42,24 @@ Este documento sirve como memoria persistente para el desarrollo del proyecto IM
 - **Lógica de Downgrade:** Si un usuario nivel 3 borra todos sus planes (entrenador) o se queda sin suscripciones activas (atleta), el sistema lo baja automáticamente a nivel 2.
 - **Diferencia de Etiquetas:** En el admin, el Nivel 3 se muestra como "Aprobado" para entrenadores y "Suscrito" para atletas.
 - **Archivo clave:** `wp-content/plugins/sistema-pro/includes/class-ui.php` (funciones `handle_profile_update` y `handle_solicitude_approval`)
+
+---
+
+## 🔒 Bloqueo de Conexión (GCP Instancia Caída o Sin SSH)
+**Error:** La instancia de Google Cloud Platform (GCP) no responde al tráfico HTTP (puerto 80) y la conexión SSH (puerto 22) lanza un error de "Connection timed out" tanto desde la terminal local como web.
+**Causa:** El firewall interno del sistema operativo Ubuntu (UFW - Uncomplicated Firewall) se ha activado y configurado de forma restrictiva, bloqueando el acceso a puertos externos, ignorando las reglas de red generales permitidas en GCP.
+**Solución:** 
+- Inyectar un script de inicio de emergencia desde la consola de GCP para desactivar el firewall interno al reiniciar la máquina.
+1. Ir a GCP Console -> Compute Engine -> VM instances.
+2. Hacer clic en la instancia afectada (ej. `improvia-staging`) y darle a **Editar** en la barra superior.
+3. Bajar hasta la sección **Automatización (Automation)**.
+4. En la caja de texto **Script de inicio (Startup script)**, ingresar exactamente lo siguiente:
+   ```bash
+   #!/bin/bash
+   ufw disable
+   iptables -F
+   systemctl restart docker
+   ```
+5. Guardar los cambios al final de la página.
+6. Hacer clic en **Restablecer (Reset)** en la barra superior. Esto reinicia la máquina y fuerza la ejecución del script.
+- **Nota:** Una vez recuperado el acceso (HTTP/SSH), verifica la configuración de UFW o Docker para prevenir que vuelva a sobreescribirse de forma errónea.
